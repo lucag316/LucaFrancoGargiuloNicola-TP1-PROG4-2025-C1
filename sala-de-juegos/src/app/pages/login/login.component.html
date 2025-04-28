@@ -1,0 +1,69 @@
+
+<!--
+Componente: Login
+Descripción: 
+    Muestra un formulario de inicio de sesión donde el usuario debe ingresar su nombre de usuario 
+    y contraseña. Al enviar el formulario, se ejecuta la función onLogin().
+Notas:
+    - Utiliza Angular Forms (ngForm) para validación del formulario.
+    - Enlace al registro si el usuario no tiene cuenta.
+-->
+
+<div class="login-container">
+
+    <!-- Tarjeta de login -->
+    <div class="login-card">
+        <!-- Título del formulario -->
+        <h2 class="login-title">Iniciar Sesión</h2>
+        
+        <!-- Formulario de login -->
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm"> <!-- (ngSubmit)="onLogin()": cuando el usuario envie el form, se ejecuta la funcion onLogin-->
+
+            <!-- Campo de entrada: Usuario -->
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-input" 
+                    required 
+                    [(ngModel)]="username">
+            </div>
+
+            <!-- Campo de entrada: Contraseña -->
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-input" 
+                    required 
+                    [(ngModel)]="password">
+            </div>
+
+            <!-- Mensaje de error en caso de login fallido -->
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="form-group">
+                <button 
+                    type="submit" 
+                    class="login-button" 
+                    [disabled]="!loginForm.form.valid">
+                    Iniciar Sesión
+                </button>
+            </div>
+        </form>
+
+        <!-- Enlace a la página de registro -->
+        <div class="register-link">
+            <p>¿No tienes cuenta? 
+                <a routerLink="/register">Registrarse</a>
+            </p>
+        </div>
+    </div>
+</div>
