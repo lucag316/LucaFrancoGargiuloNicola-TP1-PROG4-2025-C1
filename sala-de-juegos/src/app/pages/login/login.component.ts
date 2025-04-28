@@ -29,21 +29,30 @@ export class LoginComponent {
   */
   onLogin(){
     //Verifica si el usuario y la contraseña son 'a'
-    if (this.username === 'a' && this.password === 'a') {
+    if (this.username === 'aaa' && this.password === 'aaa') {
       // Muestra un mensaje en la consola (sólo para desarrollo)
       console.log('Login exitoso');
-    
+      this.showMessage('Login exitoso', false); // verde
 
       // Redirige al usuario a la página principal 'home'
       this.router.navigate(['/home']);
 
-    } else {
-      this.snackBar.open('usuario o contraseña incorrectos', 'Cerrar', {
-        duration: 3000, // 3 segundos
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
+    }  else {
+      this.showMessage('Usuario o contraseña incorrectos', true); // rojo
     }
+  }
+
+  /*
+  * mensaje: el texto que quieras mostrar.
+  * esError: si es true, le da la clase snackbar-error (rojo); si es false, le da snackbar-success (verde).
+  * */
+  showMessage(mensaje: string, esError: boolean = false) {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: [esError ? 'snackbar-error' : 'snackbar-success']
+    });
   }
 
 }

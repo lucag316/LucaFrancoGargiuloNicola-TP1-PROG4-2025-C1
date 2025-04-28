@@ -17,7 +17,7 @@ Notas:
         <h2 class="login-title">Iniciar Sesión</h2>
         
         <!-- Formulario de login -->
-        <form (ngSubmit)="onLogin()" #loginForm="ngForm"> <!-- (ngSubmit)="onLogin()": cuando el usuario envie el form, se ejecuta la funcion onLogin-->
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm" novalidate> <!-- (ngSubmit)="onLogin()": cuando el usuario envie el form, se ejecuta la funcion onLogin-->
 
             <!-- Campo de entrada: Usuario -->
             <div class="form-group">
@@ -28,7 +28,16 @@ Notas:
                     name="username" 
                     class="form-input" 
                     required 
-                    [(ngModel)]="username">
+                    minlength="3"
+                    [(ngModel)]="username"
+                    #usernameModel="ngModel"
+                    [ngClass]="{'invalid-input': usernameModel.invalid && usernameModel.touched}"
+                >
+                <!-- Mensaje de error -->
+                <div class="error-message" *ngIf="usernameModel.errors && usernameModel.touched">
+                    <span *ngIf="usernameModel.errors['required']">El nombre de usuario es obligatorio.</span>
+                    <span *ngIf="usernameModel.errors['minlength']">El nombre de usuario debe tener al menos 3 caracteres.</span>
+                </div>
             </div>
 
             <!-- Campo de entrada: Contraseña -->
@@ -40,7 +49,16 @@ Notas:
                     name="password" 
                     class="form-input" 
                     required 
-                    [(ngModel)]="password">
+                    minlength="3"
+                    [(ngModel)]="password"
+                    #passwordModel="ngModel"
+                    [ngClass]="{'invalid-input': passwordModel.invalid && passwordModel.touched}"
+                >
+                <!-- Mensaje de error -->
+                <div class="error-message" *ngIf="passwordModel.errors && passwordModel.touched">
+                    <span *ngIf="passwordModel.errors['required']">La contraseña es obligatoria.</span>
+                    <span *ngIf="passwordModel.errors['minlength']">La contraseña debe tener al menos 3 caracteres.</span>
+                </div>
             </div>
 
             <!-- Botón de envío -->
