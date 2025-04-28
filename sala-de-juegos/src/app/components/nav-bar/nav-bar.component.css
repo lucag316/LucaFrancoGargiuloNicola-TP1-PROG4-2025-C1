@@ -1,0 +1,145 @@
+
+
+/* Estilos para el navbar */
+.navbar-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: rgba(27, 27, 27, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--color-boton);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.03);
+}
+
+.navbar-logo {
+    height: 50px;
+    width: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 5px var(--color-boton));
+}
+
+.navbar-logo:hover {
+    transform: rotate(-5deg) scale(1.1);
+    filter: drop-shadow(0 0 8px var(--color-boton-hover));
+}
+
+.navbar-title {
+    font-size: 1.8rem;
+    color: var(--color-titulo);
+    text-shadow: 0 0 10px var(--color-boton);
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.navbar-title:hover {
+    text-shadow: 0 0 15px var(--color-boton-hover);
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.navbar-links a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-links a:hover {
+    color: var(--color-boton);
+}
+
+.navbar-links a::before {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-boton);
+    transition: width 0.3s ease;
+}
+
+.navbar-links a:hover::before {
+    width: 100%;
+}
+
+.active-link {
+    color: var(--color-boton) !important;
+    font-weight: bold;
+}
+
+.active-link::before {
+    width: 100% !important;
+    background-color: var(--color-boton-hover);
+}
+
+.signup-link {
+    background-color: var(--color-boton);
+    color: var(--color-fondo) !important;
+    padding: 0.7rem 1.8rem !important;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+}
+
+.signup-link:hover {
+    background-color: var(--color-boton-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .navbar-links {
+        margin-top: 1.5rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .navbar-title {
+        font-size: 1.5rem;
+    }
+    
+    .navbar-logo {
+        height: 40px;
+    }
+    
+    .signup-link {
+        padding: 0.5rem 1.2rem !important;
+    }
+}
