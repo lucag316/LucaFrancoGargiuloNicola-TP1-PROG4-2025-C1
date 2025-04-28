@@ -30,7 +30,14 @@ Notas:
                     name="username"
                     class="form-input"
                     required
-                    [(ngModel)]="username">
+                    minlength="3"
+                    [(ngModel)]="username"
+                    #usernameField="ngModel">
+                <!-- Mensaje de error -->
+                <div *ngIf="usernameField.invalid && usernameField.touched" class="error-message">
+                    <div *ngIf="usernameField.errors?.['required']">El nombre de usuario es obligatorio.</div>
+                    <div *ngIf="usernameField.errors?.['minlength']">El usuario debe tener al menos 3 caracteres.</div>
+                </div>
             </div>
 
             <!-- Campo de entrada: Contraseña -->
@@ -42,7 +49,14 @@ Notas:
                     name="password"
                     class="form-input"
                     required
-                    [(ngModel)]="password">
+                    minlength="3"
+                    [(ngModel)]="password"
+                    #passwordField="ngModel">
+                <!-- Mensaje de error -->
+                <div *ngIf="passwordField.invalid && passwordField.touched" class="error-message">
+                    <div *ngIf="passwordField.errors?.['required']">La contraseña es obligatoria.</div>
+                    <div *ngIf="passwordField.errors?.['minlength']">La contraseña debe tener al menos 3 caracteres.</div>
+                </div>
             </div>
 
             <!-- Campo de entrada: Email -->
@@ -54,7 +68,14 @@ Notas:
                     name="email"
                     class="form-input"
                     required
-                    [(ngModel)]="email">
+                    pattern=".*@.*"
+                    [(ngModel)]="email"
+                    #emailField="ngModel">
+                <!-- Mensaje de error -->
+                <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
+                    <div *ngIf="emailField.errors?.['required']">El email es obligatorio.</div>
+                    <div *ngIf="emailField.errors?.['pattern']">El email debe ser válido y contener un arroba.</div>
+                </div>
             </div>
 
             <!-- Campo de entrada: Teléfono -->
@@ -66,7 +87,14 @@ Notas:
                     name="phone"
                     class="form-input"
                     required
-                    [(ngModel)]="phone">
+                    pattern="^[0-9]{8}$"
+                    [(ngModel)]="phone"
+                    #phoneField="ngModel">
+                <!-- Mensaje de error -->
+                <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
+                    <div *ngIf="phoneField.errors?.['required']">El teléfono es obligatorio.</div>
+                    <div *ngIf="phoneField.errors?.['pattern']">El teléfono debe ser numérico y tener exactamente 8 dígitos.</div>
+                </div>
             </div>
 
             <!-- Botón de envío -->

@@ -32,15 +32,27 @@ export class RegisterComponent {
     if (this.username && this.password && this.email && this.phone) {
       console.log('Registro exitoso');
 
+      this.showMessage('Registro exitoso', false); // verde
+
       // Después del registro, podría guardar los datos en un servicio o backend
       // Por ahora simplemente redirige al home
       this.router.navigate(['/home']);
     } else {
-        this.snackBar.open('Por favor completa todos los campos', 'Cerrar', {
-          duration: 3000, // 3 segundos
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-      });
+      this.showMessage('ERROR, vuelva a registrarse', true); // rojo
     }
+  }
+  
+
+  /*
+  * mensaje: el texto que quieras mostrar.
+  * esError: si es true, le da la clase snackbar-error (rojo); si es false, le da snackbar-success (verde).
+  * */
+  showMessage(mensaje: string, esError: boolean = false) {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: [esError ? 'snackbar-error' : 'snackbar-success']
+    });
   }
 }
