@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar }  from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-login',
@@ -14,9 +16,9 @@ export class LoginComponent {
 
   username: string = '';
   password: string = '';
-  errorMessage: string = '';
 
-  constructor(private router: Router) {}
+
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
 
   /**
    * Maneja el proceso de login del usuario.
@@ -31,15 +33,16 @@ export class LoginComponent {
       // Muestra un mensaje en la consola (sólo para desarrollo)
       console.log('Login exitoso');
     
-      // Limpia cualquier mensaje de error previo
-      this.errorMessage = '';
 
       // Redirige al usuario a la página principal 'home'
       this.router.navigate(['/home']);
 
     } else {
-      // Si las credenciales son incorrectas, muestra mensaje de error
-      this.errorMessage = 'Usuario o contraseña incorrectos';
+      this.snackBar.open('usuario o contraseña incorrectos', 'Cerrar', {
+        duration: 3000, // 3 segundos
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 

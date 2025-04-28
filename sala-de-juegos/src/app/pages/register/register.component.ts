@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-
+import { MatSnackBar }  from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -18,9 +18,8 @@ export class RegisterComponent {
   password: string = '';
   email: string = '';
   phone: string = '';
-  errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
 
   /**
    * Maneja el proceso de registro de usuario.
@@ -32,13 +31,16 @@ export class RegisterComponent {
   onRegister() {
     if (this.username && this.password && this.email && this.phone) {
       console.log('Registro exitoso');
-      this.errorMessage = '';
-      
+
       // Después del registro, podría guardar los datos en un servicio o backend
       // Por ahora simplemente redirige al home
       this.router.navigate(['/home']);
     } else {
-      this.errorMessage = 'Por favor completa todos los campos';
+        this.snackBar.open('Por favor completa todos los campos', 'Cerrar', {
+          duration: 3000, // 3 segundos
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+      });
     }
   }
 }

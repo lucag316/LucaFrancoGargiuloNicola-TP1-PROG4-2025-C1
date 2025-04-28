@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/* Estilos globales - variables de color */
+:root {
+    --color-primario: #4CAF50; /* Verde */
+    --color-secundario: #FFC107; /* Amarillo */
+    --color-fondo: #1B1B1B; /* Fondo oscuro */
+    --color-titulo: #FFFFFF; /* Blanco */
+    --color-texto: #D1D1D1; /* Gris claro */
+    --color-boton: #FFC107; /* Amarillo */
+    --color-boton-hover: #FF9800; /* Naranja cuando el botón es hover */
+    --color-error: #F44336; /* Rojo para mensajes de error */
+    --color-input-fondo: #333333; /* Fondo oscuro en inputs */
+    --color-input-texto: #FFFFFF; /* Texto en blanco */
+}
+
+/* Aplico la fuente y el color de fondo global */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Silkscreen", sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
