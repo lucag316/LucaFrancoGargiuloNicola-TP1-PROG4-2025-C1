@@ -1,1 +1,68 @@
-<p>quien-soy works!</p>
+
+
+<!-- Contenedor principal que ocupa toda la pantalla -->
+<div class="container">
+
+    <!-- Envoltura de la tarjeta de perfil -->
+    <div class="container-wrapper">
+
+        <!-- Tarjeta de perfil: solo se muestra si existe userData -->
+        <section *ngIf="userData() as user" class="profile-card">
+        
+            <!-- Imagen de avatar -->
+            <div class="container-avatar">
+                <img 
+                    [src]="user.avatar_url" 
+                    [alt]="user.name || 'Avatar'" 
+                    class="profile-avatar">
+            </div>
+
+            <!-- Nombre completo o username -->
+            <h2 class="profile-name">
+                {{ user.name || user.login }}
+            </h2>
+
+        <!-- Información adicional del perfil -->
+            <div class="profile-info">
+    
+                <!-- Biografía -->
+                <p *ngIf="user.bio" class="profile-bio">
+                    <strong>Bio:</strong> {{ user.bio }}
+                </p>    
+    
+                <!-- Ubicación -->
+                <p *ngIf="user.location" class="profile-location">
+                    <strong>Ubicación:</strong> {{ user.location }}
+                </p>
+    
+                <!-- Estadísticas del perfil -->
+                <div class="profile-stats">
+                    
+                    <div class="profile-stat-item">
+                        <strong>Repos públicos:</strong>
+                        <span>{{ user.public_repos }}</span>
+                    </div>
+        
+                    <div class="profile-stat-item">
+                        <strong>Seguidores:</strong>
+                        <span>{{ user.followers }}</span>
+                    </div>
+        
+                    <div class="profile-stat-item">
+                        <strong>Siguiendo:</strong>
+                        <span>{{ user.following }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-explanation">
+            <h3>Mi Juego propio</h3>
+            <div class="game-content">
+        
+            </div>
+        </section>
+    </div>
+</div>
+
+
