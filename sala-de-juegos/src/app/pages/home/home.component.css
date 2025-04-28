@@ -1,10 +1,104 @@
 
-/* Estilos específicos para el componente Home */
 .home-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     padding: 20px;
-    animation: fadeInSlideUp 1s ease-out; /* Animación de entrada */
+    animation: fadeInSlideUp 1s ease-out;
+}
+
+.welcome-banner {
+    background: rgba(255, 208, 0, 0.863);
+    color: #1B1B1B;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    animation: neonColorCycle 4s infinite alternate;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
+.welcome-banner h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    font-family: "Silkscreen", sans-serif;
+}
+
+.welcome-banner p {
+    font-size: 18px;
+    margin: 0;
+}
+
+.juegos-section {
+    text-align: center;
+}
+
+.juegos-title {
+    font-size: 28px;
+    color: var(--color-titulo);
+    margin-bottom: 30px;
+    text-shadow: 0 0 5px var(--color-secundario);
+}
+
+.juegos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.juego-card {
+    background-color: rgba(46, 46, 46, 0.7); /* Color oscuro con 70% de opacidad */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    border: 2px solid transparent;
+    animation: fadeInSlideUp 0.5s ease forwards;
+    backdrop-filter: blur(5px); /* EFECTO de difuminado de fondo */
+}
+
+.juego-card:hover {
+    transform: translateY(-5px);
+    border: 2px solid var(--color-boton-hover);
+    box-shadow: 0 0 15px 5px var(--color-boton-hover);
+}
+
+.juego-card h3 {
+    font-size: 22px;
+    color: var(--color-secundario);
+    margin-bottom: 10px;
+}
+
+.juego-card p {
+    font-size: 16px;
+    color: var(--color-texto);
+    margin-bottom: 20px;
+}
+
+.jugar-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-boton);
+    color: var(--color-fondo);
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.jugar-button:hover {
+    background-color: var(--color-boton-hover);
+    box-shadow: 0 0 10px 3px var(--color-boton-hover);
+}
+
+/* Animación de resplandor cíclico */
+@keyframes neonColorCycle {
+    0% {
+        box-shadow: 0 0 20px 5px #FF9800;
+    }
+    50% {
+        box-shadow: 0 0 30px 10px #FF5722;
+    }
+    100% {
+        box-shadow: 0 0 20px 5px #FFC107;
+    }
 }

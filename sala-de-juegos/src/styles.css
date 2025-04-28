@@ -15,15 +15,35 @@
     --color-input-texto: #FFFFFF; /* Texto en blanco */
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* Aplico la fuente y el color de fondo global */
-html, body {
-    height: 100%;
+body {
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     font-family: "Silkscreen", sans-serif;
-    background-color: var(--color-fondo);
     color: var(--color-texto);
+    position: relative; /* Añadido para asegurar el posicionamiento relativo */
+    background-color: var(--color-fondo); /* fallback si no carga imagen */
+    background: url('./assets/images/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    &::before{
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8); /* 50% de opacidad */
+        z-index: -1; /* Asegura que quede detrás del contenido */
+    }
 }
+
 
 /* Animación de desvanecimiento y deslizamiento */
 @keyframes fadeInSlideUp {
@@ -47,3 +67,4 @@ html, body {
     background-color: #43a047 !important; /* verde */
     color: white !important;
 }
+
