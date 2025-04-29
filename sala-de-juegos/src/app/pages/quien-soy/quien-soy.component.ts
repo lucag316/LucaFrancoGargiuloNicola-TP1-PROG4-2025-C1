@@ -50,4 +50,10 @@ export class QuienSoyComponent implements OnInit {
       });
   }
 
+  empezarJuego(): void {
+    // Lógica para iniciar tu juego
+    // Por ejemplo: redirigir a otro componente, mostrar un modal, etc.
+    console.log('¡Comenzar juego!');
+  }
+
 }
