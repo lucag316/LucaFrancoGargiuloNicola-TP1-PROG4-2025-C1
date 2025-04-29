@@ -5,7 +5,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: calc(100vh - 60px); /* Resta la altura del navbar */
+    padding-top: 60px;
     padding: 20px;
     animation: fadeInSlideUp 1s ease-out; /* Animación de entrada */
 }
