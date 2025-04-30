@@ -11,7 +11,8 @@ import { SupabaseService } from '../../services/supabase.service';
   selector: 'app-register',
   imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
+  standalone: true
 })
 export class RegisterComponent {
 

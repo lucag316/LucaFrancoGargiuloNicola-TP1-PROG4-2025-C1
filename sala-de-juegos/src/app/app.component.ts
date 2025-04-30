@@ -6,7 +6,8 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
   selector: 'app-root',
   imports: [RouterOutlet, NavBarComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  standalone: true
 })
 export class AppComponent {
   title = 'sala-de-juegos';

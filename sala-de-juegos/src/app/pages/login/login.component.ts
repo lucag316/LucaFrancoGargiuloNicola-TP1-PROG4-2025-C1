@@ -12,6 +12,7 @@ import { SupabaseService } from '../../services/supabase.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   imports: [FormsModule, CommonModule, RouterModule], //pongo el FormsModule aca sino me tira error en el HTML ngForm, el RouterModule es para que me funcione el routerLink en el html
+  standalone: true
 })
 export class LoginComponent {
 
