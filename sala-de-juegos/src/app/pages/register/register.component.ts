@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { MatSnackBar }  from '@angular/material/snack-bar';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,11 @@ export class RegisterComponent {
   email: string = '';
   phone: string = '';
 
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private router: Router, 
+    private snackBar: MatSnackBar,
+    private supabaseService: SupabaseService
+  ) {}
 
   /**
    * Maneja el proceso de registro de usuario.

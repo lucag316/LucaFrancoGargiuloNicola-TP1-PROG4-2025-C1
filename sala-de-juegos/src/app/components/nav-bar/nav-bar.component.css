@@ -93,7 +93,7 @@
 
 .active-link {
     color: var(--color-boton) !important;
-    font-weight: bold;
+
 }
 
 .active-link::before {
@@ -115,6 +115,16 @@
     background-color: var(--color-boton-hover);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+}
+
+.signup-link::before {
+    display: none;
+}
+
+.signup-link.active-link {
+    background-color: var(--color-boton-hover);
+    color: var(--color-fondo) !important;
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
 }
 
 /* Responsive */

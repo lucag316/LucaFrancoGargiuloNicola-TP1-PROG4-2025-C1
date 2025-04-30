@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar }  from '@angular/material/snack-bar';
+import { SupabaseService } from '../../services/supabase.service';
 
 
 @Component({
@@ -16,9 +17,14 @@ export class LoginComponent {
 
   username: string = '';
   password: string = '';
+  errorMessage: string = '';
+  loading: boolean = false;
 
-
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private router: Router, 
+    private snackBar: MatSnackBar,
+    private supabase: SupabaseService
+  ) {}
 
   /**
    * Maneja el proceso de login del usuario.
