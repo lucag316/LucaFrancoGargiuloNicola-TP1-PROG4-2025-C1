@@ -6,7 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   selector: 'app-nav-bar',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrl: './nav-bar.component.css',
   standalone: true
 })
 export class NavBarComponent {

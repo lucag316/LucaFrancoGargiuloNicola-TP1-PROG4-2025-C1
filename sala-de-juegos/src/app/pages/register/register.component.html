@@ -31,7 +31,7 @@ Notas:
                     class="form-input"
                     required
                     minlength="3"
-                    [(ngModel)]="username"
+                    [(ngModel)]="newUser.username"
                     #usernameField="ngModel">
                 <!-- Mensaje de error -->
                 <div *ngIf="usernameField.invalid && usernameField.touched" class="error-message">
@@ -50,7 +50,7 @@ Notas:
                     class="form-input"
                     required
                     minlength="3"
-                    [(ngModel)]="password"
+                    [(ngModel)]="newUser.password"
                     #passwordField="ngModel">
                 <!-- Mensaje de error -->
                 <div *ngIf="passwordField.invalid && passwordField.touched" class="error-message">
@@ -69,7 +69,7 @@ Notas:
                     class="form-input"
                     required
                     pattern=".*@.*"
-                    [(ngModel)]="email"
+                    [(ngModel)]="newUser.email"
                     #emailField="ngModel">
                 <!-- Mensaje de error -->
                 <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
@@ -88,7 +88,7 @@ Notas:
                     class="form-input"
                     required
                     pattern="^[0-9]{8}$"
-                    [(ngModel)]="phone"
+                    [(ngModel)]="newUser.phone"
                     #phoneField="ngModel">
                 <!-- Mensaje de error -->
                 <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">

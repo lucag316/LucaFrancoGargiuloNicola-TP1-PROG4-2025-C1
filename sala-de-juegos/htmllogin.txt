@@ -1,5 +1,9 @@
 
 
+
+
+
+
 <!--
 Componente: Login
 Descripción: 
@@ -67,8 +71,9 @@ Notas:
                 <button 
                     type="submit" 
                     class="login-button" 
-                    [disabled]="!loginForm.form.valid">
-                    Iniciar Sesión
+                    [disabled]="!loginForm.form.valid || isLoading">
+                    <span *ngIf="!isLoading">Iniciar Sesión</span>
+                    <span *ngIf="isLoading">Cargando...</span>
                 </button>
             </div>
         </form>

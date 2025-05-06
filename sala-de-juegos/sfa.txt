@@ -1,0 +1,64 @@
+
+
+import { Injectable } from '@angular/core';
+import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
+
+import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
+
+
+export interface IUser {
+    username: string;
+    password: string;
+    email: string;
+    phone: string;
+}
+
+@Injectable({
+    providedIn: 'root' // Hace que este servicio esté disponible a nivel global en la app
+})
+
+
+export class SupabaseService {
+
+    private supabase: SupabaseClient; // Cliente de Supabase para conectarse al backend
+    // private _session: AuthSession | null = null; // Almacena la sesión de autenticación actual (si existe)
+
+    constructor() {
+        this.supabase = createClient(
+            environment.supabaseUrl,
+            environment.supabaseKey
+        ); // Crea el cliente de Supabase usando las variables de entorno
+
+    }
+
+    // Método para login
+    async signInWithUsername(username: string, password: string) {
+        const email = `${username}@tudominio.com`; // Asegúrate que coincida con lo registrado
+        const { data, error } = await this.supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (error) {
+          throw new Error(this.getUserFriendlyError(error.message));
+        }
+        return data;
+      }
+      
+      private getUserFriendlyError(error: string): string {
+        if (error.includes('Invalid login credentials')) {
+          return 'Credenciales inválidas';
+        }
+        return 'Error al iniciar sesión';
+      }
+
+    // Método para registro
+    async register(email: string, password: string) {
+        const { data, error } = await this.supabase.auth.signUp({
+            email,
+            password
+        });
+        if (error) throw error;
+        return data;
+    }
+}

@@ -1,24 +1,17 @@
 
 # Sala de Juegos 🎮
-
 ===
 
 Aplicación interactiva desarrollada en Angular que permite a los usuarios ejercitar sus habilidades cognitivas y motrices a través de diversos juegos clásicos y uno original. Ofrece funcionalidades de autenticación, estadísticas personalizadas por jugador y por juego, chat en tiempo real, y una experiencia de usuario fluida y moderna.
 
 ---
-## 📋 Tabla de Contenidos
+## 📋 Indice
 - [Información del Proyecto](#-información-del-proyecto)
 - [Links importantes](#-links-importantes)
 - [Objetivo general](#-objetivo-general)
 - [Tecnologias utilizadas](#-tecnologias-utilizadas)
 - [Caracteristicas principales](#-caracteristicas-principales)
 - [Funcionalidades por Sprint](#-funcionalidades-por-sprint)
-- [Desarrollo por Sprints](#-desarrollo-por-sprints)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Instalación Local](#-instalación-local)
-- [Capturas de Pantalla](#-capturas-de-pantalla)
-- [Contribución](#-contribución)
-- [Licencia](#-licencia)
 ---
 
 ## 👨‍💻 Información del Proyecto
@@ -35,11 +28,14 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 ## 🔗 Links importantes
 
 -🔗 **Repositorio GitHub**: *[https://sala-de-juegos-delta.vercel.app/]*
--🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
--🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
+
 -🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
 
-## 🌐 Hosting del Proyecto
+-🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
+
+-🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
+
+#### 🌐 Hosting del Proyecto
 
 🔗 **Deploy online**: *[https://sala-de-juegos-delta.vercel.app/]*
 

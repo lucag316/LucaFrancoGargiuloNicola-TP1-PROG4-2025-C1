@@ -1,7 +1,10 @@
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
+import { BehaviorSubject } from 'rxjs'; // Importar BehaviorSubject para manejo de usuarios en tiempo real
+import { SUPABASE_CONFIG } from '../lib/constants'; // Constantes de configuración de Supabase
+import { IDatabase, IUser } from '../lib/interfaces';  // Interface para definir el tipo de usuario
+import { isPlatformBrowser } from '@angular/common'; // Detecta si estamos en el navegador
 
-
-import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient, AuthSession } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
 import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
 
 
@@ -12,8 +15,198 @@ import { environment } from '../enviroments/enviroment'; // Importa las variable
 
 export class SupabaseService {
 
+    private supabase!: SupabaseClient;  // Cliente de Supabase para interactuar con el backend
+    private users = new BehaviorSubject<IUser[]>([]); // BehaviorSubject para almacenar y emitir usuarios
+    users$ = this.users.asObservable(); // Observable para escuchar cambios en la lista de usuarios
+
+    private initialized = false; // Indica si el servicio ha sido inicializado correctamente
+
+
+    /**
+    * Constructor de SupabaseService
+    * Inicializa el cliente de Supabase solo si estamos en el navegador
+    */
+    constructor( @Inject(PLATFORM_ID) private platformId: Object ) {
+        if(isPlatformBrowser(this.platformId)){
+            try{
+                // Crea el cliente de Supabase usando las configuraciones definidas
+                this.supabase = createClient(
+                    SUPABASE_CONFIG.url, 
+                    SUPABASE_CONFIG.key, 
+                    SUPABASE_CONFIG.options);
+                this.initialize(); // Inicializa el servicio
+            } catch (error) {
+                this.users.error(error); // Manejo de errores si no se puede crear el cliente
+            }
+        }
+    }
+
+    /**
+   * Método de inicialización del servicio
+   * Solo se ejecuta una vez, y obtiene el número de usuarios en la tabla
+   */
+    private async initialize() {
+        if (this.initialized) {
+            return; // Si ya está inicializado, no hace nada
+        } 
+
+        try {
+            const { data, error } = await this.supabase.from('users').select('count').limit(0);
+            if (error) {
+                throw error; // Si hay error en la consulta, lo lanza
+            }
+            await this.getUsers(); // Obtiene los usuarios desde la base de datos
+            this.initialized = true; // Marca el servicio como inicializado
+        } catch (error) {
+            this.users.error(error); // Si ocurre un error en la inicialización, lo maneja
+        }
+    }
+
+    /**
+   * Método privado para obtener los usuarios desde la base de datos
+   */
+    private async getUsers() {
+        try{
+            const response = await this.supabase.from('users').select('*');
+            if (response.error) {
+                throw response.error; // Si hay error en la consulta, lo lanza
+            }
+            const users = response.data || []; // Guarda los usuarios obtenidos
+            this.users.next(users); // Actualiza el valor de los usuarios
+        } catch (error) {
+            this.users.error(error); // Si ocurre un error, lo maneja
+        }
+    }
+
+    /**
+   * Método para registrar un nuevo usuario
+   * @param user Objeto que contiene los datos del usuario a registrar
+   */
+    async register(user: Omit<IUser, 'id' | 'created_at'>): Promise<void> {
+        try {
+            // Realiza el registro en la autenticación de Supabase
+            const { data: authData, error: authError } = await this.supabase.auth.signUp({
+                email: user.email,
+                password: user.password,
+            });
+        
+            // Si hubo un error en la autenticación o no se creó el usuario, lanza un error
+            if (authError || !authData?.user) {
+                throw new Error(authError?.message || 'No se pudo registrar el usuario en Auth');
+            }
+        
+            // Inserta los datos del usuario en la tabla 'users' de Supabase
+            const { error: insertError } = await this.supabase
+                .from('users')
+                .insert([{
+                    username: user.username,
+                    email: user.email,
+                    phone: user.phone,
+            }]);
+        
+            // Si hubo un error insertando los datos, lanza un error
+            if (insertError) {
+                console.error('Error insertando en tabla users:', insertError);
+                throw new Error(insertError.message);
+            }
+        
+            await this.getUsers();
+        } catch (error) {
+            console.error('Error completo del register():', error); // Log del error completo
+            throw error; // Relanza el error para que lo pueda manejar el componente
+        }
+    }
+}
+
+
+
+
+
+
+
+    /*
+    private async loadUsers() {
+      try {
+        const { data, error } = await this.supabase.from('users').select('*');
+        if (error) {
+          throw error;
+        }
+        this.users.next(data);
+      } catch (error) {
+        this.users.error(error);
+      }
+    }*/
+
+    
+
+    /*
+    // Método para login
+    async signInWithUsername(username: string, password: string) {
+        const email = `${username}@tudominio.com`; // Asegúrate que coincida con lo registrado
+        const { data, error } = await this.supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (error) {
+          throw new Error(this.getUserFriendlyError(error.message));
+        }
+        return data;
+      }
+      
+      private getUserFriendlyError(error: string): string {
+        if (error.includes('Invalid login credentials')) {
+          return 'Credenciales inválidas';
+        }
+        return 'Error al iniciar sesión';
+      }
+    */
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+import { Injectable } from '@angular/core';
+import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
+
+import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
+
+
+export interface IUser {
+    username: string;
+    password: string;
+    email: string;
+    phone: string;
+}
+
+@Injectable({
+    providedIn: 'root' // Hace que este servicio esté disponible a nivel global en la app
+})
+
+
+export class SupabaseService {
+
     private supabase: SupabaseClient; // Cliente de Supabase para conectarse al backend
-    private _session: AuthSession | null = null; // Almacena la sesión de autenticación actual (si existe)
+    // private _session: AuthSession | null = null; // Almacena la sesión de autenticación actual (si existe)
 
     constructor() {
         this.supabase = createClient(
@@ -21,135 +214,37 @@ export class SupabaseService {
             environment.supabaseKey
         ); // Crea el cliente de Supabase usando las variables de entorno
 
-        this.loadSession(); // Carga la sesión almacenada (si existe)
     }
 
-    /**
-     * Método privado para cargar la sesión actual del usuario desde Supabase
-     */
-    private async loadSession() {
-        const { data: { session } } = await this.supabase.auth.getSession();
-        this._session = session;
-    }
-
-
-    /**
-     * Getter para acceder a la sesión actual
-     */
-    get session() {
-        return this._session;
-    }
-    
-    /**
-     * Indica si el usuario está logueado
-     */
-    get isLoggedIn(): boolean {
-        return !!this._session;
-    }
-
-
-    /**
-     * Iniciar sesión con nombre de usuario y contraseña
-     * 1. Busca el email correspondiente al nombre de usuario
-     * 2. Inicia sesión con email y contraseña
-     * @param username - Nombre de usuario
-     * @param password - Contraseña
-     */
-    async signIn(username: string, password: string) {
-
-        // Buscar el email en la tabla 'usuarios' usando el username
-        const { data: userData, error: userError } = await this.supabase
-            .from('usuarios')
-            .select('email')
-            .eq('username', username)
-            .single(); // Espera un único resultado
-        
-        if (userError || !userData) {
-            throw new Error('Usuario no encontrado');
-        }
-    
-        // Usar el email recuperado para hacer login
+    // Método para login
+    async signInWithUsername(username: string, password: string) {
+        const email = `${username}@tudominio.com`; // Asegúrate que coincida con lo registrado
         const { data, error } = await this.supabase.auth.signInWithPassword({
-            email: userData.email,
+          email,
+          password
+        });
+        
+        if (error) {
+          throw new Error(this.getUserFriendlyError(error.message));
+        }
+        return data;
+      }
+      
+      private getUserFriendlyError(error: string): string {
+        if (error.includes('Invalid login credentials')) {
+          return 'Credenciales inválidas';
+        }
+        return 'Error al iniciar sesión';
+      }
+
+    // Método para registro
+    async register(email: string, password: string) {
+        const { data, error } = await this.supabase.auth.signUp({
+            email,
             password
         });
-        
         if (error) throw error;
-
-        this._session = data.session; // Guardar sesión actual
         return data;
     }
-    
-
-
-    /**
-     * Registro de nuevo usuario
-     * 1. Registra en el sistema de autenticación
-     * 2. Guarda datos adicionales en tabla 'usuarios'
-     * @param email - Correo electrónico
-     * @param password - Contraseña
-     * @param username - Nombre de usuario personalizado
-     */
-    async signUp(email: string, password: string, username: string) {
-        
-        // Registrar usuario en sistema de autenticación de Supabase
-        const { data: authData, error: authError } = await this.supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    username: username // Se guarda también en metadatos
-                }
-            }
-        });
-        
-        if (authError) throw authError;
-    
-        // Insertar usuario en la tabla 'usuarios' con info adicional
-        const { error: dbError } = await this.supabase
-            .from('usuarios')
-            .insert({
-                id: authData.user?.id, // Usa el ID generado por Supabase Auth
-                username: username,
-                email: email
-            });
-        
-        if (dbError) throw dbError;
-        
-        return authData;
-    }
-
-    /**
-     * Cierra la sesión del usuario
-     */
-    async signOut() {
-        const { error } = await this.supabase.auth.signOut();
-        this._session = null;
-        if (error) throw error;
-    }
-
-    /**
-     * Devuelve el nombre de usuario del usuario logueado
-     * @returns username o null si no está logueado
-     */
-    async getCurrentUsername(): Promise<string | null> {
-        if (!this._session?.user?.id) return null;
-        
-        // Busca el username en la tabla 'usuarios' por ID
-        const { data, error } = await this.supabase
-            .from('usuarios')
-            .select('username')
-            .eq('id', this._session.user.id)
-            .single();
-        
-        if (error) return null;
-        return data.username;
-    }
-
-    async registerUser(user: { username: string, password: string, email: string, phone: string }) {
-        return await this.supabase
-            .from('users')
-            .insert([user]);
-    }
-
 }
+*/
