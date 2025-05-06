@@ -120,7 +120,7 @@ export class RegisterComponent {
             panelClass: [esError ? 'snackbar-error' : 'snackbar-success']
         });
     }
-    }
+}
 
 
     /**

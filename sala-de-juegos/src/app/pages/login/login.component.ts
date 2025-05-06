@@ -1,35 +1,89 @@
 
 
+/*
+import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 
-
-
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router'
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatSnackBar }  from '@angular/material/snack-bar';
+
+import { Subscription } from 'rxjs';
+
+import { IUser } from '../../lib/interfaces';
+import { SupabaseService } from '../../services/supabase.service';
+*/
+
+
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router'
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { MatSnackBar }  from '@angular/material/snack-bar';
+
 import { SupabaseService } from '../../services/supabase.service';
 
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   imports: [FormsModule, CommonModule, RouterModule], //pongo el FormsModule aca sino me tira error en el HTML ngForm, el RouterModule es para que me funcione el routerLink en el html
-  standalone: true
 })
 export class LoginComponent {
 
   username: string = '';
   password: string = '';
+  isBrowser: boolean = false;
+
   errorMessage: string = '';
   loading: boolean = false;
 
   constructor(
+    private supabase: SupabaseService,
     private router: Router, 
     private snackBar: MatSnackBar,
-    private supabase: SupabaseService
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+/*
+  ngOnInit() {
+    this.supabase.isLoggedIn().then((isAuth) => {
+      if (isAuth) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }*/
+
+    async onLogin() {
+      if (!this.username || !this.password) {
+        this.showMessage('Usuario y contraseña son obligatorios', true);
+        return;
+      }
+  
+      try {
+        const { error } = await this.supabase.loginWithUsername(this.username, this.password);
+  
+        if (error) {
+          if (error.message.includes('Email not confirmed')) {
+            this.showMessage('Email no confirmado. Por favor verifica tu correo.', true);
+          } else {
+            this.showMessage('Error al iniciar sesión: ' + error.message, true);
+          }
+          return;
+        }
+  
+        this.showMessage('Inicio de sesión exitoso');
+        this.router.navigate(['/home']);
+  
+      } catch (err: any) {
+        this.showMessage('Error inesperado: ' + err.message, true);
+      }
+    }
+
 
   /**
    * Maneja el proceso de login del usuario.
@@ -37,7 +91,7 @@ export class LoginComponent {
    * Si las credenciales (usuario y contraseña) son correctas,
    * redirige al usuario a la página principal (/home).
    * Si son incorrectas, muestra un mensaje de error en pantalla.
-  */
+  *//*
   onLogin(){
     //Verifica si el usuario y la contraseña son 'a'
     if (this.username === 'aaa' && this.password === 'aaa') {
@@ -51,7 +105,7 @@ export class LoginComponent {
     }  else {
       this.showMessage('Usuario o contraseña incorrectos', true); // rojo
     }
-  }
+  }*/
 
   /*
   * mensaje: el texto que quieras mostrar.

@@ -116,6 +116,62 @@ export class SupabaseService {
             throw error; // Relanza el error para que lo pueda manejar el componente
         }
     }
+
+
+
+    /**
+    * Busca el email asociado al nombre de usuario
+    */
+    async getEmailByUsername(username: string): Promise<string | null> {
+        const { data, error } = await this.supabase
+            .from('users') // tu tabla personalizada de usuarios
+            .select('email')
+            .eq('username', username)
+            .single();
+
+        if (error || !data) {
+            return null;
+        }
+
+        return data.email;
+    }
+
+    async loginWithUsername(username: string, password: string) {
+        // Paso 1: buscar el email por el username
+        const { data: userData, error: fetchError } = await this.supabase
+            .from('users')
+            .select('email')
+            .eq('username', username)
+            .single();
+        if (fetchError || !userData?.email) {
+            return { error: { message: 'Usuario no encontrado' } };
+        }
+    
+        // Paso 2: hacer login con el email obtenido
+        const { data, error } = await this.supabase.auth.signInWithPassword({
+            email: userData.email,
+            password,
+        });
+        return { data, error };
+    }
+
+    async login(email: string, password: string) {
+        const { data, error } = await this.supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+    
+        return { data, error };
+    }
+
+    /**
+    * Verifica si hay una sesión activa (async)
+    */
+    async isLoggedIn(): Promise<boolean> {
+        const { data } = await this.supabase.auth.getSession();
+        return !!data.session;
+    }
+
 }
 
 
