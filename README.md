@@ -12,6 +12,12 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 - [Tecnologias utilizadas](#-tecnologias-utilizadas)
 - [Caracteristicas principales](#-caracteristicas-principales)
 - [Funcionalidades por Sprint](#-funcionalidades-por-sprint)
+- [Sprint 1](#-sprint-1)
+- [Sprint 2](#-sprint-2)
+- [Sprint 3](#-sprint-3)
+- [Sprint 4](#-sprint-4)
+- [Sprint 5](#-sprint-5)
+
 ---
 
 ## 👨‍💻 Información del Proyecto
@@ -28,10 +34,6 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 ## 🔗 Links importantes
 
 -🔗 **Repositorio GitHub**: *[https://sala-de-juegos-delta.vercel.app/]*
-
--🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
-
--🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
 
 -🔗 **Deploy en Vercel**: *[https://sala-de-juegos-delta.vercel.app/]*
 
