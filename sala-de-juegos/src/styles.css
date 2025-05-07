@@ -58,13 +58,13 @@ body {
 }
 
 /* Estilos para los snackbars */
-.snackbar-error {
-    background-color: #e53935 !important; /* rojo */
+
+.mat-snack-bar-container.snackbar-success {
+    background-color: #4CAF50 !important;
     color: white !important;
 }
 
-.snackbar-success {
-    background-color: #43a047 !important; /* verde */
+.mat-snack-bar-container.snackbar-error {
+    background-color: #f44336 !important;
     color: white !important;
 }
-

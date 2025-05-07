@@ -19,7 +19,9 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router'
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+
 import { MatSnackBar }  from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { SupabaseService } from '../../services/supabase.service';
 
@@ -29,7 +31,7 @@ import { SupabaseService } from '../../services/supabase.service';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [FormsModule, CommonModule, RouterModule], //pongo el FormsModule aca sino me tira error en el HTML ngForm, el RouterModule es para que me funcione el routerLink en el html
+  imports: [FormsModule, CommonModule, RouterModule, MatSnackBarModule], //pongo el FormsModule aca sino me tira error en el HTML ngForm, el RouterModule es para que me funcione el routerLink en el html
 })
 export class LoginComponent {
 

@@ -5,23 +5,33 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 
 import { MatSnackBar }  from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 
 import { IUser } from '../../lib/interfaces';
 import { SupabaseService } from '../../services/supabase.service';
 
+
+/**
+* Componente de registro de nuevos usuarios.
+* Permite completar un formulario con username, email, teléfono y contraseña,
+* registrando el usuario en Supabase y redirigiéndolo al Home tras el alta exitosa.
+*/
 @Component({
     selector: 'app-register',
     standalone: true,
-    imports: [FormsModule, CommonModule, RouterModule],
+    imports: [FormsModule, CommonModule, RouterModule, MatSnackBarModule],
     templateUrl: './register.component.html',
     styleUrl: './register.component.css',
 })
+
 export class RegisterComponent {
 
-    users: IUser[] = []; // Lista de usuarios cargados desde Supabase
-    newUser: IUser = { // Objeto que representa al nuevo usuario a registrar
+    users: IUser[] = []; /** Lista de usuarios ya registrados, se actualiza desde Supabase */
+
+    /** Nuevo usuario a registrar (modelo del formulario) */
+    newUser: IUser = { 
         id: '',
         created_at: '',
         username: '',
@@ -29,8 +39,9 @@ export class RegisterComponent {
         email: '',
         phone: '',
     }
-    isBrowser: boolean = false; // Bandera para saber si se está ejecutando en el navegador
-    private usersSubscription?: Subscription; // Referencia a la suscripción para limpiar al destruir el componente
+
+    isBrowser: boolean = false; /** Para verificar si estamos ejecutando en navegador (no en SSR) */
+    private usersSubscription?: Subscription; /** Suscripción al observable de usuarios para luego desuscribirse correctamente */
 
     constructor(
         private router: Router, 
@@ -42,6 +53,10 @@ export class RegisterComponent {
     }
 
 
+    /**
+    * Se ejecuta al inicializar el componente.
+    * Se suscribe al observable de usuarios y los guarda en `this.users`.
+    */
     ngOnInit() {
         if (this.isBrowser) {
             this.users = [];
@@ -66,46 +81,40 @@ export class RegisterComponent {
     }
 
 
-    async onRegister() {
+    /**
+    * Método que se ejecuta al hacer submit en el formulario de registro.
+    * Valida los campos y llama a Supabase para registrar al usuario.
+    */
+    async onRegister(): Promise<void> {
+        const { username, email, password, phone } = this.newUser;
+    
+        if (!username || !email || !password || !phone) {
+            this.showMessage('Todos los campos son obligatorios', true);
+            return;
+        }
+    
         try {
-            const { username, email, password, phone } = this.newUser;
-        
-            console.log('Registrando usuario:', this.newUser); // Verifica los datos antes de enviar
+            await this.supabase.register({ 
+                username, 
+                email, 
+                password, 
+                phone: phone.toString() });
 
-            if (!username || !email || !password || !phone) {
-                this.showMessage('Todos los campos son obligatorios', true);
-                return;
-            }
-            console.log('Datos a enviar a Supabase:', this.newUser);
-
-            const result = await this.supabase.register({
-                username,
-                email,
-                password,
-                phone: phone.toString(),
-            });
-
-        
             this.showMessage('Registro exitoso', false);
-            this.router.navigate(['/home']); // o la ruta que tengas
-    
+            this.router.navigate(['/home']);
+
         } catch (error: any) {
-            console.error('Error completo:', error);
-    
-        // Verifica si el error contiene más detalles de Supabase
-            if (error?.message) {
-                this.showMessage('Error al registrar: ' + error.message, true);
-            } else {
-                // Mostrar detalles adicionales si están disponibles
-                this.showMessage('Error desconocido', true);
-            }
+            console.error('Error durante el registro:', error);
+            const mensaje = error?.message || 'Error desconocido al registrar usuario';
+            this.showMessage(mensaje, true);
         }
     }
 
-    /*
-    * mensaje: el texto que quieras mostrar.
-    * esError: si es true, le da la clase snackbar-error (rojo); si es false, le da snackbar-success (verde).
-    * */
+    /**
+    * Muestra un mensaje tipo snackbar (éxito o error).
+    * @param mensaje Texto a mostrar
+    * @param esError Define si el mensaje es de error (true) o de éxito (false)
+    */
     showMessage(mensaje: string, esError: boolean = false) {
         this.snackBar.open(mensaje, 'Cerrar', {
             duration: 3000,
