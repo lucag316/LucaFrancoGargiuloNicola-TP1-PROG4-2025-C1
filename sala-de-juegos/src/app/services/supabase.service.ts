@@ -13,14 +13,16 @@ import { environment } from '../enviroments/enviroment'; // Importa las variable
 })
 
 
+
 export class SupabaseService {
 
     private supabase!: SupabaseClient;  // Cliente de Supabase para interactuar con el backend
+    private initialized = false; // Indica si el servicio ha sido inicializado correctamente
+    
     private users = new BehaviorSubject<IUser[]>([]); // BehaviorSubject para almacenar y emitir usuarios
     users$ = this.users.asObservable(); // Observable para escuchar cambios en la lista de usuarios
 
-    private initialized = false; // Indica si el servicio ha sido inicializado correctamente
-
+    authStatus$ = new BehaviorSubject<boolean>(false);
 
     /**
     * Constructor de SupabaseService
@@ -34,9 +36,14 @@ export class SupabaseService {
                     SUPABASE_CONFIG.url, 
                     SUPABASE_CONFIG.key, 
                     SUPABASE_CONFIG.options);
-                this.initialize(); // Inicializa el servicio
+                // Inicializa y luego verifica el estado de autenticación
+                this.initialize().then(() => {
+                    this.checkAuthStatus();
+                });
+                
             } catch (error) {
                 this.users.error(error); // Manejo de errores si no se puede crear el cliente
+                console.error('Error inicializando Supabase:', error);
             }
         }
     }
@@ -45,7 +52,7 @@ export class SupabaseService {
    * Método de inicialización del servicio
    * Solo se ejecuta una vez, y obtiene el número de usuarios en la tabla
    */
-    private async initialize() {
+    async initialize() {
         if (this.initialized) {
             return; // Si ya está inicializado, no hace nada
         } 
@@ -120,22 +127,8 @@ export class SupabaseService {
 
 
     /**
-    * Busca el email asociado al nombre de usuario
-    */
-    async getEmailByUsername(username: string): Promise<string | null> {
-        const { data, error } = await this.supabase
-            .from('users') // tu tabla personalizada de usuarios
-            .select('email')
-            .eq('username', username)
-            .single();
-
-        if (error || !data) {
-            return null;
-        }
-
-        return data.email;
-    }
-
+   * Inicia sesión con usuario y contraseña (usa email obtenido desde username).
+   */
     async loginWithUsername(username: string, password: string) {
         // Paso 1: buscar el email por el username
         const { data: userData, error: fetchError } = await this.supabase
@@ -143,6 +136,7 @@ export class SupabaseService {
             .select('email')
             .eq('username', username)
             .single();
+
         if (fetchError || !userData?.email) {
             return { error: { message: 'Usuario no encontrado' } };
         }
@@ -152,21 +146,48 @@ export class SupabaseService {
             email: userData.email,
             password,
         });
+
+        // Asegurate de actualizar el estado de autenticación
+        if (data?.session) {
+            this.authStatus$.next(true);
+        }
         return { data, error };
     }
 
-    async login(email: string, password: string) {
-        const { data, error } = await this.supabase.auth.signInWithPassword({
-            email,
-            password
-        });
-    
-        return { data, error };
+
+    /**
+    * Cierra la sesión actual del usuario.
+    */
+    async logout(): Promise<void> {
+        await this.supabase.auth.signOut();
+        this.authStatus$.next(false);
     }
 
     /**
-    * Verifica si hay una sesión activa (async)
-    */
+     * Obtiene información del usuario actualmente autenticado.
+     */
+    async getUser() {
+        return await this.supabase.auth.getUser();
+    }
+
+    /**
+     * Verifica si el usuario está autenticado y actualiza `authStatus$`.
+     */
+    async checkAuthStatus() {
+        try {
+            const { data, error } = await this.supabase.auth.getSession();
+            const isLoggedIn = !!data?.session?.user;
+            this.authStatus$.next(isLoggedIn);
+        } catch (e) {
+                console.error('Error verificando la sesión:', e);
+                this.authStatus$.next(false);
+        }
+    }
+    
+
+    /**
+     * Devuelve `true` si hay una sesión activa.
+     */
     async isLoggedIn(): Promise<boolean> {
         const { data } = await this.supabase.auth.getSession();
         return !!data.session;
@@ -176,131 +197,3 @@ export class SupabaseService {
 
 
 
-
-
-
-
-    /*
-    private async loadUsers() {
-      try {
-        const { data, error } = await this.supabase.from('users').select('*');
-        if (error) {
-          throw error;
-        }
-        this.users.next(data);
-      } catch (error) {
-        this.users.error(error);
-      }
-    }*/
-
-    
-
-    /*
-    // Método para login
-    async signInWithUsername(username: string, password: string) {
-        const email = `${username}@tudominio.com`; // Asegúrate que coincida con lo registrado
-        const { data, error } = await this.supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (error) {
-          throw new Error(this.getUserFriendlyError(error.message));
-        }
-        return data;
-      }
-      
-      private getUserFriendlyError(error: string): string {
-        if (error.includes('Invalid login credentials')) {
-          return 'Credenciales inválidas';
-        }
-        return 'Error al iniciar sesión';
-      }
-    */
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
-
-import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
-
-
-export interface IUser {
-    username: string;
-    password: string;
-    email: string;
-    phone: string;
-}
-
-@Injectable({
-    providedIn: 'root' // Hace que este servicio esté disponible a nivel global en la app
-})
-
-
-export class SupabaseService {
-
-    private supabase: SupabaseClient; // Cliente de Supabase para conectarse al backend
-    // private _session: AuthSession | null = null; // Almacena la sesión de autenticación actual (si existe)
-
-    constructor() {
-        this.supabase = createClient(
-            environment.supabaseUrl,
-            environment.supabaseKey
-        ); // Crea el cliente de Supabase usando las variables de entorno
-
-    }
-
-    // Método para login
-    async signInWithUsername(username: string, password: string) {
-        const email = `${username}@tudominio.com`; // Asegúrate que coincida con lo registrado
-        const { data, error } = await this.supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (error) {
-          throw new Error(this.getUserFriendlyError(error.message));
-        }
-        return data;
-      }
-      
-      private getUserFriendlyError(error: string): string {
-        if (error.includes('Invalid login credentials')) {
-          return 'Credenciales inválidas';
-        }
-        return 'Error al iniciar sesión';
-      }
-
-    // Método para registro
-    async register(email: string, password: string) {
-        const { data, error } = await this.supabase.auth.signUp({
-            email,
-            password
-        });
-        if (error) throw error;
-        return data;
-    }
-}
-*/

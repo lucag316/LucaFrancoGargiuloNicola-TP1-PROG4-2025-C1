@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -122,28 +116,3 @@ export class RegisterComponent {
     }
 }
 
-
-    /**
-   * Maneja el proceso de registro de usuario.
-   * 
-   * Si todos los campos están completos, simula un registro exitoso
-   * y redirige al usuario a la página de login (/login).
-   * De lo contrario, muestra un mensaje de error.
-   */
-  /*
-  onRegister() {
-    if (this.username && this.password && this.email && this.phone) {
-      console.log('Registro exitoso');
-
-      this.showMessage('Registro exitoso', false); // verde
-
-      // Después del registro, podría guardar los datos en un servicio o backend
-      // Por ahora simplemente redirige al home
-      this.router.navigate(['/home']);
-    } else {
-      this.showMessage('ERROR, vuelva a registrarse', true); // rojo
-    }
-  }
-  
-  */
-  

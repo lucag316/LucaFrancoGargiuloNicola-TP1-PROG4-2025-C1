@@ -10,8 +10,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
 
 
-
-
 export const routes: Routes = [
 
     {

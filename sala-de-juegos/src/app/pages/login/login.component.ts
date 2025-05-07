@@ -49,15 +49,6 @@ export class LoginComponent {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-/*
-  ngOnInit() {
-    this.supabase.isLoggedIn().then((isAuth) => {
-      if (isAuth) {
-        this.router.navigate(['/home']);
-      }
-    });
-  }*/
-
     async onLogin() {
       if (!this.username || !this.password) {
         this.showMessage('Usuario y contraseña son obligatorios', true);
@@ -84,28 +75,6 @@ export class LoginComponent {
       }
     }
 
-
-  /**
-   * Maneja el proceso de login del usuario.
-   * 
-   * Si las credenciales (usuario y contraseña) son correctas,
-   * redirige al usuario a la página principal (/home).
-   * Si son incorrectas, muestra un mensaje de error en pantalla.
-  *//*
-  onLogin(){
-    //Verifica si el usuario y la contraseña son 'a'
-    if (this.username === 'aaa' && this.password === 'aaa') {
-      // Muestra un mensaje en la consola (sólo para desarrollo)
-      console.log('Login exitoso');
-      this.showMessage('Login exitoso', false); // verde
-
-      // Redirige al usuario a la página principal 'home'
-      this.router.navigate(['/home']);
-
-    }  else {
-      this.showMessage('Usuario o contraseña incorrectos', true); // rojo
-    }
-  }*/
 
   /*
   * mensaje: el texto que quieras mostrar.

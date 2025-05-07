@@ -11,9 +11,17 @@
         <div class="navbar-links">
             <a routerLink="/home" routerLinkActive="active-link">Home</a>
             <a routerLink="/quien-soy" routerLinkActive="active-link">Quién Soy</a>
-            <a routerLink="/login" routerLinkActive="active-link" class="signup-link">Login</a>
-            <a routerLink="/register" routerLinkActive="active-link" class="signup-link">Sign Up</a>
-            <a routerLink="/logout" routerLinkActive="active-link" class="signup-link">Cerrar Sesión</a>
+            <!-- <a routerLink="/ag" routerLinkActive="active-link">Chat</a> -->
+            <!-- Mostrar solo si NO está logueado -->
+            <ng-container *ngIf="!usuarioLogueado">
+                <a routerLink="/login" routerLinkActive="active-link" class="signup-link">Login</a>
+                <a routerLink="/register" routerLinkActive="active-link" class="signup-link">Sign Up</a>
+            </ng-container>
+
+            <!-- Mostrar solo si SÍ está logueado -->
+            <button *ngIf="usuarioLogueado" (click)="cerrarSesion()" class="signup-link">
+                Cerrar Sesión
+            </button>
         </div>
     </nav>
 </div>
