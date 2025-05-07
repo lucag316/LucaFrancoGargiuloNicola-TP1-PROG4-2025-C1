@@ -1,5 +1,12 @@
 
 {
+    "version": 2,
+    "builds": [
+        {
+            "src": "dist/sala-de-juegos/index.html",
+            "use": "@vercel/static"
+        }
+    ],
     "rewrites": [
         { "source": "/(.*)", "destination": "/index.html" }
     ]
