@@ -21,3 +21,10 @@ export interface IDatabase {
         };
     };
 }
+
+export interface IMessage {
+    id: UUID;
+    username: string;
+    message: string;
+    timestamp?: string;
+}

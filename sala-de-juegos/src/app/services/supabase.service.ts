@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
 import { BehaviorSubject } from 'rxjs'; // Importar BehaviorSubject para manejo de usuarios en tiempo real
 import { SUPABASE_CONFIG } from '../lib/constants'; // Constantes de configuración de Supabase
-import { IDatabase, IUser } from '../lib/interfaces';  // Interface para definir el tipo de usuario
+import { IDatabase, IUser, IMessage } from '../lib/interfaces';  // Interface para definir el tipo de usuario
 import { isPlatformBrowser } from '@angular/common'; // Detecta si estamos en el navegador
 
 import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
@@ -23,6 +23,10 @@ export class SupabaseService {
     users$ = this.users.asObservable(); // Observable para escuchar cambios en la lista de usuarios
 
     authStatus$ = new BehaviorSubject<boolean>(false);
+
+
+    private messagesSubject = new BehaviorSubject<IMessage[]>([]);
+    public messages$ = this.messagesSubject.asObservable();
 
     /**
     * Constructor de SupabaseService
@@ -192,6 +196,50 @@ export class SupabaseService {
         const { data } = await this.supabase.auth.getSession();
         return !!data.session;
     }
+
+
+    /** Cargar mensajes existentes desde la base de datos */
+    async loadInitialMessages(): Promise<void> {
+        const { data, error } = await this.supabase
+        .from('messages')
+        .select('*')
+        .order('timestamp', { ascending: true });
+
+        if (error) {
+            console.error('Error al cargar mensajes iniciales:', error);
+            return;
+        }
+
+        this.messagesSubject.next(data as IMessage[]);
+    }
+
+    async sendMessage(username: string, message: string): Promise<void> {
+        const { error } = await this.supabase
+            .from('messages')
+            .insert([{ username, message }]);
+
+        if (error) {
+            console.error('Error al enviar mensaje:', error);
+            throw error;
+        }
+    }
+
+  /** Escucha nuevos mensajes en tiempo real */
+   /** Escucha nuevos mensajes en tiempo real */
+    listenForMessages(): void {
+        this.supabase
+        .channel('public:messages')
+        .on(
+            'postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'messages' },
+            (payload) => {
+                const currentMessages = this.messagesSubject.getValue();
+                this.messagesSubject.next([...currentMessages, payload.new as IMessage]);
+            }
+        )
+        .subscribe();
+    }
+
 
 }
 

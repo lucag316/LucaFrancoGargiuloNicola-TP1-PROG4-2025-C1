@@ -1,0 +1,31 @@
+<div class="chat-container">
+  <!-- Zona de mensajes -->
+  <div class="messages">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [ngClass]="{
+        'my-message': msg.username === currentUsername,
+        'other-message': msg.username !== currentUsername
+      }"
+    >
+      <div class="message-username">
+        <strong>{{ msg.username }}</strong>
+      </div>
+      <div class="message-content">
+        {{ msg.message }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Zona de entrada de texto -->
+  <div class="input-area">
+    <input
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="Escribe un mensaje..."
+      class="message-input"
+    />
+    <button (click)="sendMessage()" class="send-button">Enviar</button>
+  </div>
+</div>
