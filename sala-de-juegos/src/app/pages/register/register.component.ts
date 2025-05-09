@@ -23,7 +23,7 @@ import { SupabaseService } from '../../services/supabase.service';
     standalone: true,
     imports: [FormsModule, CommonModule, RouterModule, MatSnackBarModule],
     templateUrl: './register.component.html',
-    styleUrl: './register.component.css',
+    styleUrls: ['./register.component.css', '../../../styles.css'], // por mas de que haya importado lso estilos generales, no me funciono
 })
 
 export class RegisterComponent {
@@ -104,8 +104,9 @@ export class RegisterComponent {
             this.router.navigate(['/home']);
 
         } catch (error: any) {
-            console.error('Error durante el registro:', error);
             const mensaje = error?.message || 'Error desconocido al registrar usuario';
+
+            console.error('Error durante el registro:', error);
             this.showMessage(mensaje, true);
         }
     }
@@ -117,7 +118,7 @@ export class RegisterComponent {
     */
     showMessage(mensaje: string, esError: boolean = false) {
         this.snackBar.open(mensaje, 'Cerrar', {
-            duration: 3000,
+            duration: 10000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
             panelClass: [esError ? 'snackbar-error' : 'snackbar-success']

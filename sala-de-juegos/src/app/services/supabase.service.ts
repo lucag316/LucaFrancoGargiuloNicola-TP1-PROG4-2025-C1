@@ -113,7 +113,7 @@ export class SupabaseService {
         
             // Si hubo un error insertando los datos, lanza un error
             if (insertError) {
-                console.error('Error insertando en tabla users:', insertError);
+                console.error('Error insertando en tabla users:', insertError); // despues sacarlo 
                 throw new Error(insertError.message);
             }
         

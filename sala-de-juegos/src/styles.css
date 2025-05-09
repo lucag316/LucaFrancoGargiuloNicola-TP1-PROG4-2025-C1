@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-
 /* Estilos globales - variables de color */
 :root {
     --color-primario: #4CAF50; /* Verde */
@@ -57,14 +56,16 @@ body {
     }
 }
 
+
+
 /* Estilos para los snackbars */
 
-.mat-snack-bar-container.snackbar-success {
-    background-color: #4CAF50 !important;
+.snackbar-success .mdc-snackbar__surface {
+    background-color: #4caf50 !important;
     color: white !important;
 }
 
-.mat-snack-bar-container.snackbar-error {
+.snackbar-error .mdc-snackbar__surface {
     background-color: #f44336 !important;
     color: white !important;
 }
