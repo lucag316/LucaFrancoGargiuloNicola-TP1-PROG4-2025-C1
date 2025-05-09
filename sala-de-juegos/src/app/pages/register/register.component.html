@@ -33,10 +33,10 @@ Notas:
                     minlength="3"
                     [(ngModel)]="newUser.username"
                     #usernameField="ngModel">
-                <!-- Mensaje de error -->
-                <div *ngIf="usernameField.invalid && usernameField.touched" class="error-message">
+                <!-- Validaciones locales + errores personalizados -->
+                <div *ngIf="(usernameField.invalid && usernameField.touched) || formErrors['username']" class="error-message">
                     <div *ngIf="usernameField.errors?.['required']">El nombre de usuario es obligatorio.</div>
-                    <div *ngIf="usernameField.errors?.['minlength']">El usuario debe tener al menos 3 caracteres.</div>
+                    <div *ngIf="formErrors['username']">{{ formErrors['username'] }}</div>
                 </div>
             </div>
 
@@ -53,9 +53,10 @@ Notas:
                     [(ngModel)]="newUser.password"
                     #passwordField="ngModel">
                 <!-- Mensaje de error -->
-                <div *ngIf="passwordField.invalid && passwordField.touched" class="error-message">
+                <div *ngIf="(passwordField.invalid && passwordField.touched) || formErrors['password']" class="error-message">
                     <div *ngIf="passwordField.errors?.['required']">La contraseña es obligatoria.</div>
                     <div *ngIf="passwordField.errors?.['minlength']">La contraseña debe tener al menos 3 caracteres.</div>
+                    <div *ngIf="formErrors['password']">{{ formErrors['password'] }}</div>
                 </div>
             </div>
 
@@ -72,9 +73,9 @@ Notas:
                     [(ngModel)]="newUser.email"
                     #emailField="ngModel">
                 <!-- Mensaje de error -->
-                <div *ngIf="emailField.invalid && emailField.touched" class="error-message">
-                    <div *ngIf="emailField.errors?.['required']">El email es obligatorio.</div>
-                    <div *ngIf="emailField.errors?.['pattern']">El email debe ser válido y contener un arroba.</div>
+                <div *ngIf="(emailField.invalid && emailField.touched) || formErrors['email']" class="error-message">
+                    <div *ngIf="emailField.errors?.['required']">El correo electrónico es obligatorio.</div>
+                    <div *ngIf="formErrors['email']">{{ formErrors['email'] }}</div>
                 </div>
             </div>
 
@@ -91,9 +92,9 @@ Notas:
                     [(ngModel)]="newUser.phone"
                     #phoneField="ngModel">
                 <!-- Mensaje de error -->
-                <div *ngIf="phoneField.invalid && phoneField.touched" class="error-message">
+                <div *ngIf="(phoneField.invalid && phoneField.touched) || formErrors['phone']" class="error-message">
                     <div *ngIf="phoneField.errors?.['required']">El teléfono es obligatorio.</div>
-                    <div *ngIf="phoneField.errors?.['pattern']">El teléfono debe ser numérico y tener exactamente 8 dígitos.</div>
+                    <div *ngIf="formErrors['phone']">{{ formErrors['phone'] }}</div>
                 </div>
             </div>
 

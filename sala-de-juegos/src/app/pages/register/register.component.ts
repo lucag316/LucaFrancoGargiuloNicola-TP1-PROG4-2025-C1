@@ -43,6 +43,9 @@ export class RegisterComponent {
     isBrowser: boolean = false; /** Para verificar si estamos ejecutando en navegador (no en SSR) */
     private usersSubscription?: Subscription; /** Suscripción al observable de usuarios para luego desuscribirse correctamente */
 
+    // Objeto que almacena errores personalizados para cada campo
+    formErrors: { [key: string]: string } = {};
+
     constructor(
         private router: Router, 
         private snackBar: MatSnackBar,
@@ -88,11 +91,18 @@ export class RegisterComponent {
     async onRegister(): Promise<void> {
         const { username, email, password, phone } = this.newUser;
     
-        if (!username || !email || !password || !phone) {
-            this.showMessage('Todos los campos son obligatorios', true);
-            return;
-        }
+        // Limpiar errores anteriores
+        this.formErrors = {};
+
+        // Validación manual de campos requeridos
+        if (!username) this.formErrors["username"] = 'El nombre de usuario es obligatorio.';
+        if (!email) this.formErrors["email"] = 'El correo electrónico es obligatorio.';
+        if (!password) this.formErrors["password"] = 'La contraseña es obligatoria.';
+        if (!phone) this.formErrors["phone"] = 'El teléfono es obligatorio.';
     
+        // Si hay errores, detener el proceso y mostrar los errores debajo de los inputs
+        if (Object.keys(this.formErrors).length > 0) return;
+
         try {
             await this.supabase.register({ 
                 username, 
@@ -106,8 +116,20 @@ export class RegisterComponent {
         } catch (error: any) {
             const mensaje = error?.message || 'Error desconocido al registrar usuario';
 
-            console.error('Error durante el registro:', error);
-            this.showMessage(mensaje, true);
+            // Si el error es conocido (correo duplicado)
+            if (mensaje.toLowerCase().includes('already registered')) {
+                this.showMessage('El correo ya está registrado', true);
+            } else {
+                // Otros errores se asignan al campo correspondiente si se puede
+                if (mensaje.toLowerCase().includes('password')) {
+                    this.formErrors["password"] = mensaje;
+                } else if (mensaje.toLowerCase().includes('email')) {
+                    this.formErrors["email"] = mensaje;
+                } else {
+                    // Error general no relacionado a campos
+                    this.showMessage(mensaje, true);
+                }
+            }
         }
     }
 
