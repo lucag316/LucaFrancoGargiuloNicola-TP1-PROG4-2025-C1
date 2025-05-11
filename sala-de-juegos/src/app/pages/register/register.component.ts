@@ -46,6 +46,7 @@ export class RegisterComponent {
     // Objeto que almacena errores personalizados para cada campo
     formErrors: { [key: string]: string } = {};
 
+    
     constructor(
         private router: Router, 
         private snackBar: MatSnackBar,
@@ -103,6 +104,7 @@ export class RegisterComponent {
         // Si hay errores, detener el proceso y mostrar los errores debajo de los inputs
         if (Object.keys(this.formErrors).length > 0) return;
 
+
         try {
             await this.supabase.register({ 
                 username, 
@@ -116,19 +118,15 @@ export class RegisterComponent {
         } catch (error: any) {
             const mensaje = error?.message || 'Error desconocido al registrar usuario';
 
-            // Si el error es conocido (correo duplicado)
-            if (mensaje.toLowerCase().includes('already registered')) {
-                this.showMessage('El correo ya está registrado', true);
+            // Manejo de errores específicos
+            if (mensaje.toLowerCase().includes('email')) {
+                this.formErrors["email"] = mensaje;
+            } else if (mensaje.toLowerCase().includes('username')) {
+                this.formErrors["username"] = mensaje;
+            } else if (mensaje.toLowerCase().includes('password')) {
+                this.formErrors["password"] = mensaje;
             } else {
-                // Otros errores se asignan al campo correspondiente si se puede
-                if (mensaje.toLowerCase().includes('password')) {
-                    this.formErrors["password"] = mensaje;
-                } else if (mensaje.toLowerCase().includes('email')) {
-                    this.formErrors["email"] = mensaje;
-                } else {
-                    // Error general no relacionado a campos
-                    this.showMessage(mensaje, true);
-                }
+                this.showMessage(mensaje, true);
             }
         }
     }

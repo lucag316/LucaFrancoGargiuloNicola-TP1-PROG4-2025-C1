@@ -1,11 +1,11 @@
+
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
 import { BehaviorSubject } from 'rxjs'; // Importar BehaviorSubject para manejo de usuarios en tiempo real
 import { SUPABASE_CONFIG } from '../lib/constants'; // Constantes de configuración de Supabase
-import { IDatabase, IUser, IMessage } from '../lib/interfaces';  // Interface para definir el tipo de usuario
 import { isPlatformBrowser } from '@angular/common'; // Detecta si estamos en el navegador
+import { IDatabase, IUser, IMessage } from '../lib/interfaces';  // Interface para definir el tipo de usuario
 
-import { environment } from '../enviroments/enviroment'; // Importa las variables de entorno (URL y clave del proyecto de Supabase)
 
 
 @Injectable({
@@ -95,6 +95,29 @@ export class SupabaseService {
    */
     async register(user: Omit<IUser, 'id' | 'created_at'>): Promise<void> {
         try {
+
+            // Verificar si ya existe un usuario con el mismo username
+            const { data: existingUsername, error: usernameError } = await this.supabase
+                .from('users')
+                .select('id')
+                .eq('username', user.username)
+                .single();
+
+            if (existingUsername) {
+                throw new Error('El nombre de usuario ya está registrado.');
+            }
+
+            // Verificar si ya existe un usuario con el mismo email
+            const { data: existingEmail, error: emailError } = await this.supabase
+                .from('users')
+                .select('id')
+                .eq('email', user.email)
+                .single();
+
+            if (existingEmail) {
+                throw new Error('El correo electrónico ya está registrado.');
+            }
+
             // Realiza el registro en la autenticación de Supabase
             const { data: authData, error: authError } = await this.supabase.auth.signUp({
                 email: user.email,
@@ -121,7 +144,8 @@ export class SupabaseService {
                 throw new Error(insertError.message);
             }
         
-            await this.getUsers();
+            await this.getUsers(); // Actualiza la lista de usuarios
+
         } catch (error) {
             console.error('Error completo del register():', error); // Log del error completo
             throw error; // Relanza el error para que lo pueda manejar el componente
@@ -183,8 +207,8 @@ export class SupabaseService {
             const isLoggedIn = !!data?.session?.user;
             this.authStatus$.next(isLoggedIn);
         } catch (e) {
-                console.error('Error verificando la sesión:', e);
-                this.authStatus$.next(false);
+            console.error('Error verificando la sesión:', e);
+            this.authStatus$.next(false);
         }
     }
     
@@ -213,6 +237,11 @@ export class SupabaseService {
         this.messagesSubject.next(data as IMessage[]);
     }
 
+    /**
+   * Envía un nuevo mensaje a la base de datos.
+   * @param username Nombre de usuario del remitente.
+   * @param message Contenido del mensaje.
+   */
     async sendMessage(username: string, message: string): Promise<void> {
         const { error } = await this.supabase
             .from('messages')
@@ -224,7 +253,7 @@ export class SupabaseService {
         }
     }
 
-  /** Escucha nuevos mensajes en tiempo real */
+
    /** Escucha nuevos mensajes en tiempo real */
     listenForMessages(): void {
         this.supabase
