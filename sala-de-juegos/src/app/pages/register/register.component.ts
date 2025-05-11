@@ -1,23 +1,26 @@
-
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, ViewChild } from '@angular/core';
+// Angular core y módulos esenciales
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 
-import { MatSnackBar }  from '@angular/material/snack-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+// Angular Material para notificaciones
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+// RXJS
 import { Subscription } from 'rxjs';
 
+// Interfaces y servicios propios
 import { IUser } from '../../lib/interfaces';
 import { SupabaseService } from '../../services/supabase.service';
-
 import { UserService } from '../../services/user.service';
+
 
 /**
 * Componente de registro de nuevos usuarios.
-* Permite completar un formulario con username, email, teléfono y contraseña,
-* registrando el usuario en Supabase y redirigiéndolo al Home tras el alta exitosa.
+* Este componente permite al usuario crear una cuenta ingresando:
+* username, email, teléfono y contraseña.
+* Una vez registrado, se lo redirige a la página principal.
 */
 @Component({
     selector: 'app-register',
@@ -27,27 +30,37 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['./register.component.css', '../../../styles.css'], // por mas de que haya importado lso estilos generales, no me funciono
 })
 
-export class RegisterComponent {
+export class RegisterComponent implements OnInit, OnDestroy{
 
-    users: IUser[] = []; /** Lista de usuarios ya registrados, se actualiza desde Supabase */
+    // ======== MODELO DEL FORMULARIO ========
 
-    /** Nuevo usuario a registrar (modelo del formulario) */
-    newUser: IUser = { 
+    /** Usuario nuevo a registrar */
+    newUser: IUser = {
         id: '',
         created_at: '',
         username: '',
         password: '',
         email: '',
         phone: '',
-    }
+    };
 
-    isBrowser: boolean = false; /** Para verificar si estamos ejecutando en navegador (no en SSR) */
-    private usersSubscription?: Subscription; /** Suscripción al observable de usuarios para luego desuscribirse correctamente */
+    // ======== DATOS DEL COMPONENTE ========
 
-    // Objeto que almacena errores personalizados para cada campo
+    /** Lista de usuarios obtenidos desde Supabase */
+    users: IUser[] = [];
+
+    /** Para validar si se está ejecutando en navegador (SSR o no) */
+    isBrowser: boolean = false; 
+
+    /** Suscripción al observable de usuarios */
+    private usersSubscription?: Subscription; 
+
+    /** Diccionario con errores por campo */
     formErrors: { [key: string]: string } = {};
 
-    
+
+    // ======== CONSTRUCTOR ========
+
     constructor(
         private router: Router, 
         private snackBar: MatSnackBar,
@@ -58,45 +71,54 @@ export class RegisterComponent {
     }
 
 
-    /**
-    * Se ejecuta al inicializar el componente.
-    * Se suscribe al observable de usuarios y los guarda en `this.users`.
-    */
-    ngOnInit() {
-        if (this.isBrowser) {
-            this.users = [];
-        return;
-        }
+    // ======== CICLOS DE VIDA ========
 
+    /**
+     * Al iniciar el componente, se suscribe a la lista de usuarios si está en plataforma cliente.
+     */
+    ngOnInit(): void {
+        if (!this.isBrowser) return;
+
+        // Suscripción al observable de usuarios
         this.usersSubscription = this.userService.users$.subscribe({
             next:(users: IUser[]) => {
                 this.users = users;
-                if (this.isBrowser){
-                    try{
-                        localStorage.setItem('users', JSON.stringify(this.users));
-                    } catch (error) {
-                        this.showMessage('Error al cargar los usuarios', true);
-                    }
+
+                // Guardar en localStorage solo si es navegador
+                try {
+                    localStorage.setItem('users', JSON.stringify(users));
+                } catch (error) {
+                    this.showMessage('Error al cargar los usuarios', true);
                 }
             },
-        error:(error: any) => {
-            console.error("ERROR al cargar los usuarios", error);
-        }
+            error:(error: any) => {
+                console.error("ERROR al cargar los usuarios", error);
+                this.showMessage("No se pudo obtener la lista de usuarios", true);
+            }
         })
     }
 
+    /**
+     * Al destruir el componente, se desuscribe del observable si corresponde.
+     */
+    ngOnDestroy(): void {
+        this.usersSubscription?.unsubscribe();
+    }
+
+
+    // ======== EVENTOS ========
 
     /**
-    * Método que se ejecuta al hacer submit en el formulario de registro.
-    * Valida los campos y llama a Supabase para registrar al usuario.
-    */
+     * Evento que se dispara al enviar el formulario de registro.
+     * Valida los campos y registra al usuario usando el UserService.
+     */
     async onRegister(): Promise<void> {
         const { username, email, password, phone } = this.newUser;
     
         // Limpiar errores anteriores
         this.formErrors = {};
 
-        // Validación manual de campos requeridos
+        // Validaciones básicas del formulario
         if (!username) this.formErrors["username"] = 'El nombre de usuario es obligatorio.';
         if (!email) this.formErrors["email"] = 'El correo electrónico es obligatorio.';
         if (!password) this.formErrors["password"] = 'La contraseña es obligatoria.';
@@ -107,19 +129,21 @@ export class RegisterComponent {
 
 
         try {
+            // Registro de usuario
             await this.userService.register({ 
                 username, 
                 email, 
                 password, 
-                phone: phone.toString() });
+                phone: phone.toString() 
+            });
 
-            this.showMessage('Registro exitoso', false);
+            this.showMessage('Registro exitoso 🎉', false);
             this.router.navigate(['/home']);
 
         } catch (error: any) {
             const mensaje = error?.message || 'Error desconocido al registrar usuario';
 
-            // Manejo de errores específicos
+            // Mapear errores específicos al campo correspondiente
             if (mensaje.toLowerCase().includes('email')) {
                 this.formErrors["email"] = mensaje;
             } else if (mensaje.toLowerCase().includes('username')) {
@@ -132,12 +156,15 @@ export class RegisterComponent {
         }
     }
 
+
+    // ======== MÉTODOS AUXILIARES ========
+
     /**
-    * Muestra un mensaje tipo snackbar (éxito o error).
-    * @param mensaje Texto a mostrar
-    * @param esError Define si el mensaje es de error (true) o de éxito (false)
-    */
-    showMessage(mensaje: string, esError: boolean = false) {
+     * Muestra un mensaje en la pantalla (tipo snackbar).
+     * @param mensaje El texto del mensaje
+     * @param esError Si es un mensaje de error (true) o éxito (false)
+     */
+    showMessage(mensaje: string, esError: boolean = false): void {
         this.snackBar.open(mensaje, 'Cerrar', {
             duration: 10000,
             horizontalPosition: 'center',
