@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { IUser } from '../../lib/interfaces';
 import { SupabaseService } from '../../services/supabase.service';
 
+import { UserService } from '../../services/user.service';
 
 /**
 * Componente de registro de nuevos usuarios.
@@ -50,7 +51,7 @@ export class RegisterComponent {
     constructor(
         private router: Router, 
         private snackBar: MatSnackBar,
-        private supabase: SupabaseService,
+        private userService: UserService,
         @Inject(PLATFORM_ID) private platformId: Object
     ) {
         this.isBrowser = isPlatformBrowser(this.platformId);
@@ -67,7 +68,7 @@ export class RegisterComponent {
         return;
         }
 
-        this.usersSubscription = this.supabase.users$.subscribe({
+        this.usersSubscription = this.userService.users$.subscribe({
             next:(users: IUser[]) => {
                 this.users = users;
                 if (this.isBrowser){
@@ -106,7 +107,7 @@ export class RegisterComponent {
 
 
         try {
-            await this.supabase.register({ 
+            await this.userService.register({ 
                 username, 
                 email, 
                 password, 

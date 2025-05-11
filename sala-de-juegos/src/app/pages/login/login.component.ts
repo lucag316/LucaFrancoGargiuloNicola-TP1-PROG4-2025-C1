@@ -24,7 +24,8 @@ import { MatSnackBar }  from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { SupabaseService } from '../../services/supabase.service';
-
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,8 @@ export class LoginComponent {
   loading: boolean = false;
 
   constructor(
-    private supabase: SupabaseService,
+    private userService: UserService,
+    private authService: AuthService,
     private router: Router, 
     private snackBar: MatSnackBar,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -58,7 +60,7 @@ export class LoginComponent {
       }
   
       try {
-        const { error } = await this.supabase.loginWithUsername(this.username, this.password);
+        const { error } = await this.authService.loginWithUsername(this.username, this.password);
   
         if (error) {
           if (error.message.includes('Email not confirmed')) {

@@ -11,7 +11,9 @@ import { Subscription } from 'rxjs';
 
 import { IMessage } from '../../lib/interfaces';
 import { SupabaseService } from '../../services/supabase.service';
-
+import { MessageService } from '../../services/message.service';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -31,24 +33,27 @@ export class ChatComponent implements OnInit {
 
     private messagesSub!: Subscription;
 
-    constructor(private supabaseService: SupabaseService) {}
+    constructor(
+        private messageService: MessageService,
+        private authService: AuthService
+    ) {}
 
     async ngOnInit(): Promise<void> {
         // Obtener nombre de usuario desde metadata
-        const { data: userData } = await this.supabaseService.getUser();
+        const { data: userData } = await this.authService.getUser();
         console.log(userData); // Verificar la respuesta de getUser()
         this.currentUsername = userData?.user?.user_metadata?.['username'] || '';
 
         // Cargar mensajes ya existentes
-        await this.supabaseService.loadInitialMessages();
+        await this.messageService.loadInitialMessages();
 
         // Suscribirse a los mensajes
-        this.messagesSub = this.supabaseService.messages$.subscribe((msgs) => {
+        this.messagesSub = this.messageService.messages$.subscribe((msgs) => {
             this.messages = msgs;
         });
 
         // Escuchar en tiempo real nuevos mensajes
-        this.supabaseService.listenForMessages();
+        this.messageService.listenForMessages();
     }
 
     async sendMessage(): Promise<void> {
@@ -57,7 +62,7 @@ export class ChatComponent implements OnInit {
 
         try {
             // Enviar ambos parámetros: username y message
-            await this.supabaseService.sendMessage(this.currentUsername, trimmed);
+            await this.messageService.sendMessage(this.currentUsername, trimmed);
             this.newMessage = '';
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);

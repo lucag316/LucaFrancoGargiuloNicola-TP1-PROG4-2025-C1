@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { SupabaseService } from '../../services/supabase.service';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-nav-bar',
@@ -18,24 +21,27 @@ export class NavBarComponent implements OnInit, OnDestroy {
   usuarioLogueado: boolean = false;
   private authSub!: Subscription;
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     // Suscribirse al estado de autenticación
-  this.authSub = this.supabaseService.authStatus$.subscribe(status => {
+  this.authSub = this.authService.authStatus$.subscribe(status => {
     this.usuarioLogueado = status;
   });
 
   try {
-    await this.supabaseService.initialize();
-    await this.supabaseService.checkAuthStatus(); // Esto ya actualiza el estado real
+    await this.userService.initialize();
+    await this.authService.checkAuthStatus(); // Esto ya actualiza el estado real
   } catch (error) {
       console.error('Error inicializando Supabase:', error);
   }
   }
 
   cerrarSesion() {
-    this.supabaseService.logout();
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {
