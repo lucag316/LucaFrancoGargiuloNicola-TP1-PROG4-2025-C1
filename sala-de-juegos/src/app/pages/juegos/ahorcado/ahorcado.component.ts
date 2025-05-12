@@ -30,6 +30,8 @@ export class AhorcadoComponent implements OnInit {
     intentosRestantes: number = 6;
     mensaje: string = '';
 
+    juegoTerminado: boolean = false;
+
 
     constructor ( 
         router: Router ,
@@ -58,6 +60,12 @@ export class AhorcadoComponent implements OnInit {
         this.mensaje = '';
     }
 
+    // Función para generar una palabra aleatoria
+    generarPalabra(): string {
+        const index = Math.floor(Math.random() * this.palabras.length);
+        return this.palabras[index];
+    }
+
     adivinarLetra(letra: string) {
         if (this.letrasUsadas.includes(letra) || this.mensaje !== '') return;
 
@@ -73,6 +81,7 @@ export class AhorcadoComponent implements OnInit {
 
             if (!this.palabraMostrada.includes('_')) {
                 this.mensaje = '¡Ganaste! 🎉';
+                this.juegoTerminado = true;  // Cambiar a true cuando el jugador gana
                 this.guardarPartida(true);
             }
         } else {
@@ -81,6 +90,7 @@ export class AhorcadoComponent implements OnInit {
 
             if (this.intentosRestantes <= 0) {
                 this.mensaje = `Perdiste 😢. La palabra era: ${this.palabraSecreta}`;
+                this.juegoTerminado = true;  // Cambiar a true cuando el jugador pierde
                 this.palabraMostrada = this.palabraSecreta.split('');
                 this.guardarPartida(false);
             }
@@ -90,7 +100,7 @@ export class AhorcadoComponent implements OnInit {
     // Método para guardar la partida después de ganar o perder
     async guardarPartida(gano: boolean) {
         const userId = await this.authService.getUserId();  // Obtener user_id si está logueado
-        
+
         const resultado: 'ganó' | 'perdió' = gano ? 'ganó' : 'perdió';
         
         const partida = {
@@ -108,6 +118,22 @@ export class AhorcadoComponent implements OnInit {
         } catch (error) {
             console.error('Error al guardar la partida', error);
         }
+    }
+
+    // Función que reinicia el juego
+    reiniciarJuego() {
+        this.intentosRestantes = 6;
+        this.mensaje = '';
+        this.letrasUsadas = [];
+        this.juegoTerminado = false;
+        // Aquí también puedes limpiar la palabra mostrada y reiniciar cualquier estado necesario
+        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_'); // Reiniciar palabra mostrada
+    }
+
+    // Función que maneja la acción de "volver a jugar"
+    volverAJugar() {
+        this.reiniciarJuego();
+        this.mensaje = '¡Vamos de nuevo!';
     }
 
 }

@@ -1,63 +1,154 @@
-
-
+/* Estilo contenedor principal del juego */ 
 .ahorcado-container {
-  max-width: 600px;
-  margin: 40px auto;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f4f4;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px; /* Reducido para compactar */
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+    width: 80%;
+    max-width: 700px; /* Reducido para mayor compresión */
+    margin: 20px auto;
 }
 
+/* Título del juego */
 .titulo {
-  font-size: 2rem;
-  margin-bottom: 20px;
+    font-size: 2rem; /* Reducido para ajustarse mejor */
+    color: var(--color-titulo);
+    text-transform: uppercase;
+    letter-spacing: 4px; /* Menor espacio entre letras */
+    margin-bottom: 15px; /* Reducido */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
+/* Palabra oculta */
 .palabra-oculta {
-  font-size: 2.5rem;
-  letter-spacing: 12px;
-  margin-bottom: 25px;
+    font-size: 2.5rem; /* Reducido */
+    letter-spacing: 12px; /* Reducido */
+    margin-bottom: 20px; /* Reducido */
+    color: var(--color-titulo);
+    text-align: center;
 }
 
+/* Letras visibles */
+.letra {
+    display: inline-block;
+    padding: 0 15px; /* Reducido */
+    font-size: 2.5rem; /* Reducido */
+    color: var(--color-primario);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Botones de letras disponibles */
 .letras {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px; /* Reducido */
+    margin-bottom: 20px; /* Reducido */
+    text-align: center;
 }
 
 .letra-btn {
-  width: 40px;
-  height: 40px;
-  font-size: 1.1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    padding: 12px 20px; /* Reducido */
+    font-size: 1.3rem; /* Reducido */
+    background-color: var(--color-boton);
+    color: var(--color-fondo);
+    border: 3px solid var(--color-primario);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-.letra-btn:hover:enabled {
-  background-color: #0056b3;
+/* Efecto hover en los botones */
+.letra-btn:hover {
+    background-color: var(--color-boton-hover);
+    border-color: var(--color-secundario);
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
 }
 
+/* Deshabilitar botones de letras */
 .letra-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+    background-color: #666666;
+    cursor: not-allowed;
 }
 
+/* Información de la partida */
 .info-partida {
-  font-size: 1.2rem;
-  margin-top: 20px;
+    font-size: 1.3rem; /* Reducido */
+    text-align: center;
+    color: var(--color-texto);
 }
 
+.intentos {
+    font-weight: bold;
+    color: var(--color-error);
+}
+
+/* Mensajes de error */
 .mensaje {
-  margin-top: 10px;
-  font-weight: bold;
-  color: #d9534f;
+    font-size: 1.5rem; /* Reducido */
+    color: var(--color-error);
+    text-align: center;
+    margin-top: 15px; /* Reducido */
+}
+
+/* Estilo de botones de reinicio y volver a jugar */
+.reiniciar-btn, .volver-jugar-btn {
+    padding: 18px 35px; /* Reducido */
+    font-size: 1.8rem; /* Reducido */
+    background-color: var(--color-secundario);
+    color: var(--color-fondo);
+    border: 5px solid var(--color-primario);
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    margin-top: 20px; /* Reducido */
+}
+
+/* Hover para los botones */
+.reiniciar-btn:hover, .volver-jugar-btn:hover {
+    background-color: var(--color-primario);
+    border-color: var(--color-secundario);
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
+}
+
+/* Animación para el fade in */
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación para los botones al aparecer */
+.reiniciar-btn, .volver-jugar-btn {
+    animation: fadeInSlideUp 1s ease-out;
+}
+
+/* Imagen del ahorcado */
+.imagen-ahorcado {
+    width: 90px; /* Reducido */
+    height: 90px; /* Reducido */
+    margin-top: 20px; /* Reducido */
+    animation: fadeInSlideUp 1s ease-out;
+}
+
+.imagen-ahorcado img {
+    width: 100%;
+    height: auto;
+    display: block;
 }

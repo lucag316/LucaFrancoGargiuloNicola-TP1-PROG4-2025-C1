@@ -5,7 +5,7 @@
 
     <!-- Palabra oculta -->
     <div class="palabra-oculta">
-        <span *ngFor="let letra of palabraMostrada">{{ letra }}</span>
+        <span *ngFor="let letra of palabraMostrada" class="letra">{{ letra }}</span>
     </div>
 
     <!-- Letras disponibles -->
@@ -21,7 +21,22 @@
 
     <!-- Información de la partida -->
     <div class="info-partida">
-        <p>Intentos restantes: {{ intentosRestantes }}</p>
+        <p>Intentos restantes: <span class="intentos">{{ intentosRestantes }}</span></p>
         <p *ngIf="mensaje" class="mensaje">{{ mensaje }}</p>
     </div>
+    
+    <!-- Botón de reiniciar juego -->
+    <button *ngIf="!juegoTerminado" (click)="reiniciarJuego()" class="reiniciar-btn">
+        Reiniciar Juego
+    </button>
+
+    <!-- Botón de volver a jugar, que aparece cuando el juego termina -->
+    <button *ngIf="juegoTerminado" (click)="volverAJugar()" class="volver-jugar-btn">
+    Volver a Jugar
+    </button>
+
+    <!-- Animación o imagen de ahorcado -->
+    <!-- <div class="imagen-ahorcado" *ngIf="intentosRestantes < 6">
+        <img [src]="getImagenAhorcado()" alt="Ahorcado">
+    </div> -->
 </div>
