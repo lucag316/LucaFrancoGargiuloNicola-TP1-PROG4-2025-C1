@@ -22,6 +22,10 @@ export class AuthService {
 
     constructor(private supabaseService: SupabaseService) {}
 
+    // Método para obtener el estado actual de autenticación (sin necesidad de suscripción)
+    getCurrentAuthStatus(): boolean {
+        return this.authStatus$.getValue();
+    }
 
     /**
    * Realiza el inicio de sesión utilizando username y password.
