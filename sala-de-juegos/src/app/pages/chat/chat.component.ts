@@ -63,12 +63,14 @@ export class ChatComponent implements OnInit, OnDestroy {
         } finally {
             this.loading = false;
         }
+        this.scrollToBottom();
     }
 
     private subscribeToMessages(){
         if (!this.isBrowser) return;
         this.messageService.subscribeToMessages((message: IMessage) => {
             this.messages = [...this.messages, message];
+            this.scrollToBottom();
         });
     }
 
@@ -80,7 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy {
             const user = await this.authService.getUserIdMail();
             if (!user) throw new Error('Usuario no Autenticado')
             
-            await this.messageService.sendMessages(
+            await this.messageService.sendMessage(
                 this.newMessage, 
                 user.id, 
                 user.email
@@ -88,6 +90,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
             this.newMessage = '';
         
+            this.scrollToBottom();
         } catch (error: any) {
             this.error = error.message;
             console.error('Error al enviar el mensaje:', error);
@@ -98,6 +101,14 @@ export class ChatComponent implements OnInit, OnDestroy {
         return new Date(date).toLocaleString();
     }
 
+    scrollToBottom() {
+        setTimeout(() => {
+            const container = document.getElementById('messages-container');
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }, 100);
+    }
 }
 
 

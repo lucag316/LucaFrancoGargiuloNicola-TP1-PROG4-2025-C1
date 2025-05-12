@@ -66,7 +66,7 @@ export class MessageService {
 
 
 
-    async sendMessages(message: string, userId: string, userEmail: string ) : Promise<void>{
+    async sendMessage(message: string, userId: string, userEmail: string ) : Promise<void>{
         if (!this.isBrowser) return;
 
         const { error } = await this.supabaseService.client
