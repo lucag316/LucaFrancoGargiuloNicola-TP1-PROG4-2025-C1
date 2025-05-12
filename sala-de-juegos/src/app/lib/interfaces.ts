@@ -23,8 +23,10 @@ export interface IDatabase {
 }
 
 export interface IMessage {
-    id: UUID;
-    username: string;
-    message: string;
-    timestamp?: string;
+    id: number;         
+    message: string;    
+    timestamp: string;  
+    user_id: string;
+    user_email: string;
 }
+

@@ -1,31 +1,54 @@
-<div class="chat-container">
-  <!-- Zona de mensajes -->
-  <div class="messages">
-    <div
-      *ngFor="let msg of messages"
-      class="message"
-      [ngClass]="{
-        'my-message': msg.username === currentUsername,
-        'other-message': msg.username !== currentUsername
-      }"
-    >
-      <div class="message-username">
-        <strong>{{ msg.username }}</strong>
-      </div>
-      <div class="message-content">
-        {{ msg.message }}
-      </div>
-    </div>
-  </div>
 
-  <!-- Zona de entrada de texto -->
-  <div class="input-area">
-    <input
-      [(ngModel)]="newMessage"
-      (keyup.enter)="sendMessage()"
-      placeholder="Escribe un mensaje..."
-      class="message-input"
-    />
-    <button (click)="sendMessage()" class="send-button">Enviar</button>
-  </div>
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Chat</h2>
+    </div>
+
+    <div class="chat-messages" #messageContainer>
+
+        <div *ngIf="loading" class="loading-messages">
+            <span class="loading-spinner"></span>
+            <p>Cargando mensajes...</p>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+            {{ error }}
+        </div>
+
+        <div *ngIf="!loading && !error && messages.length === 0" class="no-messages">
+            <p>No hay mensajes disponibles</p>
+        </div>
+
+        <div *ngFor="let message of messages" class="message">
+            <div class="message-header">
+                <span class="user-email">{{ message.user_email }}</span> 
+                <span class="timestamp">{{ formatDate(message.timestamp) }}</span>
+            </div>
+            <div class="message-content">
+                {{ message.message }}
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <form (ngSubmit)="sendMessage()" #chatForm="ngForm">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    [(ngModel)]="newMessage"
+                    name="newMessage" 
+                    placeholder="Escribe tu mensaje..."
+                    required
+                    #messageInput="ngModel"
+                    [maxlength]="500"
+                >
+                <button type="submit" [disabled]="!chatForm.form.valid || !newMessage.trim()">
+                    Enviar
+                </button>
+            </div>
+            <div class="char-count" [class.near-limit]="newMessage.length > 450">
+                {{ newMessage.length }} / 500
+            </div>
+        </form>
+    </div>
 </div>

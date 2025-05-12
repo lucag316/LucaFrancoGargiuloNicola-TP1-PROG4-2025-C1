@@ -28,7 +28,9 @@ export class AhorcadoService {
         resultado: 'ganó' | 'perdió';
         fecha: string;
     }) {
-        const userId = await this.authService.getUserId(); // Garantizado que no será null
+        // Utilizando getUserIdMail para obtener id y email
+        const { id: userId } = await this.authService.getUserIdMail(); // Obtenemos solo el id
+
 
         // Añadimos el user_id al objeto partida
         const partidaConUsuario = {

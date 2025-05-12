@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { SupabaseService } from './supabase.service';
-
+import { IUser } from '../lib/interfaces';
 
 
 @Injectable({
@@ -102,8 +102,16 @@ export class AuthService {
     }
 
     // Devuelve el ID del usuario autenticado
-    async getUserId(): Promise<string> {
-        const { data } = await this.supabaseService.client.auth.getUser();
-        return data?.user?.id ?? ''; // No devolverá null, ya que sabemos que el usuario está autenticado
+    async getUserIdMail(): Promise<Pick<IUser, 'id' | 'email'>> {
+        const { data, error } = await this.supabaseService.client.auth.getUser();
+        
+        if (error || !data?.user || !data.user.email) {
+            throw new Error('No hay usuario autenticado o el email no está disponible');
+        }
+
+        return {
+            id: data.user.id,
+            email: data.user.email
+        };
     }
 }

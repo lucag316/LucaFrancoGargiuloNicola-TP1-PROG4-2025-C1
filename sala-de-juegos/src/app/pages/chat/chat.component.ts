@@ -1,13 +1,13 @@
 
 
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { Subscription } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 
 import { IMessage } from '../../lib/interfaces';
 import { SupabaseService } from '../../services/supabase.service';
@@ -25,50 +25,79 @@ import { AuthService } from '../../services/auth.service';
 
 
 
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
     messages: IMessage[] = [];
     newMessage: string = '';
-    currentUsername: string = '';
-
-    private messagesSub!: Subscription;
+    loading = false;
+    error = '';
+    private isBrowser: boolean;
 
     constructor(
         private messageService: MessageService,
         private authService: AuthService
-    ) {}
-
-    async ngOnInit(): Promise<void> {
-        // Obtener nombre de usuario desde metadata
-        const { data: userData } = await this.authService.getUser();
-        console.log(userData); // Verificar la respuesta de getUser()
-        this.currentUsername = userData?.user?.user_metadata?.['username'] || '';
-
-        // Cargar mensajes ya existentes
-        await this.messageService.loadInitialMessages();
-
-        // Suscribirse a los mensajes
-        this.messagesSub = this.messageService.messages$.subscribe((msgs) => {
-            this.messages = msgs;
-        });
-
-        // Escuchar en tiempo real nuevos mensajes
-        this.messageService.listenForMessages();
+    ) {
+        this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
     }
 
-    async sendMessage(): Promise<void> {
-        const trimmed = this.newMessage.trim();
-        if (!trimmed) return;
+    async ngOnInit() {
+        if ( this.isBrowser){
+            await this.loadMessages();
+            this.subscribeToMessages();
+        }
+    }
+
+    ngOnDestroy(): void {
+        if ( this.isBrowser){
+            this.messageService.unsubscribeFromMessages();
+        }
+    }
+
+    private async loadMessages() {
+        try {
+            this.loading = true;
+            this.messages = await this.messageService.getMessages();
+        } catch (error: any) {
+            this.error = error.message;
+            console.error('Error al cargar los mensajes:', error);
+        } finally {
+            this.loading = false;
+        }
+    }
+
+    private subscribeToMessages(){
+        if (!this.isBrowser) return;
+        this.messageService.subscribeToMessages((message: IMessage) => {
+            this.messages = [...this.messages, message];
+        });
+    }
+
+
+    async sendMessage() {
+        if (!this.isBrowser || !this.newMessage.trim()) return;
 
         try {
-            // Enviar ambos parámetros: username y message
-            await this.messageService.sendMessage(this.currentUsername, trimmed);
+            const user = await this.authService.getUserIdMail();
+            if (!user) throw new Error('Usuario no Autenticado')
+            
+            await this.messageService.sendMessages(
+                this.newMessage, 
+                user.id, 
+                user.email
+            );
+
             this.newMessage = '';
-        } catch (error) {
+        
+        } catch (error: any) {
+            this.error = error.message;
             console.error('Error al enviar el mensaje:', error);
         }
     }
-    ngOnDestroy(): void {
-        this.messagesSub?.unsubscribe();
+
+    formatDate(date: string): string {
+        return new Date(date).toLocaleString();
     }
+
 }
+
+

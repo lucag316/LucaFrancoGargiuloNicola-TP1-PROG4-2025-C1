@@ -103,6 +103,7 @@ export class UserService {
         const { error: insertError } = await supabase
             .from('users')
             .insert([{ 
+                id: authData.user.id, // 👈 importante
                 username: user.username, 
                 email: user.email, 
                 phone: user.phone 

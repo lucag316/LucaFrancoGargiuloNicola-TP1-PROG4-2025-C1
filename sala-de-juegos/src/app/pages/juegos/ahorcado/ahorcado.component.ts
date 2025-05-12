@@ -99,7 +99,14 @@ export class AhorcadoComponent implements OnInit {
 
     // Método para guardar la partida después de ganar o perder
     async guardarPartida(gano: boolean) {
-        const userId = await this.authService.getUserId();  // Obtener user_id si está logueado
+        let userId: string | null = null;
+
+        try {
+            const { id } = await this.authService.getUserIdMail();
+            userId = id;
+        } catch {
+            // Si no está logueado, userId queda como null
+        }
 
         const resultado: 'ganó' | 'perdió' = gano ? 'ganó' : 'perdió';
         
@@ -127,13 +134,15 @@ export class AhorcadoComponent implements OnInit {
         this.letrasUsadas = [];
         this.juegoTerminado = false;
         // Aquí también puedes limpiar la palabra mostrada y reiniciar cualquier estado necesario
-        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_'); // Reiniciar palabra mostrada
+        this.palabraSecreta = '';  // Asegúrate de reiniciar la palabra secreta
+        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_');  // Reiniciar palabra mostrada
+        this.iniciarNuevaPartida();  // Llamar a esta función para iniciar una nueva partida
     }
 
     // Función que maneja la acción de "volver a jugar"
     volverAJugar() {
         this.reiniciarJuego();
-        this.mensaje = '¡Vamos de nuevo!';
+        // this.mensaje = '¡Vamos de nuevo!';
     }
 
 }

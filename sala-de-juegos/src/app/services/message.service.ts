@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 import { IMessage } from '../lib/interfaces';
+import { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 
 
 
@@ -12,44 +14,70 @@ import { IMessage } from '../lib/interfaces';
 
 export class MessageService {
 
-    private messagesSubject = new BehaviorSubject<IMessage[]>([]);
-    public messages$ = this.messagesSubject.asObservable();
+    private channel: RealtimeChannel | null = null;
+    private isBrowser: boolean;
 
-    constructor(private supabaseService: SupabaseService) {}
+    // private messagesSubject = new BehaviorSubject<IMessage[]>([]);
+    // public messages$ = this.messagesSubject.asObservable();
 
-    async loadInitialMessages(): Promise<void> {
-        const { data, error } = await this.supabaseService.client
+
+    constructor(private supabaseService: SupabaseService) {
+        this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+    }
+
+
+
+    async getMessages(): Promise<IMessage[]> {
+        if (!this.isBrowser) return [];
+
+        const { data, error } =  await this.supabaseService.client
             .from('messages')
             .select('*')
             .order('timestamp', { ascending: true });
 
-        if (error) {
-            console.error('Error al cargar mensajes iniciales:', error);
-            return;
-        }
-
-        this.messagesSubject.next(data as IMessage[]);
+        if (error) throw error
+        return data as IMessage[];
+        
     }
 
-    async sendMessage(username: string, message: string): Promise<void> {
-        const { error } = await this.supabaseService.client
-            .from('messages')
-            .insert([{ username, message }]);
 
-        if (error) throw error;
-    }
+    subscribeToMessages(callback: (messages: IMessage) => void): void {
+        if (!this.isBrowser) return;
 
-    listenForMessages(): void {
-        this.supabaseService.client
+        this.channel = this.supabaseService.client
             .channel('public:messages')
             .on(
                 'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'messages' },
+                { event: '*', schema: 'public', table: 'messages' },
                 (payload) => {
-                const currentMessages = this.messagesSubject.getValue();
-                this.messagesSubject.next([...currentMessages, payload.new as IMessage]);
+                    if(payload.eventType === 'INSERT') {
+                        callback(payload.new as IMessage);
+                    }
                 }
             )
-        .subscribe();
+            .subscribe();
     }
+
+
+    unsubscribeFromMessages(): void {
+        if (!this.isBrowser) return;
+        this.channel?.unsubscribe();
+    }
+
+
+
+    async sendMessages(message: string, userId: string, userEmail: string ) : Promise<void>{
+        if (!this.isBrowser) return;
+
+        const { error } = await this.supabaseService.client
+            .from('messages')
+            .insert({ 
+                message: message.trim(), 
+                user_id: userId, 
+                user_email: userEmail 
+            });
+        if (error) throw error
+    }
+
+
 }
