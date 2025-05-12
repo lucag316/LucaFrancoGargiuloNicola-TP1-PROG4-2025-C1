@@ -34,6 +34,48 @@
     font-family: Arial, sans-serif;
 }
 
+/* Estilo para los mensajes propios */
+.my-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.my-message .message-header {
+    justify-content: flex-end;
+}
+
+.my-message .user-email {
+    color: #fff;
+}
+
+.my-message .timestamp {
+    color: #ddd;
+}
+
+/* Estilo para los mensajes de otros usuarios */
+.other-message {
+    background-color: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.other-message .message-header {
+    justify-content: flex-start;
+}
+
+.other-message .user-email {
+    color: #007bff;
+}
+
+.other-message .timestamp {
+    color: #999;
+}
+
+/* Resto de estilos */
+
 .loading-messages {
     display: flex;
     align-items: center;
@@ -72,7 +114,6 @@
     padding: 10px;
     border: 1px solid #eee;
     border-radius: 5px;
-    background-color: #f9f9f9;
 }
 
 .message-header {
@@ -81,11 +122,6 @@
     margin-bottom: 5px;
     font-size: 0.9rem;
     color: #555;
-}
-
-.user-email {
-    font-weight: bold;
-    color: #007bff;
 }
 
 .timestamp {

@@ -19,7 +19,8 @@
             <p>No hay mensajes disponibles</p>
         </div>
 
-        <div *ngFor="let message of messages" class="message">
+        <div *ngFor="let message of messages" [ngClass]="{'my-message': message.user_email === currentUserEmail, 
+            'other-message': message.user_email !== currentUserEmail}"class="message">
             <div class="message-header">
                 <span class="user-email">{{ message.user_email }}</span> 
                 <span class="timestamp">{{ formatDate(message.timestamp) }}</span>

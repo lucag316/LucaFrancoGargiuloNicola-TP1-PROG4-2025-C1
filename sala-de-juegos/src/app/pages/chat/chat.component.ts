@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, OnDestroy, PLATFORM_ID, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -33,6 +33,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     error = '';
     private isBrowser: boolean;
 
+    currentUserEmail: string = '';
+
+    @ViewChild('messageContainer') messageContainer!: ElementRef; // tengo que fijarme mejor
+
     constructor(
         private messageService: MessageService,
         private authService: AuthService
@@ -42,6 +46,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         if ( this.isBrowser){
+            const user = await this.authService.getUserIdMail();
+            this.currentUserEmail = user.email; // Guardamos el mail
             await this.loadMessages();
             this.subscribeToMessages();
         }
@@ -102,12 +108,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
     scrollToBottom() {
-        setTimeout(() => {
-            const container = document.getElementById('messages-container');
-            if (container) {
-                container.scrollTop = container.scrollHeight;
-            }
-        }, 100);
+        if (this.messageContainer) {
+            setTimeout(() => {
+                this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+            }, 100);
+        }
     }
 }
 
