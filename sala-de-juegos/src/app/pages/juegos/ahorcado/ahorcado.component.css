@@ -1,0 +1,63 @@
+
+
+.ahorcado-container {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.titulo {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.palabra-oculta {
+  font-size: 2.5rem;
+  letter-spacing: 12px;
+  margin-bottom: 25px;
+}
+
+.letras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 25px;
+}
+
+.letra-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.letra-btn:hover:enabled {
+  background-color: #0056b3;
+}
+
+.letra-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.info-partida {
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+.mensaje {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #d9534f;
+}

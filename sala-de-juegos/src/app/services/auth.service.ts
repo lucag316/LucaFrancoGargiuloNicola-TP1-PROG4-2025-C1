@@ -101,4 +101,9 @@ export class AuthService {
         return !!data.session;
     }
 
+    // Devuelve el ID del usuario autenticado
+    async getUserId(): Promise<string> {
+        const { data } = await this.supabaseService.client.auth.getUser();
+        return data?.user?.id ?? ''; // No devolverá null, ya que sabemos que el usuario está autenticado
+    }
 }

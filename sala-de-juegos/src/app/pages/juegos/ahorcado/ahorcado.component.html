@@ -1,1 +1,27 @@
-<p>ahorcado works!</p>
+
+
+<div class="ahorcado-container">
+    <h1 class="titulo">Juego del Ahorcado</h1>
+
+    <!-- Palabra oculta -->
+    <div class="palabra-oculta">
+        <span *ngFor="let letra of palabraMostrada">{{ letra }}</span>
+    </div>
+
+    <!-- Letras disponibles -->
+    <div class="letras">
+        <button 
+            *ngFor="let letra of abecedario"
+            (click)="adivinarLetra(letra)"
+            [disabled]="letrasUsadas.includes(letra)"
+            class="letra-btn">
+            {{ letra }}
+        </button>
+    </div>
+
+    <!-- Información de la partida -->
+    <div class="info-partida">
+        <p>Intentos restantes: {{ intentosRestantes }}</p>
+        <p *ngIf="mensaje" class="mensaje">{{ mensaje }}</p>
+    </div>
+</div>
