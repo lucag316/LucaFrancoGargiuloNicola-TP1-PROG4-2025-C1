@@ -24,12 +24,21 @@ export class MayorOMenorService {
 
     
     generarMazo(): ICarta[] {
-        const palos: ICarta['palo'][] = ['corazones', 'diamantes', 'tréboles', 'picas'];
+
+        const valores: Record<number, string> = {
+            1: 'A',
+            11: 'J',
+            12: 'Q',
+            13: 'K'
+        };
+
+        const palos: ICarta['palo'][] = ['hearts', 'diamonds', 'clubs', 'spades'];
         const mazo: ICarta[] = [];
 
         for (const palo of palos) {
             for (let valor = 1; valor <= 13; valor++) {
-                const imagen = `assets/cartas/${valor}_de_${palo}.png`;
+                const nombreValor = valores[valor] || valor.toString(); // A, 2–10, J, Q, K
+                const imagen = `assets/cartas/${nombreValor}_of_${palo}.png`;
                 mazo.push({ palo, valor, imagen });
             }
         }

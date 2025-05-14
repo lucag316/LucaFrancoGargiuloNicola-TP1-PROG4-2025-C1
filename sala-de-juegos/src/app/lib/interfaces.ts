@@ -31,7 +31,7 @@ export interface IMessage {
 }
 
 export interface ICarta{
-    palo: 'corazones' | 'diamantes' | 'tréboles' | 'picas';
+    palo: 'hearts' | 'diamonds' | 'clubs' | 'spades';
     valor: number; // 1 al 13 (A=1, J=11, Q=12, K=13)
     imagen: string; // ruta de la imagen
 }
