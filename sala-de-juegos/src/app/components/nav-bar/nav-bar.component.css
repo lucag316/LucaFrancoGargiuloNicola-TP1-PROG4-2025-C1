@@ -17,6 +17,56 @@
     backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--color-boton);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    gap: 1rem;
+}
+
+.navbar-center {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    gap: 2rem;
+}
+
+.navbar-center a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-center a:hover {
+    color: var(--color-boton);
+}
+
+.navbar-center a::before {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-boton);
+    transition: width 0.3s ease;
+}
+
+.navbar-center a:hover::before {
+    width: 100%;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.usuario-nombre {
+    color: var(--color-texto);
+    font-weight: bold;
 }
 
 .navbar-brand {
@@ -101,30 +151,37 @@
     background-color: var(--color-boton-hover);
 }
 
-.signup-link {
+.navbar-button {
     background-color: var(--color-boton);
     color: var(--color-fondo) !important;
-    padding: 0.7rem 1.8rem !important;
+    padding: 0.5rem 1.4rem;
     border-radius: 30px;
     transition: all 0.3s ease;
     font-weight: bold;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
     box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
 }
 
-.signup-link:hover {
+.navbar-button:hover {
     background-color: var(--color-boton-hover);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
 }
 
-.signup-link::before {
+.navbar-button::before {
     display: none;
 }
 
-.signup-link.active-link {
-    background-color: var(--color-boton-hover);
+.navbar-button.active-link {
+    background-color: var(--color-boton-hover); /* ya existe */
     color: var(--color-fondo) !important;
     box-shadow: 0 4px 15px rgba(255, 152, 0, 0.5);
+    filter: brightness(0.8) contrast(1.2);; /* 👈 esto hace que se vea más intenso/naranja */
+    transform: translateY(-2px);
+
 }
 
 /* Responsive */
@@ -149,7 +206,31 @@
         height: 40px;
     }
     
-    .signup-link {
+    .navbar-button {
         padding: 0.5rem 1.2rem !important;
+    }
+}
+
+/* Responsive: distribuir en columna si es necesario */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-brand,
+    .navbar-center,
+    .navbar-right {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .navbar-center {
+        order: 2;
+    }
+
+    .navbar-right {
+        order: 3;
+        margin-top: 1rem;
     }
 }
