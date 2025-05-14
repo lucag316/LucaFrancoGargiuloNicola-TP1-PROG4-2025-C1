@@ -1,1 +1,28 @@
-<p>mayor-o-menor works!</p>
+<div class="juego">
+    <h2>Mayor o Menor</h2>
+
+    <div class="cartas">
+        <div class="carta">
+            <img [src]="cartaActual.imagen" alt="Carta actual" />
+            <p>Carta actual</p>
+        </div>
+
+        <div class="carta">
+            <img src="assets/cartas/back.png" alt="Carta oculta" />
+            <p>¿Mayor o Menor?</p>
+        </div>
+    </div>
+
+    <div class="botones">
+        <button (click)="elegir('mayor')" [disabled]="juegoTerminado">Mayor</button>
+        <button (click)="elegir('menor')" [disabled]="juegoTerminado">Menor</button>
+    </div>
+
+    <div class="info">
+        <p>Racha: {{ racha }}</p>
+        <p>Puntaje: {{ puntaje }}</p>
+        <p *ngIf="mensaje">{{ mensaje }}</p>
+    </div>
+
+    <button (click)="reiniciar()" *ngIf="juegoTerminado">Reiniciar</button>
+</div>
