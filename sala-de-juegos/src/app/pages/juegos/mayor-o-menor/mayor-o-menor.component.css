@@ -1,153 +1,155 @@
+
+
 .juego {
-  max-width: 600px;
-  margin: 3rem auto;
-  padding: 2rem;
-  border: 2px solid var(--color-primario);
-  border-radius: 16px;
-  background-color: rgba(0, 0, 0, 0.6);
-  text-align: center;
-  animation: fadeInSlideUp 0.6s ease-in-out;
-  color: var(--color-texto);
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    border: 2px solid var(--color-primario);
+    border-radius: 16px;
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    animation: fadeInSlideUp 0.6s ease-in-out;
+    color: var(--color-texto);
 }
 
 .juego h2 {
-  color: var(--color-titulo);
-  font-size: 2rem;
-  margin-bottom: 1rem;
+    color: var(--color-titulo);
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 .cartas {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .carta {
-  background-color: #2e2e2e;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  max-width: 140px;
-  width: 100%;
+    background-color: #2e2e2e;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    max-width: 140px;
+    width: 100%;
 }
 
 .carta img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
 }
 
 .carta p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-texto);
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-texto);
 }
 
 .botones {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
 .botones button {
-  background-color: var(--color-boton);
-  color: #000;
-  font-family: "Silkscreen", sans-serif;
-  font-size: 1rem;
-  padding: 0.7rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    background-color: var(--color-boton);
+    color: #000;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .botones button:hover:not(:disabled) {
-  background-color: var(--color-boton-hover);
+    background-color: var(--color-boton-hover);
 }
 
 .botones button:disabled {
-  background-color: #888;
-  cursor: not-allowed;
+    background-color: #888;
+    cursor: not-allowed;
 }
 
 .info {
-  margin-top: 1rem;
-  font-size: 1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
 }
 
 .info p {
-  margin: 0.4rem 0;
-  color: var(--color-texto);
+    margin: 0.4rem 0;
+    color: var(--color-texto);
 }
 
 .info p:last-child {
-  color: var(--color-error);
+    color: var(--color-error);
 }
 
 /* Botón de reiniciar (se muestra solo al terminar) */
 button.reiniciar-btn {
-  margin-top: 1.5rem;
-  background-color: var(--color-primario);
-  color: #fff;
-  padding: 0.8rem 1.6rem;
-  border-radius: 10px;
-  font-family: "Silkscreen", sans-serif;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    margin-top: 1.5rem;
+    background-color: var(--color-primario);
+    color: #fff;
+    padding: 0.8rem 1.6rem;
+    border-radius: 10px;
+    font-family: "Silkscreen", sans-serif;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button.reiniciar-btn:hover {
-  background-color: #43a047;
+    background-color: #43a047;
 }
 
 /* RESPONSIVE - CELULAR */
 @media (max-width: 728px) {
-  .juego {
-    margin: 2rem 1rem;
-    padding: 1rem;
-  }
+    .juego {
+        margin: 2rem 1rem;
+        padding: 1rem;
+    }
 
-  .juego h2 {
-    font-size: 1.5rem;
-  }
+    .juego h2 {
+        font-size: 1.5rem;
+    }
 
-  .cartas {
-    flex-direction: row; /* <- Asegura que se mantengan lado a lado */
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap; /* Por si el espacio es muy chico */
-  }
+    .cartas {
+        flex-direction: row; /* <- Asegura que se mantengan lado a lado */
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap; /* Por si el espacio es muy chico */
+    }
 
-  .carta {
-    max-width: 120px; /* achicamos para celulares */
-    padding: 0.8rem;
-  }
+    .carta {
+        max-width: 120px; /* achicamos para celulares */
+        padding: 0.8rem;
+    }
 
-  .botones {
-    flex-direction: column;
-    align-items: center;
-  }
+    .botones {
+        flex-direction: column;
+        align-items: center;
+    }
 
-  .botones button {
-    width: 100%;
-    max-width: 200px;
-  }
+    .botones button {
+        width: 100%;
+        max-width: 200px;
+    }
 
-  button.reiniciar-btn {
-    width: 100%;
-    max-width: 240px;
-    font-size: 0.95rem;
-  }
+    button.reiniciar-btn {
+        width: 100%;
+        max-width: 240px;
+        font-size: 0.95rem;
+    }
 
-  .info {
-    font-size: 0.9rem;
-  }
+    .info {
+        font-size: 0.9rem;
+    }
 }

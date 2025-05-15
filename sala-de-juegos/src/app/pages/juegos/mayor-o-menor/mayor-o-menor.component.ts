@@ -37,8 +37,7 @@ export class MayorOMenorComponent implements OnInit {
         private mayorOMenorService: MayorOMenorService,
         private authService: AuthService,
         private supabaseService: SupabaseService
-    ){
-    }
+    ){}
 
 
     ngOnInit(): void {

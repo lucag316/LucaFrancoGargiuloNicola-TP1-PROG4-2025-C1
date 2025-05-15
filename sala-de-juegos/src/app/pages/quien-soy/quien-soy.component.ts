@@ -4,7 +4,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-
+import { Router, RouterModule } from '@angular/router';
 
 // -------------------- Interfaces --------------------
 
@@ -32,7 +32,7 @@ interface GitHubUser{
 @Component({
     selector: 'app-quien-soy',
     standalone: true, // Indica que es un componente independiente
-    imports: [CommonModule], // Importa módulo común para usar directivas como *ngIf, *ngFor, etc.
+    imports: [CommonModule, RouterModule], // Importa módulo común para usar directivas como *ngIf, *ngFor, etc.
     templateUrl: './quien-soy.component.html',
     styleUrl: './quien-soy.component.css',
 })
@@ -49,7 +49,7 @@ export class QuienSoyComponent implements OnInit {
     /**
     * Inyección del servicio HttpClient para realizar peticiones HTTP.
     */
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     /**
     * Hook que se ejecuta al inicializar el componente.
@@ -79,9 +79,7 @@ export class QuienSoyComponent implements OnInit {
     * Aquí podrías redirigir a otra vista, lanzar un modal, etc.
     */
     empezarJuego(): void {
-        // Lógica para iniciar tu juego
-        // Por ejemplo: redirigir a otro componente, mostrar un modal, etc.
-        console.log('¡Comenzar juego!');
+        this.router.navigate(['/simon']);
     }
 
   /* // ASI LO HIZO EL PROFE

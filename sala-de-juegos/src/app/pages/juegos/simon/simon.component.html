@@ -1,1 +1,33 @@
-<p>simon works!</p>
+
+
+
+<div class="simon-wrapper">
+
+    <!-- Título del juego -->
+    <h2 class="simon-title">🧠 Simón Dice</h2>
+
+    <!-- Contenedor de botones de colores -->
+    <div class="simon-colores">
+        <button 
+            *ngFor="let color of colores"
+            class="color-boton"
+            [ngClass]="getClasesColor(color)"
+            (click)="presionarColor(color)"
+            [disabled]="!jugando">
+        </button>
+    </div>
+
+    <!-- Sección de información del juego -->
+    <div class="simon-info">
+        <p *ngIf="jugando"><strong>Puntaje:</strong> {{ puntaje }}</p>
+        <p *ngIf="mensaje">{{ mensaje }}</p>
+    </div>
+
+    <!-- Botón para iniciar partida -->
+    <button 
+        class="simon-start-btn" 
+        (click)="iniciarJuego()" 
+        *ngIf="!jugando">
+        Iniciar Juego
+    </button>
+</div>
