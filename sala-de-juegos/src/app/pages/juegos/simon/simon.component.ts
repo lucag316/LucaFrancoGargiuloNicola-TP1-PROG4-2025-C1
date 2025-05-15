@@ -22,9 +22,13 @@ import { SupabaseService } from '../../../services/supabase.service';
 
 export class SimonComponent implements OnInit {
 
-    // --- Propiedades del juego ---
-    readonly colores: string[] = ['rojo', 'verde', 'azul', 'amarillo', 'naranja', 'violeta', 'negro', 'blanco'];
+    // --- Configuración ---
+    readonly colores: string[] = [
+        'rojo', 'verde', 'azul', 'amarillo',
+        'naranja', 'violeta', 'negro', 'blanco'
+    ];
 
+    // --- Estado del juego ---
     secuencia: string[] = [];
     entradaUsuario: string[] = [];
     colorActivo: string | null = null;
@@ -35,19 +39,49 @@ export class SimonComponent implements OnInit {
     jugando = false;
     puntaje = 0;
 
-    constructor(
-        private simonService: SimonService,
-        private authService: AuthService,
-        private supabaseService: SupabaseService
-    ) {}
+    private inicioJuego: number = 0;
+
+    constructor(private simonService: SimonService) {}
 
     ngOnInit(): void {}
 
-    // --- Lógica del juego ---
+    // --- Métodos públicos ---
+
     iniciarJuego(): void {
         this.resetearJuego();
+        this.inicioJuego = Date.now();
         this.agregarColor();
     }
+
+    async presionarColor(color: string): Promise<void> {
+        if (!this.turnoUsuario) return;
+
+        this.iluminarColor(color);
+        this.entradaUsuario.push(color);
+
+        if (color !== this.secuencia[this.indiceUsuario]) {
+            this.finalizarJuego(false);
+            return;
+        }
+
+        this.indiceUsuario++;
+
+        if (this.indiceUsuario === this.secuencia.length) {
+            this.puntaje++;
+            this.turnoUsuario = false;
+
+            setTimeout(() => this.agregarColor(), 1000);
+        }
+    }
+
+    getClasesColor(color: string): Record<string, boolean> {
+        return {
+            [color]: true,
+            'activo': this.colorActivo === color
+        };
+    }
+
+  // --- Métodos privados ---
 
     private resetearJuego(): void {
         this.secuencia = [];
@@ -84,38 +118,29 @@ export class SimonComponent implements OnInit {
         }, 800);
     }
 
-    presionarColor(color: string): void {
-        if (!this.turnoUsuario) return;
-
-        this.iluminarColor(color);
-        this.entradaUsuario.push(color);
-
-        if (color !== this.secuencia[this.indiceUsuario]) {
-            this.mensaje = `¡Incorrecto! Tu puntaje fue de ${this.puntaje}`;
-            this.jugando = false;
-            this.turnoUsuario = false;
-            return;
-        }
-
-        this.indiceUsuario++;
-
-        if (this.indiceUsuario === this.secuencia.length) {
-            this.puntaje++;
-            this.turnoUsuario = false;
-            setTimeout(() => this.agregarColor(), 1000);
-        }
-    }
-
-
-    iluminarColor(color: string) {
+    private iluminarColor(color: string): void {
         this.colorActivo = color;
         setTimeout(() => this.colorActivo = null, 400);
     }
 
-    getClasesColor(color: string): Record<string, boolean> {
-        return {
-            [color]: true,
-            'activo': this.colorActivo === color
-        };
+    private async finalizarJuego(gano: boolean): Promise<void> {
+        this.jugando = false;
+        this.turnoUsuario = false;
+        this.mensaje = gano ? '¡Ganaste! 🎉' : `¡Incorrecto! Tu puntaje fue de ${this.puntaje}`;
+
+        const duracion = (Date.now() - this.inicioJuego) / 1000;
+
+        // Guardar la partida en la base de datos
+        try {
+            await this.simonService.guardarPartida({
+                puntaje: this.puntaje,
+                fecha: new Date().toISOString(),
+                secuencia: [...this.secuencia],          // Pasar el array completo de colores
+                fechaInicio: new Date(this.inicioJuego).toISOString(),
+                duracion
+            });
+        } catch (error) {
+            console.error('Error al guardar la partida', error);
+        }
     }
 }

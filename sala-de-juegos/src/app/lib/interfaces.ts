@@ -35,3 +35,11 @@ export interface ICarta{
     valor: number; // 1 al 13 (A=1, J=11, Q=12, K=13)
     imagen: string; // ruta de la imagen
 }
+
+export interface IPartidaSimon {
+    puntaje: number;
+    fecha: string;           // Fecha de guardado (fin de partida)
+    secuencia: string[];     // Array de colores que formó la secuencia
+    fechaInicio: string;     // Fecha/hora en que empezó la partida
+    duracion: number;        // Duración en segundos
+}
