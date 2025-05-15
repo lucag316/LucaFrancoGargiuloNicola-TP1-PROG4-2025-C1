@@ -138,11 +138,16 @@ export class PreguntadosService {
             }
 
             // Insertar partida en Supabase
-            await this.supabaseService.client
+            const {data, error} = await this.supabaseService.client
                 .from('partidas_preguntados')
                 .insert([partida]);
 
-            console.log('Partida de Preguntados guardada exitosamente');
+            if (error) {
+                console.error('Error en insert:', error);
+                throw error;
+            }
+                
+            console.log('Partida de Preguntados guardada exitosamente', data);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 console.error('Error al guardar partida de Preguntados:', error.message);
