@@ -245,3 +245,69 @@
         transform: translateY(0);
     }
 }
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .game-content {
+        width: 90%;
+        padding: 1rem;
+        margin: 2rem auto 0 auto;
+    }
+
+    .game-header h2 {
+        font-size: 2rem;
+    }
+
+    .game-info, .progress-display {
+        font-size: 1rem;
+    }
+
+    .category-badge {
+        width: 150px;
+        font-size: 0.9rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    .option-button {
+        font-size: 1rem;
+        padding: 0.7rem 0.8rem;
+    }
+
+    /* Pasa a 1 columna para botones en pantallas pequeñas */
+    .options-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-content {
+        width: 95%;
+        padding: 0.8rem;
+        margin: 1rem auto 0 auto;
+    }
+
+    .game-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .game-info, .progress-display {
+        font-size: 0.9rem;
+    }
+
+    .category-badge {
+        width: 120px;
+        font-size: 0.85rem;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
+
+    .option-button {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.7rem;
+    }
+}

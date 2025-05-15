@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
+import { SupabaseService } from '../supabase/supabase.service';
 
 import { ITriviaPreguntas } from '../../lib/interfaces';
 
@@ -15,13 +17,14 @@ import { ITriviaPreguntas } from '../../lib/interfaces';
 
 export class PreguntadosService {
 
-    private apiUrl = 'http://corsproxy.io/?https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986';
+    //private apiUrl = 'http://corsproxy.io/?https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986';
+    private apiUrl = '';
     private preguntasJsonPath = '../../../assets/data/trivia-questions.json';
 
     private cachedPreguntas: ITriviaPreguntas[] = [];
     private usedQuestionIds: Set<number> = new Set<number>();
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private authService: AuthService, private supabaseService: SupabaseService) {
         // precargar las preguntas json
         this.loadQuestionsFromJson().subscribe(questions => {
             this.cachedPreguntas = questions;
@@ -120,5 +123,35 @@ export class PreguntadosService {
 
 
 
+    async guardarPartida(partida: {
+        user_id?: string;
+        score: number;
+        won: boolean;
+        details?: any;
+        created_at?: Date;
+    }) {
+        try {
+            // Si no se envía user_id, se obtiene acá (opcional)
+            if (!partida.user_id) {
+                const { id } = await this.authService.getUserIdMail();
+                partida.user_id = id;
+            }
+
+            // Insertar partida en Supabase
+            await this.supabaseService.client
+                .from('partidas_preguntados')
+                .insert([partida]);
+
+            console.log('Partida de Preguntados guardada exitosamente');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Error al guardar partida de Preguntados:', error.message);
+                throw new Error(`Error al guardar partida: ${error.message}`);
+            } else {
+                console.error('Error inesperado al guardar partida de Preguntados:', error);
+                throw new Error('Error inesperado al guardar partida');
+            }
+        }
+    }
 
 }

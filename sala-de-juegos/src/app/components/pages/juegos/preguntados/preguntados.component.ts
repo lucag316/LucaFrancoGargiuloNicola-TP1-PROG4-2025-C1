@@ -8,6 +8,7 @@ import { PreguntadosService } from '../../../../services/preguntados/preguntados
 import { GamesService } from '../../../../services/games/games.service';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { RefreshService } from '../../../../services/refresh/refresh.service';
+import { SupabaseService } from '../../../../services/supabase/supabase.service';
 
 import { ITriviaPreguntas, IQuestion, ITriviaState } from '../../../../lib/interfaces';
 // top ten component
@@ -35,7 +36,8 @@ export class PreguntadosComponent implements OnInit {
         private preguntadosService: PreguntadosService, 
         private authService: AuthService,
         private gameService: GamesService,
-        private refreshService: RefreshService
+        private refreshService: RefreshService,
+        private supabaseService: SupabaseService
     ) {}
 
     /**
@@ -175,7 +177,8 @@ export class PreguntadosComponent implements OnInit {
         this.state.gameOver = true;
         this.state.feedBack = `Juego terminado. Tu puntuacion es ${this.state.score}. Respuestas correctas ${this.state.correctAnswers}/${this.maxQuestions}`
     
-        await this.saveGameResult();
+        //await this.saveGameResult();
+        await this.guardarPartida()
     
     }
 
@@ -208,6 +211,35 @@ export class PreguntadosComponent implements OnInit {
         }
     }
 
+    /**
+ * Guarda el resultado del juego en la tabla específica de Preguntados
+ */
+    async guardarPartida() {
+        if (this.resultsSaved) return; // Evitar guardar más de una vez
+
+        try {
+            const user = await this.authService.getUserIdMail();
+
+            const partida = {
+                user_id: user?.id,
+                score: this.state.score,
+                won: this.state.correctAnswers > (this.maxQuestions / 2),
+                details: {
+                    questionsAnswered: this.state.questionsAnswered,
+                    correctAnswers: this.state.correctAnswers,
+                    maxQuestions: this.maxQuestions
+                },
+                created_at: new Date()
+            };
+
+            await this.preguntadosService.guardarPartida(partida);
+
+            this.resultsSaved = true;
+            console.log("✅ Resultado del juego Preguntados guardado con éxito");
+        } catch (error) {
+            console.error("❌ Error al guardar el resultado del juego Preguntados:", error);
+        }
+    }
 
 }
 
