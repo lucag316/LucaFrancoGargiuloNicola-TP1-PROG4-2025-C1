@@ -4,30 +4,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px; /* Reducido para compactar */
+    padding: 20px;
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
     width: 80%;
-    max-width: 700px; /* Reducido para mayor compresión */
+    max-width: 700px;
     margin: 20px auto;
 }
 
 /* Título del juego */
 .titulo {
-    font-size: 2rem; /* Reducido para ajustarse mejor */
+    font-size: 2rem;
     color: var(--color-titulo);
     text-transform: uppercase;
-    letter-spacing: 4px; /* Menor espacio entre letras */
-    margin-bottom: 15px; /* Reducido */
+    letter-spacing: 4px;
+    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Palabra oculta */
 .palabra-oculta {
-    font-size: 2.5rem; /* Reducido */
-    letter-spacing: 12px; /* Reducido */
-    margin-bottom: 20px; /* Reducido */
+    font-size: 2.5rem;
+    letter-spacing: 12px;
+    margin-bottom: 20px;
     color: var(--color-titulo);
     text-align: center;
 }
@@ -35,8 +35,8 @@
 /* Letras visibles */
 .letra {
     display: inline-block;
-    padding: 0 15px; /* Reducido */
-    font-size: 2.5rem; /* Reducido */
+    padding: 0 15px;
+    font-size: 2.5rem;
     color: var(--color-primario);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
@@ -45,14 +45,14 @@
 .letras {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
-    gap: 8px; /* Reducido */
-    margin-bottom: 20px; /* Reducido */
+    gap: 8px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .letra-btn {
-    padding: 12px 20px; /* Reducido */
-    font-size: 1.3rem; /* Reducido */
+    padding: 12px 20px;
+    font-size: 1.3rem;
     background-color: var(--color-boton);
     color: var(--color-fondo);
     border: 3px solid var(--color-primario);
@@ -80,7 +80,7 @@
 
 /* Información de la partida */
 .info-partida {
-    font-size: 1.3rem; /* Reducido */
+    font-size: 1.3rem;
     text-align: center;
     color: var(--color-texto);
 }
@@ -92,16 +92,16 @@
 
 /* Mensajes de error */
 .mensaje {
-    font-size: 1.5rem; /* Reducido */
+    font-size: 1.5rem;
     color: var(--color-error);
     text-align: center;
-    margin-top: 15px; /* Reducido */
+    margin-top: 15px;
 }
 
 /* Estilo de botones de reinicio y volver a jugar */
 .reiniciar-btn, .volver-jugar-btn {
-    padding: 18px 35px; /* Reducido */
-    font-size: 1.8rem; /* Reducido */
+    padding: 18px 35px;
+    font-size: 1.8rem;
     background-color: var(--color-secundario);
     color: var(--color-fondo);
     border: 5px solid var(--color-primario);
@@ -111,7 +111,7 @@
     letter-spacing: 3px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
     transition: all 0.3s ease;
-    margin-top: 20px; /* Reducido */
+    margin-top: 20px;
 }
 
 /* Hover para los botones */
@@ -141,9 +141,9 @@
 
 /* Imagen del ahorcado */
 .imagen-ahorcado {
-    width: 90px; /* Reducido */
-    height: 90px; /* Reducido */
-    margin-top: 20px; /* Reducido */
+    width: 90px;
+    height: 90px;
+    margin-top: 20px;
     animation: fadeInSlideUp 1s ease-out;
 }
 
@@ -151,4 +151,82 @@
     width: 100%;
     height: auto;
     display: block;
+}
+
+/* --- MEDIA QUERIES PARA RESPONSIVE --- */
+
+@media (max-width: 600px) {
+
+    .ahorcado-container {
+        width: 95%;
+        padding: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .titulo {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .palabra-oculta {
+        font-size: 1.8rem;
+        letter-spacing: 8px;
+        margin-bottom: 15px;
+    }
+
+    .letra {
+        padding: 0 8px;
+        font-size: 1.8rem;
+    }
+
+    .letras {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+
+    .letra-btn {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border-width: 2px;
+        border-radius: 6px;
+        letter-spacing: 1.5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .letra-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .info-partida {
+        font-size: 1rem;
+    }
+
+    .mensaje {
+        font-size: 1.2rem;
+        margin-top: 10px;
+    }
+
+    .reiniciar-btn, .volver-jugar-btn {
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border-width: 3px;
+        border-radius: 8px;
+        letter-spacing: 1.5px;
+        margin-top: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .reiniciar-btn:hover, .volver-jugar-btn:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.7);
+    }
+
+    .imagen-ahorcado {
+        width: 70px;
+        height: 70px;
+        margin-top: 15px;
+    }
 }
