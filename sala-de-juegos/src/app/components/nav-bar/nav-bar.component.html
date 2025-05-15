@@ -8,15 +8,20 @@
             <span class="navbar-title">LucaGames</span>
         </a>
 
-        <!-- CENTRO: Links principales -->
-        <div class="navbar-center">
+        <!-- BOTÓN HAMBURGUESA (solo visible en mobile) -->
+        <button class="hamburger" (click)="toggleMenu()" aria-label="Menú de navegación">
+            ☰
+        </button>
+
+        <!-- CENTRO (desktop only) -->
+        <div class="navbar-center desktop-only">
             <a routerLink="/home" routerLinkActive="active-link">Home</a>
             <a routerLink="/quien-soy" routerLinkActive="active-link">Quién Soy</a>
             <a *ngIf="usuarioLogueado" routerLink="/chat" routerLinkActive="active-link">Chat</a>
         </div>
 
-        <!-- DERECHA: Login / Sign Up o Nombre de usuario y Cerrar sesión -->
-        <div class="navbar-right">
+        <!-- DERECHA: Login/Logout (desktop only) -->
+        <div class="navbar-right desktop-only">
             <ng-container *ngIf="!usuarioLogueado">
                 <button (click)="irALogin()" class="navbar-button" [ngClass]="{ 'active-link': rutaActual === '/login' }">Login</button>
                 <button (click)="irARegister()" class="navbar-button" [ngClass]="{ 'active-link': rutaActual === '/register' }">Sign Up</button>
@@ -29,4 +34,33 @@
         </div>
 
     </nav>
+
+    <!-- MENÚ DESPLEGABLE DESDE LA DERECHA (solo mobile) -->
+    <div class="side-menu" [class.abierto]="menuAbierto">
+        <div class="side-menu-header">
+            <span class="usuario-nombre">👤 {{ username }}</span>
+            <button class="cerrar-menu" (click)="toggleMenu()">✕</button>
+        </div>
+
+        <div class="side-menu-content">
+            <p class="menu-title">MENÚ</p>
+            <a routerLink="/home" (click)="toggleMenu()" routerLinkActive="active-link">Home</a>
+            <a routerLink="/quien-soy" (click)="toggleMenu()" routerLinkActive="active-link">Quién Soy</a>
+
+            <!-- OPCIONES SI ESTÁ LOGUEADO -->
+            <ng-container *ngIf="usuarioLogueado; else noLogueado">
+                <a routerLink="/chat" (click)="toggleMenu()" routerLinkActive="active-link">Chat</a>
+                <button class="navbar-button" (click)="cerrarSesion()">Cerrar Sesión</button>
+            </ng-container>
+
+            <!-- OPCIONES SI NO ESTÁ LOGUEADO -->
+            <ng-template #noLogueado>
+                <button class="navbar-button" (click)="irALogin(); toggleMenu()" [ngClass]="{ 'active-link': rutaActual === '/login' }">Login</button>
+                <button class="navbar-button" (click)="irARegister(); toggleMenu()" [ngClass]="{ 'active-link': rutaActual === '/register' }">Sign Up</button>
+            </ng-template>
+        </div>
+    </div>
+
+    <!-- FONDO OSCURO DETRÁS DEL MENÚ -->
+    <div class="side-menu-backdrop" *ngIf="menuAbierto" (click)="toggleMenu()"></div>
 </div>

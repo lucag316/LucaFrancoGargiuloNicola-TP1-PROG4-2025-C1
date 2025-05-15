@@ -25,6 +25,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   username: string | null = null;
   rutaActual: string = '';
 
+  menuAbierto: boolean = false;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
@@ -82,6 +84,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
       console.error('Error obteniendo el nombre de usuario:', err);
       this.username = 'Usuario';
     }
+  }
+
+  toggleMenu() {
+    this.menuAbierto = !this.menuAbierto;
   }
 
   cerrarSesion() {

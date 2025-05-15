@@ -184,53 +184,129 @@
 
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        padding: 1rem;
-    }
-    
-    .navbar-links {
-        margin-top: 1.5rem;
-        gap: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .navbar-title {
-        font-size: 1.5rem;
-    }
-    
-    .navbar-logo {
-        height: 40px;
-    }
-    
-    .navbar-button {
-        padding: 0.5rem 1.2rem !important;
-    }
+/* Botón hamburguesa */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: var(--color-boton);
+    cursor: pointer;
 }
 
-/* Responsive: distribuir en columna si es necesario */
 @media (max-width: 768px) {
-    .navbar {
+    .hamburger {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        z-index: 1002;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .side-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100%;
+        width: 250px;
+        background-color: rgba(27, 27, 27, 0.98);
+        box-shadow: -2px 0 15px rgba(0, 0, 0, 0.5);
+        z-index: 1003;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        transition: right 0.3s ease;
+    }
+
+    .side-menu.abierto {
+        right: 0;
+    }
+
+    .side-menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--color-texto);
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .cerrar-menu {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--color-boton);
+        cursor: pointer;
+    }
+
+    .side-menu-content {
+        display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
 
-    .navbar-brand,
-    .navbar-center,
-    .navbar-right {
-        justify-content: center;
-        flex-wrap: wrap;
+    .side-menu-content a,
+    .side-menu-content .navbar-button {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        margin-top: 0.7rem;
+        color: var(--color-texto);
+        text-decoration: none;
+        padding: 0.7rem 1rem;
+        width: 80%;
+        transition: all 0.3s ease;
     }
 
-    .navbar-center {
-        order: 2;
+    /* Botones activos: borde amarillo alrededor */
+    .side-menu-content .navbar-button.active-link,
+    .navbar-button.active-link {
+        background-color: var(--color-boton-hover); /* mantiene fondo */
+        color: var(--color-fondo) !important;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        transform: translateY(-2px);
+        border: 2px solid var(--color-secundario); /* <-- borde amarillo */
+        border-radius: 30px; /* igual que el botón */
     }
 
-    .navbar-right {
-        order: 3;
-        margin-top: 1rem;
+    /* Links activos: solo cambia color de texto */
+    .side-menu-content a.active-link,
+    .navbar-links a.active-link {
+        color: var(--color-secundario) !important; /* cambia color del texto a amarillo */
+        background-color: transparent !important; /* asegurarse que no tenga fondo */
+        box-shadow: none !important; /* elimina sombra */
+        border: none !important; /* elimina cualquier borde */
+        transform: none;
+    }
+
+    .side-menu-content a:hover {
+        color: var(--color-boton-hover);
+    }
+
+    .menu-title {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+        color: var(--color-primario);
+        font-weight: bold;
+        border-bottom: 1px solid var(--color-primario);
+        padding-bottom: 0.5rem;
+    }
+
+    .side-menu-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1002;
     }
 }
