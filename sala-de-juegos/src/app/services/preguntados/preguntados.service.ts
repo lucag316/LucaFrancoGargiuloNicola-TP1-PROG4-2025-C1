@@ -15,7 +15,7 @@ import { ITriviaPreguntas } from '../../lib/interfaces';
 
 export class PreguntadosService {
 
-    private apiUrl = ''; // Futuro endpoint de API externa
+    private apiUrl = 'http://corsproxy.io/?https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986';
     private preguntasJsonPath = '../../../assets/data/trivia-questions.json';
 
     private cachedPreguntas: ITriviaPreguntas[] = [];

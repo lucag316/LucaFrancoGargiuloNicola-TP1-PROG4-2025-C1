@@ -31,8 +31,10 @@
 
         <!-- PREGUNTA ACTUAL -->
         <div class="question-card">
-            <h3 class="question-text"> {{state.currentQuestion.pregunta}}</h3>
-            <div class="category-badge">{{ state.currentQuestion.categoria}}</div>
+            <div class="question-header">
+                <div class="category-badge">{{ state.currentQuestion.categoria}}</div>
+                <h3 class="question-text"> {{state.currentQuestion.pregunta}}</h3>
+            </div>
 
             <!-- OPCIONES DE RESPUESTA -->
             <div class="options-container">
