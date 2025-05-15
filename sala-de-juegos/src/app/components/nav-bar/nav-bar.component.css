@@ -74,10 +74,16 @@
     align-items: center;
     gap: 1rem;
     transition: all 0.3s ease;
+    text-decoration: none !important;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent; /* elimina el resaltado al tocar en Android */
 }
+
 
 .navbar-brand:hover {
     transform: scale(1.03);
+    text-decoration: none !important;
+    outline: none !important;
 }
 
 .navbar-logo {
@@ -99,6 +105,8 @@
     font-weight: bold;
     letter-spacing: 1px;
     transition: all 0.3s ease;
+    text-decoration: none !important;
+    outline: none !important;
 }
 
 .navbar-title:hover {
@@ -195,12 +203,23 @@
 }
 
 @media (max-width: 768px) {
+    .navbar-logo {
+        height: 35px; /* más chico que 50px */
+    }
+
+    .navbar-title {
+        font-size: 1.2rem; /* tamaño más pequeño */
+        text-decoration: none !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent; /* elimina el resaltado al tocar en móviles */
+    }
     .hamburger {
         display: block;
         position: absolute;
         top: 1rem;
         right: 1.5rem;
         z-index: 1002;
+        color: var(--color-boton);
     }
 
     .desktop-only {
