@@ -1,80 +1,153 @@
 .juego {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-    animation: fadeInSlideUp 0.5s ease;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 1rem;
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border: 2px solid var(--color-primario);
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  animation: fadeInSlideUp 0.6s ease-in-out;
+  color: var(--color-texto);
+}
+
+.juego h2 {
+  color: var(--color-titulo);
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .cartas {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .carta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-color: #2e2e2e;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  max-width: 140px;
+  width: 100%;
 }
 
 .carta img {
-    width: 120px;
-    height: 180px;
-    object-fit: contain;
-    border: 2px solid var(--color-secundario);
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    image-rendering: pixelated; /* si es estilo retro */
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .carta p {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: var(--color-texto);
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-texto);
 }
 
 .botones {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .botones button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-family: "Silkscreen", sans-serif;
-    border: none;
-    border-radius: 8px;
-    background-color: var(--color-boton);
-    color: black;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: var(--color-boton);
+  color: #000;
+  font-family: "Silkscreen", sans-serif;
+  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.botones button:hover {
-    background-color: var(--color-boton-hover);
+.botones button:hover:not(:disabled) {
+  background-color: var(--color-boton-hover);
 }
 
 .botones button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  background-color: #888;
+  cursor: not-allowed;
 }
 
 .info {
-    margin: 1rem 0;
-    font-size: 1.1rem;
-    color: var(--color-texto);
+  margin-top: 1rem;
+  font-size: 1rem;
 }
 
-button[ng-reflect-ng-if="true"] {
-    margin-top: 1rem;
-    background-color: var(--color-primario);
-    color: white;
+.info p {
+  margin: 0.4rem 0;
+  color: var(--color-texto);
+}
+
+.info p:last-child {
+  color: var(--color-error);
+}
+
+/* Botón de reiniciar (se muestra solo al terminar) */
+button.reiniciar-btn {
+  margin-top: 1.5rem;
+  background-color: var(--color-primario);
+  color: #fff;
+  padding: 0.8rem 1.6rem;
+  border-radius: 10px;
+  font-family: "Silkscreen", sans-serif;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.reiniciar-btn:hover {
+  background-color: #43a047;
+}
+
+/* RESPONSIVE - CELULAR */
+@media (max-width: 728px) {
+  .juego {
+    margin: 2rem 1rem;
+    padding: 1rem;
+  }
+
+  .juego h2 {
+    font-size: 1.5rem;
+  }
+
+  .cartas {
+    flex-direction: row; /* <- Asegura que se mantengan lado a lado */
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap; /* Por si el espacio es muy chico */
+  }
+
+  .carta {
+    max-width: 120px; /* achicamos para celulares */
+    padding: 0.8rem;
+  }
+
+  .botones {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .botones button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  button.reiniciar-btn {
+    width: 100%;
+    max-width: 240px;
+    font-size: 0.95rem;
+  }
+
+  .info {
+    font-size: 0.9rem;
+  }
 }
