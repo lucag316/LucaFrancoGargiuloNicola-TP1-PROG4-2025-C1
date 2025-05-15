@@ -194,12 +194,20 @@
 
 /* Botón hamburguesa */
 .hamburger {
-    display: none;
     font-size: 2rem;
     background: none;
     border: none;
     color: var(--color-boton);
     cursor: pointer;
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .side-menu,
+    .side-menu-backdrop,
+    .hamburger {
+        display: none !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -223,7 +231,7 @@
     }
 
     .desktop-only {
-        display: none;
+        display: none !important;
     }
 
     .side-menu {
