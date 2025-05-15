@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
-import { SupabaseService } from '../supabase.service';
-import { AuthService } from '../auth.service';
+import { SupabaseService } from '../supabase/supabase.service';
+import { AuthService } from '../auth/auth.service';
 import { ICarta } from '../../lib/interfaces';
 
 

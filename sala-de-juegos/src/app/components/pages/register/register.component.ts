@@ -11,9 +11,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 // Interfaces y servicios propios
-import { IUser } from '../../lib/interfaces';
-import { SupabaseService } from '../../services/supabase.service';
-import { UserService } from '../../services/user.service';
+import { IUser } from '../../../lib/interfaces';
+import { SupabaseService } from '../../../services/supabase/supabase.service';
+import { UserService } from '../../../services/user/user.service';
 
 
 /**
@@ -27,7 +27,7 @@ import { UserService } from '../../services/user.service';
     standalone: true,
     imports: [FormsModule, CommonModule, RouterModule, MatSnackBarModule],
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css', '../../../styles.css'], // por mas de que haya importado lso estilos generales, no me funciono
+    styleUrls: ['./register.component.css', '../../../../styles.css'], // por mas de que haya importado lso estilos generales, no me funciono
 })
 
 export class RegisterComponent implements OnInit, OnDestroy{

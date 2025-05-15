@@ -1,8 +1,8 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
-import { SupabaseService } from './supabase.service';
-import { IMessage } from '../lib/interfaces';
+import { SupabaseService } from '../supabase/supabase.service';
+import { IMessage } from '../../lib/interfaces';
 import { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 
 

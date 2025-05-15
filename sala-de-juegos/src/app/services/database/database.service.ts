@@ -2,7 +2,7 @@
 
 
 import { Injectable } from '@angular/core';
-import { SupabaseService } from './supabase.service';
+import { SupabaseService } from '../supabase/supabase.service';
 
 
 @Injectable({

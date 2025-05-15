@@ -9,11 +9,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Subscription, firstValueFrom } from 'rxjs';
 
-import { IMessage } from '../../lib/interfaces';
-import { SupabaseService } from '../../services/supabase.service';
-import { MessageService } from '../../services/message.service';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { IMessage } from '../../../lib/interfaces';
+import { SupabaseService } from '../../../services/supabase/supabase.service';
+import { MessageService } from '../../../services/chat/message.service';
+import { UserService } from '../../../services/user/user.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 
 @Component({

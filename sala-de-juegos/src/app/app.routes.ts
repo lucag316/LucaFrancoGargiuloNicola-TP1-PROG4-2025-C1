@@ -4,15 +4,15 @@
 import { Routes } from '@angular/router';
 
 // Importación de los componentes que se utilizarán en las rutas.
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
-import { ChatComponent } from './pages/chat/chat.component';
-import { AhorcadoComponent } from './pages/juegos/ahorcado/ahorcado.component';
-import { MayorOMenorComponent } from './pages/juegos/mayor-o-menor/mayor-o-menor.component';
-import { PreguntadosComponent } from './pages/juegos/preguntados/preguntados.component';
-import { SimonComponent } from './pages/juegos/simon/simon.component';
+import { HomeComponent } from './components/pages/home/home.component';
+import { LoginComponent } from './components/pages/login/login.component';
+import { RegisterComponent } from './components/pages/register/register.component';
+import { QuienSoyComponent } from './components/pages/quien-soy/quien-soy.component';
+import { ChatComponent } from './components/pages/chat/chat.component';
+import { AhorcadoComponent } from './components/pages/juegos/ahorcado/ahorcado.component';
+import { MayorOMenorComponent } from './components/pages/juegos/mayor-o-menor/mayor-o-menor.component';
+import { PreguntadosComponent } from './components/pages/juegos/preguntados/preguntados.component';
+import { SimonComponent } from './components/pages/juegos/simon/simon.component';
 
 
 export const routes: Routes = [

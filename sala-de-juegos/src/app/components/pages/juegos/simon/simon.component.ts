@@ -5,9 +5,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
-import { SimonService } from '../../../services/simon/simon.service';
-import { AuthService } from '../../../services/auth.service';
-import { SupabaseService } from '../../../services/supabase.service';
+import { SimonService } from '../../../../services/simon/simon.service';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { SupabaseService } from '../../../../services/supabase/supabase.service';
 
 
 

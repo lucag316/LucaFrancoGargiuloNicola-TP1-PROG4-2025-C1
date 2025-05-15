@@ -3,8 +3,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { SupabaseService } from './supabase.service';
-import { IUser } from '../lib/interfaces';
+import { SupabaseService } from '../supabase/supabase.service';
+import { IUser } from '../../lib/interfaces';
 
 
 @Injectable({

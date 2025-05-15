@@ -1,7 +1,7 @@
 
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js'; // Importa los tipos y funciones necesarias de Supabase
-import { SUPABASE_CONFIG } from '../lib/constants'; // Constantes de configuración de Supabase
+import { SUPABASE_CONFIG } from '../../lib/constants'; // Constantes de configuración de Supabase
 import { isPlatformBrowser } from '@angular/common'; // Detecta si estamos en el navegador
 
 

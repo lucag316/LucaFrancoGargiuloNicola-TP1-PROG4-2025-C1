@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { SupabaseService } from '../../services/supabase.service';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { SupabaseService } from '../../../services/supabase/supabase.service';
+import { UserService } from '../../../services/user/user.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 
 @Component({

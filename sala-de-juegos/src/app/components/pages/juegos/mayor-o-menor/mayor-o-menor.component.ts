@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
-import { MayorOMenorService } from '../../../services/mayor-o-menor/mayor-o-menor.service';
-import { AuthService } from '../../../services/auth.service';
-import { SupabaseService } from '../../../services/supabase.service';
+import { MayorOMenorService } from '../../../../services/mayor-o-menor/mayor-o-menor.service';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { SupabaseService } from '../../../../services/supabase/supabase.service';
 
-import { ICarta } from '../../../lib/interfaces';
+import { ICarta } from '../../../../lib/interfaces';
 
 
 @Component({

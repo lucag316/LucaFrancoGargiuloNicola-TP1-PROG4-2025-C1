@@ -23,9 +23,9 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatSnackBar }  from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { SupabaseService } from '../../services/supabase.service';
-import { UserService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { SupabaseService } from '../../../services/supabase/supabase.service';
+import { UserService } from '../../../services/user/user.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 
 
