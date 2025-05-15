@@ -43,3 +43,41 @@ export interface IPartidaSimon {
     fechaInicio: string;     // Fecha/hora en que empezó la partida
     duracion: number;        // Duración en segundos
 }
+
+
+export interface ITriviaPreguntas{
+    id: number;
+    pregunta: string;
+    categoria: { nombre: string };
+    opciones: string[];
+    respuestaCorrecta: string;
+}
+
+export interface IQuestion {
+    id: number;
+    pregunta: string;
+    categoria: string;
+    opciones: string[];
+    respuestaCorrecta: string;
+}
+
+export interface ITriviaState {
+    currentQuestion: IQuestion | null;
+    selectedAnswer: string | null;
+    feedBack: string | null;
+    isCorrect: boolean;
+    score: number;
+    questionsAnswered: number;
+    correctAnswers: number;
+    gameOver: boolean;
+}
+
+export interface IGameResult {
+    id?: string; //con signo de pregunta
+    user_id: string;
+    game_type: string;
+    score: number;
+    won: boolean;
+    details?: any; // signo
+    created_at?: Date; // signo 
+}

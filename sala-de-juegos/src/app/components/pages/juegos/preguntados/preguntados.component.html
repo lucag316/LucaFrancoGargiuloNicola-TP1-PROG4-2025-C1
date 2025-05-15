@@ -1,1 +1,86 @@
-<p>preguntados works!</p>
+
+<div>
+    <!-- aca puedo ir un app top ten-->
+    
+    <div class="trivia-container">
+
+        <!-- ENCABEZADO DEL JUEGO -->
+        <div class="game-header">
+            <h2>Preguntados</h2>
+
+            <div class="game-info">
+                <span class="label">Puntuación:</span>
+                <span class="value">{{ state.score }}</span>
+            </div>
+
+            <div class="progress-display">
+                <span class="label">Pregunta:</span>
+                <span class="value">{{ state.questionsAnswered }}/{{ maxQuestions }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- INDICADOR DE CARGA -->
+    <div *ngIf="loading" class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Cargando pregunta...</p>
+    </div>
+
+    <!-- CONTENIDO DEL JUEGO -->
+    <div *ngIf="!loading && state.currentQuestion" class="game-content">
+
+        <!-- PREGUNTA ACTUAL -->
+        <div class="question-card">
+            <h3 class="question-text"> {{state.currentQuestion.pregunta}}</h3>
+            <div class="category-badge">{{ state.currentQuestion.categoria}}</div>
+
+            <!-- OPCIONES DE RESPUESTA -->
+            <div class="options-container">
+                <button
+                    *ngFor="let option of state.currentQuestion.opciones"
+                    (click)="selectAnswer(option)"
+                    [disabled]="state.selectedAnswer !== null"
+                    [ngClass]="{ 
+                        'selected': state.selectedAnswer === option,
+                        'correct': state.selectedAnswer === option && state.isCorrect,
+                        'incorrect': state.selectedAnswer === option && !state.isCorrect,
+                        'disabled': state.selectedAnswer !== null && state.selectedAnswer !== option
+                    }"
+                    class="option-button"
+                >
+                    {{option}}
+                </button>
+            </div>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div *ngIf="state.feedBack" class="feedback-message" [ngClass]="{
+            'success': state.isCorrect,
+            'error': !state.isCorrect
+        }">
+            {{state.feedBack}}
+        </div>
+
+        <!-- CONTROLES DE JUEGO -->
+        <div class="game-controls">
+            <button
+                *ngIf="state.selectedAnswer && !state.gameOver"
+                (click)="loadNextQuestion()"
+                class="next-button"
+            >
+                <span class="icon">icono -></span>Siguiente pregunta
+                
+            </button>
+
+            <button
+                *ngIf="state.gameOver"
+                (click)="startNewGame()"
+                class="restart-button"
+            >
+                <span class="icon">icono reiniciar</span>Volver a jugar
+            </button>
+
+        </div>
+    </div>
+
+</div>
