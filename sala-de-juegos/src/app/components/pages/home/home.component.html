@@ -1,4 +1,5 @@
 <div class="home-container">
+
     <!-- Cartel de Bienvenida -->
     <div class="welcome-banner">
         <h1>¡Bienvenido a Mi Proyecto Angular!</h1>
@@ -9,25 +10,28 @@
     <div class="juegos-section">
         <h2 class="juegos-title">Juegos Disponibles</h2>
         <div class="juegos-grid">
+
+            <!-- Juego: Ahorcado -->
             <div class="juego-card">
                 <h3>Ahorcado</h3>
                 <p>Adiviná la palabra antes de que sea demasiado tarde.</p>
                 <button class="jugar-button" (click)="jugar('ahorcado')">Jugar</button>
             </div>
 
+            <!-- Juego: Mayor o Menor -->
             <div class="juego-card">
                 <h3>Mayor o Menor</h3>
                 <p>¿Cuál número sigue? Adiviná si es mayor o menor.</p>
                 <button class="jugar-button " (click)="jugar('mayor-o-menor')">Jugar</button>
             </div>
 
+            <!-- Juego: Preguntados -->
             <div class="juego-card">
                 <h3>Preguntados</h3>
                 <p>Responde preguntas de cultura general. ¡Desafiá tu mente!</p>
                 <button class="jugar-button" (click)="jugar('preguntados')">Jugar</button>
             </div>
 
-            
         </div>
     </div>
 </div>

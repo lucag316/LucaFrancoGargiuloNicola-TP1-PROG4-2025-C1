@@ -1,9 +1,16 @@
+// ========================================================
+// Componente: HomeComponent
+// Descripción:
+//   Página principal del proyecto. Muestra los juegos
+//   disponibles y permite navegar a ellos si el usuario
+//   está autenticado.
+// ========================================================
 
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../services/auth/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { AuthService } from '../../../services/auth/auth.service';
+import { NotificacionesService } from '../../../services/notificaciones/notificaciones.service';
 
 
 @Component({
@@ -20,9 +27,17 @@ export class HomeComponent {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private snackBar: MatSnackBar,
+        private notificacionesService: NotificacionesService
     ) { }
 
+    // ========================================================
+    // Método: jugar
+    // --------------------------------------------------------
+    // Redirige al juego solicitado si el usuario está logueado.
+    // Si no lo está, muestra un mensaje informativo.
+    //
+    // @param nombreJuego - nombre de la ruta del juego
+    // ========================================================
     jugar(nombreJuego: string) {
         if (this.authService.getCurrentAuthStatus()) {
 
@@ -30,10 +45,7 @@ export class HomeComponent {
             this.router.navigate([`/${nombreJuego}`]);
         } else {
             // Si no está logueado, muestra un mensaje de advertencia
-            this.snackBar.open('Necesitás loguearte para jugar.', 'Cerrar', {
-                duration: 3000
-            });
-
+            this.notificacionesService.showMessage('Necesitás loguearte para jugar.', true);
         }
     }
 }
