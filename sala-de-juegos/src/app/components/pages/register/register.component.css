@@ -1,37 +1,51 @@
 
 
-/* Estilos específicos para el componente de Register */
+/* ===========================================
+    Contenedor principal del componente Register
+=========================================== */
 .register-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
+    display: flex;                           /* Flexbox para centrar contenido horizontalmente */
+    justify-content: center;                /* Centra horizontalmente el contenido */
+    align-items: flex-start;                /* Alinea el contenido al inicio verticalmente */
+    height: 100vh;                          /* Ocupa todo el alto de la pantalla */
     padding: 20px;
-    padding-top: 50px;
-    animation: fadeInSlideUp 1s ease-out; /* Animación de entrada */
+    padding-top: 50px;                      /* Espacio superior para separar del borde superior */
+    animation: fadeInSlideUp 1s ease-out;   /* Animación de entrada suave */
 }
 
+/* ===========================================
+    Tarjeta que contiene el formulario
+=========================================== */
 .register-card {
-    background-color: #2E2E2E; /* Fondo oscuro para la tarjeta */
-    border-radius: 10px;
+    background-color: #2E2E2E;              /* Fondo oscuro tipo tarjeta */
+    border-radius: 10px;                    /* Bordes redondeados */
     padding: 30px;
     width: 100%;
-    max-width: 450px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: fadeInSlideUp 1s ease-out; /* Animación de entrada */
+    max-width: 450px;                       /* Máximo ancho para pantallas grandes */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil para dar profundidad */
+    animation: fadeInSlideUp 1s ease-out;   /* Misma animación para coherencia visual */
 }
 
+/* ===========================================
+    Título del formulario
+=========================================== */
 .register-title {
     font-size: 28px;
-    color: var(--color-titulo);
+    color: var(--color-titulo);             /* Variable CSS para mantener coherencia de colores */
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* ===========================================
+    Agrupador de campos del formulario
+=========================================== */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px;                    /* Espacio entre cada campo */
 }
 
+/* ===========================================
+    Etiquetas de los inputs (labels)
+=========================================== */
 label {
     display: block;
     font-size: 14px;
@@ -39,55 +53,75 @@ label {
     margin-bottom: 5px;
 }
 
+/* ===========================================
+    Estilo de los campos de entrada (inputs)
+=========================================== */
 input.form-input {
-    width: 100%;
+    width: 100%;                            /* Que ocupe todo el ancho disponible */
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background-color: var(--color-input-fondo);
-    color: var(--color-input-texto);
+    border: 1px solid #555;                 /* Borde gris oscuro */
+    background-color: var(--color-input-fondo); /* Color de fondo personalizable */
+    color: var(--color-input-texto);        /* Texto legible en fondo oscuro */
     font-size: 16px;
 }
 
+/* ===========================================
+    Botón principal de registro
+=========================================== */
 button.register-button {
     width: 100%;
     padding: 10px;
-    background-color: var(--color-boton);
-    color: var(--color-fondo);
+    background-color: var(--color-boton);         /* Fondo del botón desde variable */
+    color: var(--color-fondo);                    /* Texto claro sobre botón oscuro */
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;       /* Transición suave al hacer hover */
 }
 
+/* ===========================================
+    Estilo del botón al pasar el mouse
+=========================================== */
 button.register-button:hover {
-    background-color: var(--color-boton-hover);
+    background-color: var(--color-boton-hover);   /* Color al hacer hover */
 }
 
+/* ===========================================
+    Botón deshabilitado
+=========================================== */
 button.register-button:disabled {
-    background-color: #888; /* gris más claro */
-    cursor: not-allowed;
-    opacity: 0.6; /* lo hace más transparente */
+    background-color: #888;                /* Gris más claro para botón deshabilitado */
+    cursor: not-allowed;                   /* Cursor indica que no se puede hacer clic */
+    opacity: 0.6;                          /* Más transparente para indicar inactividad */
 }
 
+/* ===========================================
+    Link de redirección al login
+=========================================== */
 .login-link {
     text-align: center;
     margin-top: 15px;
 }
 
+/* Estilo del enlace a "Iniciar sesión" */
 .login-link a {
     color: var(--color-secundario);
     text-decoration: none;
     font-weight: bold;
 }
 
+/* Hover sobre el link de login */
 .login-link a:hover {
     color: var(--color-boton-hover);
 }
 
+/* ===========================================
+    Mensajes de error del formulario
+=========================================== */
 .error-message {
-    color: var(--color-error);
+    color: var(--color-error);             /* Variable de color para errores */
     font-size: 14px;
     text-align: center;
     margin-bottom: 5px;

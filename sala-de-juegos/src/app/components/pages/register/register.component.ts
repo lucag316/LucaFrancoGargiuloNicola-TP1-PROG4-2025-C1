@@ -1,7 +1,8 @@
+
 // Angular core y módulos esenciales
-import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID  } from '@angular/core'; // ViewChild (fijarme si agregarlo))
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // NgForm(fijarme si agreagrlo)
 import { RouterModule, Router } from '@angular/router';
 
 // Angular Material para notificaciones
@@ -12,16 +13,15 @@ import { Subscription } from 'rxjs';
 
 // Interfaces y servicios propios
 import { IUser } from '../../../lib/interfaces';
-import { SupabaseService } from '../../../services/supabase/supabase.service';
+import { SupabaseService } from '../../../services/supabase/supabase.service'; // CREO QUE SE PUEDE SACAR
 import { UserService } from '../../../services/user/user.service';
 
 
 /**
-* Componente de registro de nuevos usuarios.
-* Este componente permite al usuario crear una cuenta ingresando:
-* username, email, teléfono y contraseña.
-* Una vez registrado, se lo redirige a la página principal.
-*/
+ * Componente de registro de nuevos usuarios.
+ * Permite crear una cuenta ingresando nombre de usuario, correo, teléfono y contraseña.
+ * Si el registro es exitoso, redirige al usuario a la página principal.
+ */
 @Component({
     selector: 'app-register',
     standalone: true,
@@ -34,7 +34,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
     // ======== MODELO DEL FORMULARIO ========
 
-    /** Usuario nuevo a registrar */
+    /** 
+     * Modelo base del usuario nuevo. 
+     * Los campos `id` y `created_at` se dejan vacíos porque se generan automáticamente desde Supabase.
+     */
     newUser: IUser = {
         id: '',
         created_at: '',
@@ -44,18 +47,21 @@ export class RegisterComponent implements OnInit, OnDestroy{
         phone: '',
     };
 
+     /** Campo auxiliar para confirmar la contraseña */
+    confirmPassword: string = '';
+
     // ======== DATOS DEL COMPONENTE ========
 
     /** Lista de usuarios obtenidos desde Supabase */
     users: IUser[] = [];
 
-    /** Para validar si se está ejecutando en navegador (SSR o no) */
+    /** Indica si el entorno actual es un navegador (no SSR) */
     isBrowser: boolean = false; 
 
-    /** Suscripción al observable de usuarios */
+    /** Suscripción activa al observable de usuarios */
     private usersSubscription?: Subscription; 
 
-    /** Diccionario con errores por campo */
+    /** Diccionario de errores por campo */
     formErrors: { [key: string]: string } = {};
 
 
@@ -74,7 +80,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
     // ======== CICLOS DE VIDA ========
 
     /**
-     * Al iniciar el componente, se suscribe a la lista de usuarios si está en plataforma cliente.
+     * Al iniciar, se suscribe a los usuarios si está en navegador.
+     * Guarda los datos en localStorage para acceso rápido.
      */
     ngOnInit(): void {
         if (!this.isBrowser) return;
@@ -88,18 +95,18 @@ export class RegisterComponent implements OnInit, OnDestroy{
                 try {
                     localStorage.setItem('users', JSON.stringify(users));
                 } catch (error) {
-                    this.showMessage('Error al cargar los usuarios', true);
+                    this.showMessage('Error al guardar usuarios localmente', true);
                 }
             },
             error:(error: any) => {
                 console.error("ERROR al cargar los usuarios", error);
                 this.showMessage("No se pudo obtener la lista de usuarios", true);
             }
-        })
+        });
     }
 
     /**
-     * Al destruir el componente, se desuscribe del observable si corresponde.
+     * Al destruir el componente, se libera la suscripción al observable.
      */
     ngOnDestroy(): void {
         this.usersSubscription?.unsubscribe();
@@ -109,8 +116,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
     // ======== EVENTOS ========
 
     /**
-     * Evento que se dispara al enviar el formulario de registro.
-     * Valida los campos y registra al usuario usando el UserService.
+     * Evento al enviar el formulario de registro.
+     * Realiza validaciones manuales y envía los datos al servicio.
      */
     async onRegister(): Promise<void> {
         const { username, email, password, phone } = this.newUser;
@@ -118,18 +125,32 @@ export class RegisterComponent implements OnInit, OnDestroy{
         // Limpiar errores anteriores
         this.formErrors = {};
 
-        // Validaciones básicas del formulario
-        if (!username) this.formErrors["username"] = 'El nombre de usuario es obligatorio.';
-        if (!email) this.formErrors["email"] = 'El correo electrónico es obligatorio.';
-        if (!password) this.formErrors["password"] = 'La contraseña es obligatoria.';
-        if (!phone) this.formErrors["phone"] = 'El teléfono es obligatorio.';
+        // === VALIDACIÓN MANUAL ===
+        // Se validan los campos obligatorios antes de continuar
+        const camposObligatorios = [
+            { campo: 'username', mensaje: 'El nombre de usuario es obligatorio.' },
+            { campo: 'email', mensaje: 'El correo electrónico es obligatorio.' },
+            { campo: 'password', mensaje: 'La contraseña es obligatoria.' },
+            { campo: 'phone', mensaje: 'El teléfono es obligatorio.' },
+        ];
+
+        camposObligatorios.forEach(({ campo, mensaje }) => {
+            if (!this.newUser[campo as keyof IUser]) {
+                this.formErrors[campo] = mensaje;
+            }
+        });
+
+        // Validación: contraseñas deben coincidir
+        if (this.newUser.password !== this.confirmPassword) {
+            this.formErrors["confirmPassword"] = 'Las contraseñas no coinciden.';
+        }
     
-        // Si hay errores, detener el proceso y mostrar los errores debajo de los inputs
+        // Si hay errores, cancelar el registro
         if (Object.keys(this.formErrors).length > 0) return;
 
 
         try {
-            // Registro de usuario
+            // Registro del usuario usando el servicio
             await this.userService.register({ 
                 username, 
                 email, 
@@ -160,9 +181,9 @@ export class RegisterComponent implements OnInit, OnDestroy{
     // ======== MÉTODOS AUXILIARES ========
 
     /**
-     * Muestra un mensaje en la pantalla (tipo snackbar).
-     * @param mensaje El texto del mensaje
-     * @param esError Si es un mensaje de error (true) o éxito (false)
+     * Muestra un mensaje (tipo snackbar) en pantalla.
+     * @param mensaje Texto a mostrar
+     * @param esError Define si es mensaje de error (true) o de éxito (false)
      */
     showMessage(mensaje: string, esError: boolean = false): void {
         this.snackBar.open(mensaje, 'Cerrar', {
@@ -171,6 +192,14 @@ export class RegisterComponent implements OnInit, OnDestroy{
             verticalPosition: 'top',
             panelClass: [esError ? 'snackbar-error' : 'snackbar-success']
         });
+    }
+
+    checkPasswordMatch(): void {
+        if (this.confirmPassword && this.newUser.password !== this.confirmPassword) {
+            this.formErrors["confirmPassword"] = 'Las contraseñas no coinciden.';
+        } else {
+            delete this.formErrors["confirmPassword"];
+        }
     }
 }
 

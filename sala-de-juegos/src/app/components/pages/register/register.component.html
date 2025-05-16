@@ -1,109 +1,146 @@
 
 
-<!--
+<!-- 
 Componente: Register
-Descripción: 
-    Muestra un formulario de registro donde el usuario debe ingresar
-    nombre de usuario, contraseña, email y teléfono. Al enviar el formulario,
-    se ejecuta la función onRegister().
+Descripción:
+    Formulario de registro para nuevos usuarios. Solicita nombre de usuario,
+    contraseña, correo electrónico y teléfono. Al enviar, se ejecuta onRegister().
+
+Validaciones:
+    - Usuario: obligatorio, mínimo 3 caracteres
+    - Contraseña: obligatoria, mínimo 6 caracteres
+    - Email: obligatorio, debe contener '@'
+    - Teléfono: obligatorio, solo números, 8 dígitos exactos
+
+Tecnologías:
+    - Angular Forms Template-driven (ngForm)
+    - Validaciones HTML + Validaciones personalizadas
+
 Notas:
-    - Utiliza Angular Forms (ngForm) para validación del formulario.
-    - Enlace para volver al login si ya tiene cuenta.
+    - Muestra errores en tiempo real cuando los campos están "touched"
+    - Desactiva el botón de registro si el formulario es inválido
 -->
 
 <div class="register-container">
 
-    <!-- Tarjeta de registro -->
+    <!-- Tarjeta principal -->
     <div class="register-card">
-        <!-- Título del formulario -->
-        <h2 class="register-title">Registrarse</h2>
+
+        <!-- Título -->
+        <h2 class="register-title">Crear cuenta</h2>
 
         <!-- Formulario de registro -->
         <form (ngSubmit)="onRegister()" #registerForm="ngForm">
 
-            <!-- Campo de entrada: Usuario -->
+            <!-- === CAMPO: Usuario === -->
             <div class="form-group">
                 <label for="username">Usuario</label>
                 <input
-                    type="text"
                     id="username"
                     name="username"
+                    type="text"
                     class="form-input"
                     required
                     minlength="3"
                     [(ngModel)]="newUser.username"
                     #usernameField="ngModel">
-                <!-- Validaciones locales + errores personalizados -->
-                <div *ngIf="(usernameField.invalid && usernameField.touched) || formErrors['username']" class="error-message">
+
+                <!-- Mensajes de error del sistema o validador personalizado -->
+                <div class="error-message" *ngIf="(usernameField.invalid && usernameField.touched) || formErrors['username']" >
                     <div *ngIf="usernameField.errors?.['required']">El nombre de usuario es obligatorio.</div>
+                    <div *ngIf="usernameField.errors?.['minlength']">Debe tener al menos 3 caracteres.</div>
                     <div *ngIf="formErrors['username']">{{ formErrors['username'] }}</div>
                 </div>
             </div>
 
-            <!-- Campo de entrada: Contraseña -->
+            <!-- === CAMPO: Contraseña === -->
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 <input
-                    type="password"
                     id="password"
                     name="password"
+                    type="password"
                     class="form-input"
                     required
                     minlength="6"
                     [(ngModel)]="newUser.password"
                     #passwordField="ngModel">
-                <!-- Mensaje de error -->
-                <div *ngIf="(passwordField.invalid && passwordField.touched) || formErrors['password']" class="error-message">
+
+                <!-- Mensajes de error del sistema o validador personalizado -->
+                <div class="error-message" *ngIf="(passwordField.invalid && passwordField.touched) || formErrors['password']" >
                     <div *ngIf="passwordField.errors?.['required']">La contraseña es obligatoria.</div>
-                    <div *ngIf="passwordField.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
+                    <div *ngIf="passwordField.errors?.['minlength']">Debe tener al menos 6 caracteres.</div>
                     <div *ngIf="formErrors['password']">{{ formErrors['password'] }}</div>
                 </div>
             </div>
 
-            <!-- Campo de entrada: Email -->
+            <!-- === CAMPO: Confirmar Contraseña === -->
             <div class="form-group">
-                <label for="email">Gmail</label>
+                <label for="confirmPassword">Confirmar Contraseña</label>
                 <input
-                    type="email"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    class="form-input"
+                    required
+                    minlength="6"
+                    [(ngModel)]="confirmPassword"
+                    (ngModelChange)="checkPasswordMatch()"
+                    #confirmPasswordField="ngModel">
+
+                <!-- Mensajes de error del sistema o validación cruzada -->
+                <div class="error-message" *ngIf="(confirmPasswordField.invalid && confirmPasswordField.touched) || formErrors['confirmPassword']">
+                    <div *ngIf="confirmPasswordField.errors?.['required']">Debe confirmar la contraseña.</div>
+                    <div *ngIf="formErrors['confirmPassword']">{{ formErrors['confirmPassword'] }}</div>
+                </div>
+            </div>
+
+            <!-- === CAMPO: Email === -->
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input
                     id="email"
                     name="email"
+                    type="email"
                     class="form-input"
                     required
                     pattern=".*@.*"
                     [(ngModel)]="newUser.email"
                     #emailField="ngModel">
-                <!-- Mensaje de error -->
-                <div *ngIf="(emailField.invalid && emailField.touched) || formErrors['email']" class="error-message">
-                    <div *ngIf="emailField.errors?.['required']">El correo electrónico es obligatorio.</div>
+
+                <!-- Mensajes de error del sistema o validador personalizado -->
+                <div class="error-message" *ngIf="(emailField.invalid && emailField.touched) || formErrors['email']" >
+                    <div *ngIf="emailField.errors?.['required']">El correo es obligatorio.</div>
                     <div *ngIf="formErrors['email']">{{ formErrors['email'] }}</div>
                 </div>
             </div>
 
-            <!-- Campo de entrada: Teléfono -->
+            <!-- === CAMPO: Teléfono === -->
             <div class="form-group">
                 <label for="phone">Teléfono</label>
                 <input
-                    type="tel"
                     id="phone"
                     name="phone"
+                    type="tel"
                     class="form-input"
                     required
                     pattern="^[0-9]{8}$"
                     [(ngModel)]="newUser.phone"
                     #phoneField="ngModel">
-                <!-- Mensaje de error -->
-                <div *ngIf="(phoneField.invalid && phoneField.touched) || formErrors['phone']" class="error-message">
+
+                <!-- Mensajes de error del sistema o validador personalizado -->
+                <div class="error-message" *ngIf="(phoneField.invalid && phoneField.touched) || formErrors['phone']" >
                     <div *ngIf="phoneField.errors?.['required']">El teléfono es obligatorio.</div>
                     <div *ngIf="formErrors['phone']">{{ formErrors['phone'] }}</div>
                 </div>
             </div>
 
-            <!-- Botón de envío -->
+            <!-- === BOTÓN DE ENVÍO === -->
             <div class="form-group">
                 <button
                     type="submit"
                     class="register-button"
-                    [disabled]="!registerForm.form.valid">
+                    [disabled]="!registerForm.form.valid || newUser.password !== confirmPassword">
                     Registrarse
                 </button>
             </div>
@@ -111,9 +148,8 @@ Notas:
 
         <!-- Enlace para volver al login -->
         <div class="login-link">
-            <p>¿Ya tienes una cuenta?
-                <a routerLink="/login">Iniciar Sesión</a>
-            </p>
+            <p>¿Ya tienes una cuenta?</p>
+            <a routerLink="/login">Iniciar Sesión</a>
         </div>
     </div>
 </div>
