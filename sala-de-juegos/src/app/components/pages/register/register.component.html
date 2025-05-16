@@ -4,21 +4,27 @@
 Componente: Register
 Descripción:
     Formulario de registro para nuevos usuarios. Solicita nombre de usuario,
-    contraseña, correo electrónico y teléfono. Al enviar, se ejecuta onRegister().
+    contraseña (y confirmación), correo electrónico y teléfono. Al enviar, se ejecuta onRegister().
 
 Validaciones:
     - Usuario: obligatorio, mínimo 3 caracteres
     - Contraseña: obligatoria, mínimo 6 caracteres
+    - Confirmación: debe coincidir con la contraseña
     - Email: obligatorio, debe contener '@'
     - Teléfono: obligatorio, solo números, 8 dígitos exactos
 
 Tecnologías:
-    - Angular Forms Template-driven (ngForm)
-    - Validaciones HTML + Validaciones personalizadas
+    - Angular Template-driven Forms (ngForm)
+    - Validaciones HTML estándar (required, minlength, pattern)
+    - Validaciones personalizadas (confirmación de contraseña)
+    - Desactivación del botón de envío si el formulario es inválido o las contraseñas no coinciden
 
-Notas:
-    - Muestra errores en tiempo real cuando los campos están "touched"
-    - Desactiva el botón de registro si el formulario es inválido
+Notas de implementación:
+    - Los errores se muestran en tiempo real al perder el foco (touched)
+    - Se muestran errores de Angular y errores personalizados desde `formErrors`
+    - Se ejecuta `onRegister()` al enviar el formulario si es válido
+    - Usa variables de referencia local para detectar errores de cada campo
+    - `checkPasswordMatch()` compara contraseña y confirmación manualmente
 -->
 
 <div class="register-container">
@@ -30,7 +36,7 @@ Notas:
         <h2 class="register-title">Crear cuenta</h2>
 
         <!-- Formulario de registro -->
-        <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+        <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" novalidate>
 
             <!-- === CAMPO: Usuario === -->
             <div class="form-group">
@@ -43,9 +49,10 @@ Notas:
                     required
                     minlength="3"
                     [(ngModel)]="newUser.username"
-                    #usernameField="ngModel">
+                    #usernameField="ngModel"
+                    (blur)="usernameField.control.markAsTouched()">
 
-                <!-- Mensajes de error del sistema o validador personalizado -->
+                <!-- Mensajes de error Angular y personalizados -->
                 <div class="error-message" *ngIf="(usernameField.invalid && usernameField.touched) || formErrors['username']" >
                     <div *ngIf="usernameField.errors?.['required']">El nombre de usuario es obligatorio.</div>
                     <div *ngIf="usernameField.errors?.['minlength']">Debe tener al menos 3 caracteres.</div>
@@ -64,9 +71,10 @@ Notas:
                     required
                     minlength="6"
                     [(ngModel)]="newUser.password"
-                    #passwordField="ngModel">
+                    #passwordField="ngModel"
+                    (blur)="passwordField.control.markAsTouched()">
 
-                <!-- Mensajes de error del sistema o validador personalizado -->
+                <!-- Mensajes de error Angular y personalizados -->
                 <div class="error-message" *ngIf="(passwordField.invalid && passwordField.touched) || formErrors['password']" >
                     <div *ngIf="passwordField.errors?.['required']">La contraseña es obligatoria.</div>
                     <div *ngIf="passwordField.errors?.['minlength']">Debe tener al menos 6 caracteres.</div>
@@ -85,10 +93,10 @@ Notas:
                     required
                     minlength="6"
                     [(ngModel)]="confirmPassword"
-                    (ngModelChange)="checkPasswordMatch()"
-                    #confirmPasswordField="ngModel">
+                    #confirmPasswordField="ngModel"
+                    (blur)="confirmPasswordField.control.markAsTouched(); checkPasswordMatch()">
 
-                <!-- Mensajes de error del sistema o validación cruzada -->
+                <!-- Mensaje si no coincide con la contraseña -->
                 <div class="error-message" *ngIf="(confirmPasswordField.invalid && confirmPasswordField.touched) || formErrors['confirmPassword']">
                     <div *ngIf="confirmPasswordField.errors?.['required']">Debe confirmar la contraseña.</div>
                     <div *ngIf="formErrors['confirmPassword']">{{ formErrors['confirmPassword'] }}</div>
@@ -106,9 +114,10 @@ Notas:
                     required
                     pattern=".*@.*"
                     [(ngModel)]="newUser.email"
-                    #emailField="ngModel">
+                    #emailField="ngModel"
+                    (blur)="emailField.control.markAsTouched()">
 
-                <!-- Mensajes de error del sistema o validador personalizado -->
+                <!-- Mensajes de error Angular y personalizados -->
                 <div class="error-message" *ngIf="(emailField.invalid && emailField.touched) || formErrors['email']" >
                     <div *ngIf="emailField.errors?.['required']">El correo es obligatorio.</div>
                     <div *ngIf="formErrors['email']">{{ formErrors['email'] }}</div>
@@ -126,12 +135,17 @@ Notas:
                     required
                     pattern="^[0-9]{8}$"
                     [(ngModel)]="newUser.phone"
-                    #phoneField="ngModel">
+                    #phoneField="ngModel"
+                    (blur)="phoneField.control.markAsTouched()">
 
-                <!-- Mensajes de error del sistema o validador personalizado -->
+                <!-- Mensajes de error Angular y personalizados -->
                 <div class="error-message" *ngIf="(phoneField.invalid && phoneField.touched) || formErrors['phone']" >
                     <div *ngIf="phoneField.errors?.['required']">El teléfono es obligatorio.</div>
+                    <div *ngIf="phoneField.errors?.['pattern']">Debe tener 8 dígitos numéricos.</div>
                     <div *ngIf="formErrors['phone']">{{ formErrors['phone'] }}</div>
+                    
+                    <!-- Mostrar mensaje personalizado SOLO si no hay errores de Angular -->
+                    <div *ngIf="!phoneField.errors && formErrors['phone']">{{ formErrors['phone'] }}</div>
                 </div>
             </div>
 
@@ -146,7 +160,7 @@ Notas:
             </div>
         </form>
 
-        <!-- Enlace para volver al login -->
+        <!-- Enlace para iniciar sesión -->
         <div class="login-link">
             <p>¿Ya tienes una cuenta?</p>
             <a routerLink="/login">Iniciar Sesión</a>
