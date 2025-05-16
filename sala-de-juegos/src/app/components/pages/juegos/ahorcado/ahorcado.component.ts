@@ -102,7 +102,7 @@ export class AhorcadoComponent implements OnInit {
         let userId: string | null = null;
 
         try {
-            const { id } = await this.authService.getUserIdMail();
+            const { id } = await this.authService.getUserInfo();
             userId = id;
         } catch {
             // Si no está logueado, userId queda como null

@@ -1,38 +1,57 @@
+<!-- ================================================================
+Componente: ChatComponent
+Descripción:
+    Interfaz de chat en tiempo real. Muestra los mensajes, un estado
+    de carga/error, y permite enviar nuevos mensajes con validación.
+================================================================ -->
+
+
 
 <div class="chat-container">
+
+    <!-- Titulo -->
     <div class="chat-header">
         <h2>Chat</h2>
     </div>
 
+    <!-- Contenedor de mensajes con scroll automático (referenciado) -->
     <div class="chat-messages" #messageContainer>
 
+        <!-- Estado: Cargando mensajes -->
         <div *ngIf="loading" class="loading-messages">
             <span class="loading-spinner"></span>
             <p>Cargando mensajes...</p>
         </div>
 
+        <!-- Estado: Error al cargar -->
         <div *ngIf="error" class="error-message">
             {{ error }}
         </div>
 
+        <!-- Estado: Sin mensajes -->
         <div *ngIf="!loading && !error && messages.length === 0" class="no-messages">
             <p>No hay mensajes disponibles</p>
         </div>
 
-        <div *ngFor="let message of messages" [ngClass]="{'my-message': message.user_email === currentUserEmail, 
-            'other-message': message.user_email !== currentUserEmail}"class="message">
+        <!-- Lista de mensajes -->
+        <div *ngFor="let message of messages" [ngClass]="{'my-message': message.user_name === currentUserName, 'other-message': message.user_name !== currentUserName}" class="message">
+
             <div class="message-header">
-                <span class="user-email">{{ message.user_email }}</span> 
+                <span class="user-email">{{ message.user_name }}</span> 
                 <span class="timestamp">{{ formatDate(message.timestamp) }}</span>
             </div>
+
             <div class="message-content">
                 {{ message.message }}
             </div>
         </div>
     </div>
 
+    <!-- Formulario de envío de mensajes -->
     <div class="chat-input">
         <form (ngSubmit)="sendMessage()" #chatForm="ngForm">
+
+            <!-- Campo de entrada + botón de enviar -->
             <div class="input-group">
                 <input 
                     type="text" 
@@ -47,6 +66,8 @@
                     Enviar
                 </button>
             </div>
+
+            <!-- Contador de caracteres -->
             <div class="char-count" [class.near-limit]="newMessage.length > 450">
                 {{ newMessage.length }} / 500
             </div>

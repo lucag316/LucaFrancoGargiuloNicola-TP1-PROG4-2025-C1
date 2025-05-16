@@ -189,7 +189,7 @@ export class PreguntadosComponent implements OnInit {
         if (this.resultsSaved) return;
 
         try{
-            const user = await this.authService.getUserIdMail();
+            const user = await this.authService.getUserInfo();
             if (user) {
                 await this.gameService.saveGameResult({
                     user_id: user.id,
@@ -218,7 +218,7 @@ export class PreguntadosComponent implements OnInit {
         if (this.resultsSaved) return; // Evitar guardar más de una vez
 
         try {
-            const user = await this.authService.getUserIdMail();
+            const user = await this.authService.getUserInfo();
 
             const partida = {
                 user_id: user?.id,

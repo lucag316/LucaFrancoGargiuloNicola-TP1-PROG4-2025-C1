@@ -23,7 +23,7 @@ export class SimonService {
       let userId: string | null = null;
 
       try {
-        const { id } = await this.authService.getUserIdMail();
+        const { id } = await this.authService.getUserInfo();
         userId = id;
       } catch {
         // No logueado

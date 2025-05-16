@@ -29,7 +29,7 @@ export class AhorcadoService {
         fecha: string;
     }) {
         // Utilizando getUserIdMail para obtener id y email
-        const { id: userId } = await this.authService.getUserIdMail(); // Obtenemos solo el id
+        const { id: userId } = await this.authService.getUserInfo(); // Obtenemos solo el id
 
 
         // Añadimos el user_id al objeto partida

@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
 import { SupabaseService } from '../../../services/supabase/supabase.service';
 import { UserService } from '../../../services/user/user.service';
 import { AuthService } from '../../../services/auth/auth.service';
-
+import { IUserInfo } from '../../../lib/interfaces';
 
 @Component({
   selector: 'app-nav-bar',
@@ -67,7 +67,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   private async obtenerNombreUsuario() {
     try {
-      const { id } = await this.authService.getUserIdMail();
+      const { id } = await this.authService.getUserInfo();
 
       const { data, error } = await this.userService['supabaseService'].client
         .from('users')

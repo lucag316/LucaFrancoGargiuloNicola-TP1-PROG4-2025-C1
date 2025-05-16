@@ -1,4 +1,11 @@
 
+// ==========================================================================
+// Componente: ChatComponent
+// Descripción:
+//   Componente de chat en tiempo real. Muestra los mensajes cargados desde 
+//   Supabase, permite enviar nuevos, y se suscribe a nuevos mensajes 
+//   usando sockets o listeners en tiempo real.
+// ==========================================================================
 
 import { Component, OnInit, OnDestroy, PLATFORM_ID, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -27,15 +34,19 @@ import { AuthService } from '../../../services/auth/auth.service';
 
 export class ChatComponent implements OnInit, OnDestroy {
 
-    messages: IMessage[] = [];
-    newMessage: string = '';
-    loading = false;
-    error = '';
-    private isBrowser: boolean;
+    // ================================================================
+    // PROPIEDADES DEL COMPONENTE
+    // ================================================================
 
-    currentUserEmail: string = '';
+    messages: IMessage[] = [];           // Lista de mensajes del chat
+    newMessage: string = '';             // Mensaje en el input
+    loading = false;                     // Indicador de carga
+    error = '';                          // Mensaje de error (si ocurre)
+    currentUserName: string = '';       // Email del usuario actual
+    private isBrowser: boolean;          // Flag para detectar ejecución en el navegador
 
-    @ViewChild('messageContainer') messageContainer!: ElementRef; // tengo que fijarme mejor
+    // Referencia al contenedor de mensajes para hacer scroll automático
+    @ViewChild('messageContainer') messageContainer!: ElementRef; 
 
     constructor(
         private messageService: MessageService,
@@ -44,12 +55,22 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
     }
 
+    // ================================================================
+    // MÉTODO: ngOnInit
+    // ------------------------------------------------
+    // Obtiene el email del usuario, carga mensajes y se suscribe a nuevos
+    // ================================================================
     async ngOnInit() {
-        if ( this.isBrowser){
-            const user = await this.authService.getUserIdMail();
-            this.currentUserEmail = user.email; // Guardamos el mail
-            await this.loadMessages();
+        if (!this.isBrowser) return;
+
+        try {
+            const user = await this.authService.getUserInfo();
+            this.currentUserName = user.username;
+        await this.loadMessages();
             this.subscribeToMessages();
+        } catch (err) {
+            this.error = 'Error al inicializar el chat.';
+            console.error(err);
         }
     }
 
@@ -59,6 +80,11 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
     }
 
+    // ================================================================
+    // MÉTODO: loadMessages
+    // ------------------------------------------------
+    // Carga todos los mensajes desde Supabase
+    // ================================================================
     private async loadMessages() {
         try {
             this.loading = true;
@@ -68,12 +94,18 @@ export class ChatComponent implements OnInit, OnDestroy {
             console.error('Error al cargar los mensajes:', error);
         } finally {
             this.loading = false;
+            this.scrollToBottom();
         }
-        this.scrollToBottom();
     }
 
+    // ================================================================
+    // MÉTODO: subscribeToMessages
+    // ------------------------------------------------
+    // Se suscribe a nuevos mensajes en tiempo real
+    // ================================================================
     private subscribeToMessages(){
         if (!this.isBrowser) return;
+
         this.messageService.subscribeToMessages((message: IMessage) => {
             this.messages = [...this.messages, message];
             this.scrollToBottom();
@@ -81,17 +113,22 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
 
 
+    // ================================================================
+    // MÉTODO: sendMessage
+    // ------------------------------------------------
+    // Envía un nuevo mensaje al chat y lo limpia del input
+    // ================================================================
     async sendMessage() {
         if (!this.isBrowser || !this.newMessage.trim()) return;
 
         try {
-            const user = await this.authService.getUserIdMail();
+            const user = await this.authService.getUserInfo();
             if (!user) throw new Error('Usuario no Autenticado')
             
             await this.messageService.sendMessage(
                 this.newMessage, 
                 user.id, 
-                user.email
+                user.username,
             );
 
             this.newMessage = '';
@@ -103,10 +140,20 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
     }
 
+    // ================================================================
+    // MÉTODO: formatDate
+    // ------------------------------------------------
+    // Formatea la fecha del mensaje en formato legible
+    // ================================================================
     formatDate(date: string): string {
-        return new Date(date).toLocaleString();
+        return new Date(date).toLocaleString(); // ej: 16/05/2025, 22:45
     }
 
+    // ================================================================
+    // MÉTODO: scrollToBottom
+    // ------------------------------------------------
+    // Desplaza el contenedor al último mensaje
+    // ================================================================
     scrollToBottom() {
         if (this.messageContainer) {
             setTimeout(() => {

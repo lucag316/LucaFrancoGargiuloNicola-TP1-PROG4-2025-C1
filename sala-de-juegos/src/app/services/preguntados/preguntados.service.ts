@@ -133,7 +133,7 @@ export class PreguntadosService {
         try {
             // Si no se envía user_id, se obtiene acá (opcional)
             if (!partida.user_id) {
-                const { id } = await this.authService.getUserIdMail();
+                const { id } = await this.authService.getUserInfo();
                 partida.user_id = id;
             }
 

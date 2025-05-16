@@ -27,7 +27,7 @@ export interface IMessage {
     message: string;    
     timestamp: string;  
     user_id: string;
-    user_email: string;
+    user_name: string;
 }
 
 export interface ICarta{
@@ -80,4 +80,11 @@ export interface IGameResult {
     won: boolean;
     details?: any; // signo
     created_at?: Date; // signo 
+}
+
+export interface IUserInfo {
+    id: string;
+    email: string;
+    username: string;
+    phone?: string | null;
 }

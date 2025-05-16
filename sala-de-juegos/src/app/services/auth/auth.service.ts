@@ -11,12 +11,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { SupabaseService } from '../supabase/supabase.service';
-import { IUser } from '../../lib/interfaces';
+import { IUser, IUserInfo } from '../../lib/interfaces';
+
 
 
 @Injectable({
     providedIn: 'root'
 })
+
 
 
 export class AuthService {
@@ -92,19 +94,6 @@ export class AuthService {
         this.authStatus$.next(false);
     }
 
-
-    // ========================================================
-    // Método: getUser
-    // --------------------------------------------------------
-    // Obtiene los datos del usuario actualmente autenticado.
-    //
-    // @returns objeto con información del usuario o null
-    // ========================================================
-    async getUser() {
-        return await this.supabaseService.client.auth.getUser();
-    }
-
-
     /**
    * Verifica si hay una sesión activa y actualiza authStatus$ en consecuencia.
    * Puede usarse al cargar la app o al refrescar la página.
@@ -124,23 +113,31 @@ export class AuthService {
         return !!data.session;
     }
 
-    // ========================================================
-    // Método: getUserIdMail
-    // --------------------------------------------------------
-    // Devuelve el ID y email del usuario autenticado.
-    //
-    // @returns objeto con { id, email } o lanza error
-    // ========================================================
-    async getUserIdMail(): Promise<Pick<IUser, 'id' | 'email'>> {
+
+    async getUserInfo(): Promise<IUserInfo> {
         const { data, error } = await this.supabaseService.client.auth.getUser();
-        
-        if (error || !data?.user || !data.user.email) {
-            throw new Error('No hay usuario autenticado o el email no está disponible');
+
+        if (error || !data?.user) {
+            throw new Error('No hay usuario autenticado');
+        }
+
+        const { id, email } = data.user;
+
+        const { data: profile, error: profileError } = await this.supabaseService.client
+            .from('users')
+            .select('username, phone')
+            .eq('id', id)
+            .single();
+
+        if (profileError || !profile) {
+            throw new Error('No se encontró el perfil de usuario');
         }
 
         return {
-            id: data.user.id,
-            email: data.user.email
+            id,
+            email: email ?? '',
+            username: profile.username,
+            phone: profile.phone ?? null,
         };
     }
 }
