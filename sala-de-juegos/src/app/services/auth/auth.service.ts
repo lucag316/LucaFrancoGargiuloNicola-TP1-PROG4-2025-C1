@@ -1,4 +1,11 @@
 
+// ========================================================
+// Servicio: AuthService
+// Descripción:
+//   Gestiona toda la lógica de autenticación del usuario
+//   utilizando Supabase. Maneja el login, logout, estado
+//   de sesión, y acceso a datos del usuario actual.
+// ========================================================
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -14,28 +21,38 @@ import { IUser } from '../../lib/interfaces';
 
 export class AuthService {
 
-    /**
-   * Observable para notificar si el usuario está autenticado o no.
-   * Se puede suscribir desde componentes para mostrar contenido condicionalmente.
-   */
+    // ========================================================
+    // Observable: authStatus$
+    // --------------------------------------------------------
+    // Permite a los componentes suscribirse para saber si el
+    // usuario está autenticado (true) o no (false).
+    // ========================================================
     authStatus$ = new BehaviorSubject<boolean>(false);
 
     constructor(private supabaseService: SupabaseService) {}
 
-    // Método para obtener el estado actual de autenticación (sin necesidad de suscripción)
+    // ========================================================
+    // Método: getCurrentAuthStatus
+    // --------------------------------------------------------
+    // Devuelve el estado actual de autenticación (sin suscripción).
+    // Útil para evaluaciones rápidas en componentes.
+    // ========================================================
     getCurrentAuthStatus(): boolean {
         return this.authStatus$.getValue();
     }
 
-    /**
-   * Realiza el inicio de sesión utilizando username y password.
-   * Primero busca el email asociado al username en la tabla 'users',
-   * y luego intenta autenticar usando Supabase con ese email.
-   * 
-   * @param username Nombre de usuario
-   * @param password Contraseña del usuario
-   * @returns Objeto con data o error
-   */
+    // ========================================================
+    // Método: loginWithUsername
+    // --------------------------------------------------------
+    // Realiza el inicio de sesión usando un nombre de usuario.
+    // 1. Busca el email asociado al username en la tabla 'users'.
+    // 2. Usa ese email para autenticar vía Supabase.
+    // 3. Actualiza el estado de autenticación si es exitoso.
+    //
+    // @param username - nombre de usuario
+    // @param password - contraseña
+    // @returns objeto con { data, error }
+    // ========================================================
     async loginWithUsername(username: string, password: string) {
         const supabase = this.supabaseService.client;
 
@@ -46,6 +63,7 @@ export class AuthService {
             .eq('username', username)
             .single();
 
+            // Si no se encontró el usuario
         if (fetchError || !userData?.email) {
             return { error: { message: 'Usuario no encontrado' } };
         }
@@ -63,20 +81,25 @@ export class AuthService {
     }
 
 
-    /**
-   * Cierra la sesión actual.
-   * También actualiza el estado de autenticación (authStatus$).
-   */
+    // ========================================================
+    // Método: logout
+    // --------------------------------------------------------
+    // Cierra la sesión del usuario actual y actualiza el
+    // estado de autenticación global.
+    // ========================================================
     async logout(): Promise<void> {
         await this.supabaseService.client.auth.signOut();
         this.authStatus$.next(false);
     }
 
 
-    /**
-   * Devuelve los datos del usuario autenticado actual.
-   * @returns Información del usuario (si hay sesión activa)
-   */
+    // ========================================================
+    // Método: getUser
+    // --------------------------------------------------------
+    // Obtiene los datos del usuario actualmente autenticado.
+    //
+    // @returns objeto con información del usuario o null
+    // ========================================================
     async getUser() {
         return await this.supabaseService.client.auth.getUser();
     }
@@ -101,7 +124,13 @@ export class AuthService {
         return !!data.session;
     }
 
-    // Devuelve el ID del usuario autenticado
+    // ========================================================
+    // Método: getUserIdMail
+    // --------------------------------------------------------
+    // Devuelve el ID y email del usuario autenticado.
+    //
+    // @returns objeto con { id, email } o lanza error
+    // ========================================================
     async getUserIdMail(): Promise<Pick<IUser, 'id' | 'email'>> {
         const { data, error } = await this.supabaseService.client.auth.getUser();
         
