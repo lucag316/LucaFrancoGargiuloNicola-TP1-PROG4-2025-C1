@@ -6,6 +6,16 @@
     <!-- Título del juego -->
     <h2 class="simon-title">🧠 Simón Dice</h2>
 
+    <!-- Selector de dificultad -->
+    <div *ngIf="!jugando" class="simon-dificultad">
+        <label for="nivel">Dificultad:</label>
+        <select [(ngModel)]="nivelDificultad" id="nivel">
+            <option [ngValue]="1">Nivel 1 (Lento)</option>
+            <option [ngValue]="2">Nivel 2 (Medio)</option>
+            <option [ngValue]="3">Nivel 3 (Rápido)</option>
+        </select>
+    </div>
+    
     <!-- Contenedor de botones de colores -->
     <div class="simon-colores">
         <button 

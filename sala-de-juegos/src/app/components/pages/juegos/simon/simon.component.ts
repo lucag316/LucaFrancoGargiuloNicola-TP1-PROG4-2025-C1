@@ -4,6 +4,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { SimonService } from '../../../../services/simon/simon.service';
 import { AuthService } from '../../../../services/auth/auth.service';
@@ -14,7 +15,7 @@ import { SupabaseService } from '../../../../services/supabase/supabase.service'
 @Component({
     selector: 'app-simon',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, FormsModule],
     templateUrl: './simon.component.html',
     styleUrl: './simon.component.css'
 })
@@ -39,6 +40,12 @@ export class SimonComponent implements OnInit {
     jugando = false;
     puntaje = 0;
 
+    // --- Dificultad ---
+    nivelDificultad: number = 1;
+
+    tiempoEntreColores: number = 800;
+    tiempoIluminado: number = 400;
+
     private inicioJuego: number = 0;
 
     constructor(private simonService: SimonService) {}
@@ -49,10 +56,32 @@ export class SimonComponent implements OnInit {
 
     iniciarJuego(): void {
         this.resetearJuego();
+        this.actualizarVelocidad(); // Establecer la velocidad según el nivel
         this.inicioJuego = Date.now();
         this.agregarColor();
     }
 
+    actualizarVelocidad(): void {
+        switch (this.nivelDificultad) {
+            case 1: // Lento
+                this.tiempoEntreColores = 1000;
+                this.tiempoIluminado = 500;
+                break;
+            case 2: // Medio
+                this.tiempoEntreColores = 500;
+                this.tiempoIluminado = 300;
+                break;
+            case 3: // Rápido
+                this.tiempoEntreColores = 300;
+                this.tiempoIluminado = 200;
+                break;
+            default:
+                this.tiempoEntreColores = 1000;
+                this.tiempoIluminado = 500;
+        }
+    }
+
+    
     async presionarColor(color: string): Promise<void> {
         if (!this.turnoUsuario) return;
 
@@ -105,22 +134,27 @@ export class SimonComponent implements OnInit {
 
         let i = 0;
         const intervalo = setInterval(() => {
-            this.iluminarColor(this.secuencia[i]);
-            i++;
-
             if (i >= this.secuencia.length) {
                 clearInterval(intervalo);
+                this.colorActivo = null;
                 this.turnoUsuario = true;
                 this.entradaUsuario = [];
                 this.indiceUsuario = 0;
                 this.mensaje = 'Tu turno. Repetí la secuencia.';
+                return;
             }
-        }, 800);
+
+            const color = this.secuencia[i];
+            this.iluminarColor(color);
+            i++;
+        }, this.tiempoEntreColores);
     }
 
     private iluminarColor(color: string): void {
         this.colorActivo = color;
-        setTimeout(() => this.colorActivo = null, 400);
+        setTimeout(() => {
+            this.colorActivo = null;
+        }, this.tiempoIluminado);
     }
 
     private async finalizarJuego(gano: boolean): Promise<void> {
