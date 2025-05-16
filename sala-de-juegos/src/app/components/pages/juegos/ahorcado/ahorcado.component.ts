@@ -1,12 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { AhorcadoService } from '../../../../services/ahorcado/ahorcado.service';
 import { AuthService } from '../../../../services/auth/auth.service';
-import { SupabaseService } from '../../../../services/supabase/supabase.service';
-
 
 
 @Component({
@@ -20,68 +18,69 @@ import { SupabaseService } from '../../../../services/supabase/supabase.service'
 
 export class AhorcadoComponent implements OnInit {
 
+    // ========================================================
+    // Configuración inicial
+    // ========================================================
+    private readonly MAX_INTENTOS: number = 6;
     palabras: string[] = ['ANGULAR', 'SERVICIO', 'AHORCADO', 'COMPONENTE', 'DESARROLLO'];
+    abecedario: string[] = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
+    
+    // Estado del juego
     palabraSecreta: string = '';
     palabraMostrada: string[] = [];
-
-    abecedario: string[] = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
     letrasUsadas: string[] = [];
-
-    intentosRestantes: number = 6;
+    intentosRestantes: number = this.MAX_INTENTOS;
     mensaje: string = '';
-
     juegoTerminado: boolean = false;
 
 
     constructor ( 
-        router: Router ,
         private ahorcadoService: AhorcadoService,
         private authService: AuthService,
-        private supabaseService: SupabaseService
-
     ) {
 
     }
 
+    // ========================================================
+    // Ciclo de vida
+    // ========================================================
     ngOnInit(): void {
         this.iniciarNuevaPartida();
     }
 
+    // ========================================================
+    // Lógica principal del juego
+    // ========================================================
+
+    /**
+     * Inicializa una nueva partida: selecciona palabra, reinicia estado.
+     */
     iniciarNuevaPartida() {
-        // Elegir palabra secreta aleatoria
-        const index = Math.floor(Math.random() * this.palabras.length);
-        this.palabraSecreta = this.palabras[index];
-
-        // Inicializar palabra mostrada con guiones
-        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_');
-
+        this.palabraSecreta = this.obtenerPalabraAleatoria();
+        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_'); // Inicializa palabra mostrada con guiones
         this.letrasUsadas = [];
-        this.intentosRestantes = 6;
+        this.intentosRestantes = this.MAX_INTENTOS;
         this.mensaje = '';
+        this.juegoTerminado = false;
     }
 
-    // Función para generar una palabra aleatoria
-    generarPalabra(): string {
-        const index = Math.floor(Math.random() * this.palabras.length);
-        return this.palabras[index];
-    }
-
+    /**
+   * Procesa la letra que el usuario adivina.
+   * Si ya fue usada o el juego terminó, no hace nada.
+   * @param letra Letra seleccionada
+   */
     adivinarLetra(letra: string) {
-        if (this.letrasUsadas.includes(letra) || this.mensaje !== '') return;
+        if (this.letrasUsadas.includes(letra) || this.juegoTerminado) return;
 
         this.letrasUsadas.push(letra);
 
-        const indices = [...this.palabraSecreta]
-            .map((char, i) => (char === letra ? i : -1))
-            .filter(i => i !== -1);
+        const aciertos = this.revelarLetraEnPalabra(letra);
 
-        if (indices.length > 0) {
-            // Letra correcta
-            indices.forEach(i => this.palabraMostrada[i] = letra);
-
+        if (aciertos > 0) {
+            // Si no quedan guiones, ganó
             if (!this.palabraMostrada.includes('_')) {
                 this.mensaje = '¡Ganaste! 🎉';
-                this.juegoTerminado = true;  // Cambiar a true cuando el jugador gana
+                this.juegoTerminado = true;
                 this.guardarPartida(true);
             }
         } else {
@@ -90,15 +89,18 @@ export class AhorcadoComponent implements OnInit {
 
             if (this.intentosRestantes <= 0) {
                 this.mensaje = `Perdiste 😢. La palabra era: ${this.palabraSecreta}`;
-                this.juegoTerminado = true;  // Cambiar a true cuando el jugador pierde
                 this.palabraMostrada = this.palabraSecreta.split('');
+                this.juegoTerminado = true;
                 this.guardarPartida(false);
             }
         }
     }
 
-    // Método para guardar la partida después de ganar o perder
-    async guardarPartida(gano: boolean) {
+    /**
+    * Guarda la partida en la base de datos (usuario logueado o no).
+    * @param gano true si ganó, false si perdió
+    */
+    async guardarPartida(gano: boolean): Promise<void> {
         let userId: string | null = null;
 
         try {
@@ -127,22 +129,47 @@ export class AhorcadoComponent implements OnInit {
         }
     }
 
-    // Función que reinicia el juego
-    reiniciarJuego() {
-        this.intentosRestantes = 6;
-        this.mensaje = '';
-        this.letrasUsadas = [];
-        this.juegoTerminado = false;
-        // Aquí también puedes limpiar la palabra mostrada y reiniciar cualquier estado necesario
-        this.palabraSecreta = '';  // Asegúrate de reiniciar la palabra secreta
-        this.palabraMostrada = Array(this.palabraSecreta.length).fill('_');  // Reiniciar palabra mostrada
-        this.iniciarNuevaPartida();  // Llamar a esta función para iniciar una nueva partida
+    /**
+   * Reinicia el estado del juego completamente.
+   */
+    reiniciarJuego(): void {
+        this.iniciarNuevaPartida();
     }
 
-    // Función que maneja la acción de "volver a jugar"
-    volverAJugar() {
+    /**
+   * Alias para reiniciar el juego al volver a jugar.
+   */
+    volverAJugar(): void {
         this.reiniciarJuego();
-        // this.mensaje = '¡Vamos de nuevo!';
     }
 
+
+     // ========================================================
+    // Helpers
+    // ========================================================
+
+    /**
+     * Devuelve una palabra aleatoria del listado.
+     */
+    private obtenerPalabraAleatoria(): string {
+        const index = Math.floor(Math.random() * this.palabras.length);
+        return this.palabras[index];
+    }
+
+    /**
+     * Revela todas las ocurrencias de una letra en la palabra.
+     * @returns cantidad de letras reveladas
+     */
+    private revelarLetraEnPalabra(letra: string): number {
+        let aciertos = 0;
+
+        for (let i = 0; i < this.palabraSecreta.length; i++) {
+            if (this.palabraSecreta[i] === letra) {
+                this.palabraMostrada[i] = letra;
+                aciertos++;
+            }
+        }
+
+        return aciertos;
+    }
 }

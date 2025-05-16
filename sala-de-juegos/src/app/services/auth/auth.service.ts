@@ -23,12 +23,7 @@ import { IUser, IUserInfo } from '../../lib/interfaces';
 
 export class AuthService {
 
-    // ========================================================
-    // Observable: authStatus$
-    // --------------------------------------------------------
-    // Permite a los componentes suscribirse para saber si el
-    // usuario está autenticado (true) o no (false).
-    // ========================================================
+    // Observable global del estado de autenticación
     authStatus$ = new BehaviorSubject<boolean>(false);
 
     constructor(private supabaseService: SupabaseService) {}

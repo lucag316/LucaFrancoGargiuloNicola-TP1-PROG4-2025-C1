@@ -88,3 +88,12 @@ export interface IUserInfo {
     username: string;
     phone?: string | null;
 }
+
+export interface IPartidaAhorcado {
+    user_id: string | null;
+    palabra: string;
+    letras_usadas: string[];
+    intentos: number;
+    resultado: 'ganó' | 'perdió';
+    fecha: string;
+}

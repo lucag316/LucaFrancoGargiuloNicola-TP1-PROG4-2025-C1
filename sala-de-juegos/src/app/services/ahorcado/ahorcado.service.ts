@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { SupabaseService } from '../supabase/supabase.service';
 import { AuthService } from '../auth/auth.service';
+import { IPartidaAhorcado } from '../../lib/interfaces';
 
 
 @Injectable({
@@ -18,17 +19,17 @@ export class AhorcadoService {
     ) { }
 
     /**
-   * Método para guardar los datos de la partida en Supabase.
-   * @param partida Objeto con los datos de la partida
+   * Guarda una partida de Ahorcado en Supabase.
+   *
+   * Esta función intenta obtener el ID del usuario actual (si está autenticado)
+   * y guarda los datos de la partida en la tabla `partidas_ahorcado`.
+   * Si el usuario no está logueado, el campo `user_id` será null.
+   *
+   * @param partida Datos de la partida (sin user_id, que se añade automáticamente)
+   * @throws Error si ocurre un problema al guardar en Supabase
    */
-    async guardarPartida(partida: {
-        palabra: string;
-        letras_usadas: string[];
-        intentos: number;
-        resultado: 'ganó' | 'perdió';
-        fecha: string;
-    }) {
-        // Utilizando getUserIdMail para obtener id y email
+    async guardarPartida(partida: IPartidaAhorcado): Promise<void> {
+
         const { id: userId } = await this.authService.getUserInfo(); // Obtenemos solo el id
 
 
