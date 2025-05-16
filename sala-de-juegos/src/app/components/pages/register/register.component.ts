@@ -150,7 +150,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
             return;
         }
 
-    const { username, email, password, phone } = this.newUser;
+        const { username, email, password, phone } = this.newUser;
 
 
 
@@ -172,10 +172,13 @@ export class RegisterComponent implements OnInit, OnDestroy{
             // Asigna mensajes personalizados a campos según el error
             if (mensaje.toLowerCase().includes('email')) {
                 this.formErrors["email"] = mensaje;
+                this.showMessage(mensaje, true);
             } else if (mensaje.toLowerCase().includes('username')) {
                 this.formErrors["username"] = mensaje;
+                this.showMessage(mensaje, true);
             } else if (mensaje.toLowerCase().includes('password')) {
                 this.formErrors["password"] = mensaje;
+                this.showMessage(mensaje, true);
             } else {
                 this.showMessage(mensaje, true);
             }
