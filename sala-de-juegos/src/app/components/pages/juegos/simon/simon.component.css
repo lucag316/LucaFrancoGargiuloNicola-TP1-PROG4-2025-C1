@@ -17,6 +17,12 @@
     margin-bottom: 1.5rem;
 }
 
+.simon-dificultad {
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+}
+
 /* ====== GRID DE COLORES ====== */
 .simon-colores {
     display: grid;

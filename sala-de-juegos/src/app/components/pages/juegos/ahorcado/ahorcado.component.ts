@@ -22,7 +22,7 @@ export class AhorcadoComponent implements OnInit {
     // Configuración inicial
     // ========================================================
     private readonly MAX_INTENTOS: number = 6;
-    palabras: string[] = ['ANGULAR', 'SERVICIO', 'AHORCADO', 'COMPONENTE', 'DESARROLLO'];
+    palabras: string[] = ['JOAQUINGAY', 'FASCESELACOME'];
     abecedario: string[] = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.split('');
     
     // Estado del juego
