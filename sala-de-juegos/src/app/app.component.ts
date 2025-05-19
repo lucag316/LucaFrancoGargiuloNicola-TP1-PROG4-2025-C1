@@ -12,6 +12,7 @@ import { AuthService } from './services/auth/auth.service';
 })
 export class AppComponent {
   
+  title = 'sala-de-juegos';
     constructor(private authService: AuthService) {}
 
   ngOnInit() {
