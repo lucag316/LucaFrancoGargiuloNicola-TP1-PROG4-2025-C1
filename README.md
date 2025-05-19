@@ -37,8 +37,6 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 
 -🔗 **Repositorio GitHub**: *[https://github.com/lucag316/LucaFrancoGargiuloNicola-TP1-PROG4-2025-C1.git]*
 
--🔗 **Deploy en Vercel**: *[https://probando2.vercel.app/home]*
-
 -🔗 **Deploy en Vercel**: *[https://luca-juegos.vercel.app/home]*
 
 ---
