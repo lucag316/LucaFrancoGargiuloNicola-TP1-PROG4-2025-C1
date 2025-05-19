@@ -1,30 +1,19 @@
 
 # Sala de Juegos 🎮
 
-
 Aplicación interactiva desarrollada en Angular que permite a los usuarios ejercitar sus habilidades cognitivas y motrices a través de diversos juegos clásicos y uno original. Ofrece funcionalidades de autenticación, estadísticas personalizadas por jugador y por juego, chat en tiempo real, y una experiencia de usuario fluida y moderna.
 
 ---
 
 ## 📋 Indice
-
 - [Sala de Juegos 🎮](#sala-de-juegos-)
   - [📋 Indice](#-indice)
   - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
   - [🔗 Links importantes](#-links-importantes)
   - [🎯 Objetivo General](#-objetivo-general)
   - [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
-    - [Frontend](#frontend)
-    - [UI / UX](#ui--ux)
-    - [Backend / Servicios](#backend--servicios)
-    - [Herramientas de Desarrollo](#herramientas-de-desarrollo)
   - [🌟 Caracteristicas principales](#-caracteristicas-principales)
-    - [🛡️ Sistema de Autenticación](#️-sistema-de-autenticación)
-    - [🎲 Juegos Implementados](#-juegos-implementados)
-    - [📊 Estadísticas](#-estadísticas)
-    - [💬 Comunicación](#-comunicación)
   - [🧠 Juego Propio: "Simón Dice - Secuencia de Colores"](#-juego-propio-simón-dice---secuencia-de-colores)
-  - [📌 Notas importantes](#-notas-importantes)
   - [Sprint 1 Resumen](#sprint-1-resumen)
   - [🧑‍💼 Funcionalidades por Sprint](#-funcionalidades-por-sprint)
     - [🟢 Sprint 1 (28/04)](#-sprint-1-2804)
@@ -52,6 +41,8 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 -🔗 **Repositorio GitHub**: *[https://github.com/lucag316/LucaFrancoGargiuloNicola-TP1-PROG4-2025-C1.git]*
 
 -🔗 **Deploy en Vercel**: *[https://probando2.vercel.app/home]*
+
+-🔗 **Deploy en Vercel**: *[https://luca-juegos.vercel.app/home]*
 
 ---
 
@@ -101,11 +92,6 @@ Desarrollar una plataforma web que permita a los usuarios registrados ingresar a
 3. ❓  Preguntados - Trivia con API externa
 4. 🧠 Simón Dice (juego propio) - Memoria secuencial de colores
 
-### 📊 Estadísticas
-
-- Historial completo de partidas
-- Progreso por juego y usuario
-- Tablas comparativas
 
 ### 💬 Comunicación
 
@@ -161,6 +147,37 @@ Favicon propio: Incluir un favicon personalizado para la aplicación.
 - API GitHub: mostrar datos del alumno en “Quién Soy”.
 - Favicon personalizado.
 - Descripción detallada del juego propio.
+
+En este primer sprint se sentaron las bases fundamentales de la aplicación. Se trabajó principalmente en la estructura general, el diseño de componentes iniciales, la navegación entre pantallas y la integración con la API de GitHub.
+
+#### Tareas realizadas:
+
+- Creación del proyecto Angular:
+
+  Se utilizó Angular CLI para generar el proyecto y se realizó la configuración inicial necesaria para el entorno de desarrollo. También se subió el proyecto a GitHub y se configuró el deploy automático en Vercel para pruebas y presentación.
+
+- Implementación de componentes principales:
+
+  - LoginComponent: formulario básico para inicio de sesión.
+  - RegisterComponent: formulario de registro con estructura lista para validaciones.
+  - HomeComponent: pantalla de bienvenida que actúa como hub principal de navegación.
+  - QuienSoyComponent: sección informativa con datos personales y descripción del juego propio.
+
+- Navegación entre componentes:
+
+  Se definieron las rutas correspondientes a cada componente en el archivo de rutas (app.routes.ts), y se estableció la navegación utilizando botones y enlaces en el HTML. Esto permite al usuario moverse fluidamente por las secciones de la aplicación.
+
+- Integración con API de GitHub:  VER SI ESTA BIEN
+
+  Se consumió la API pública de GitHub para traer y mostrar en tiempo real los datos del usuario (nombre, avatar, bio, cantidad de repos, etc.) dentro del componente QuienSoyComponent. Para esto, se implementó un servicio HTTP (GithubService) y se utilizó el pipe async para vincular la respuesta al template.
+
+- Descripción del juego propio “Simón Dice”:
+
+  En la misma sección “Quién Soy” se agregó una explicación clara del funcionamiento del juego propio. Se detalló la lógica: mostrar una secuencia creciente de colores que el jugador debe repetir correctamente. Si se equivoca, el juego se reinicia.
+
+-Favicon personalizado:
+
+  Se reemplazó el favicon por defecto de Angular por un ícono representativo del proyecto, visible tanto localmente como en el deploy online.
 
 ### 🟡 Sprint 2 (05/05)
 
