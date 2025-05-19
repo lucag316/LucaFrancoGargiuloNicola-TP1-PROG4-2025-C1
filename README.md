@@ -159,6 +159,33 @@ En este primer sprint se sentaron las bases fundamentales de la aplicación. Se 
 - Login funcional usando Supabase. Botones de acceso rápido.
 - Registro validado y navegación automática post-registro.
 
+En este sprint se avanzó en la funcionalidad de autenticación usando Supabase, mejorando la experiencia de usuario con validaciones, botones para acceso rápido y gestión del estado de sesión para mostrar opciones dinámicas en la pantalla principal.
+
+#### Tareas realizadas:
+
+- **HomeComponent adaptativo:**
+
+  Se modificó el componente Home para mostrar botones o información diferente según si el usuario está autenticado o no, centralizando la experiencia principal de la aplicación.
+
+- **Login funcional con Supabase:**
+
+  Se integró el servicio de autenticación de Supabase para validar usuarios. El login ahora es real y funcional, con manejo de errores y feedback visual.
+
+- **Botón de acceso rápido:**
+
+  Se añadió un botón preconfigurado para que el usuario pueda ingresar rápidamente con cuenta de prueba, mejorando la usabilidad.
+
+- **Registro validado:**
+
+  El formulario de registro cuenta con validaciones en tiempo real, asegurando que los datos ingresados sean correctos antes de enviar la solicitud.
+
+
+- **Navegación automática post-registro:**
+
+  Una vez que el usuario se registra correctamente, se redirige automáticamente a la página Home, mejorando el flujo de usuario. (igualmente hay que confirmar mail)
+
+
+
 ### 🔵 Sprint 3 (12/05)
 
 - Implementación de juegos: Ahorcado y Mayor o Menor.
