@@ -1,25 +1,23 @@
 
 # Sala de Juegos 🎮
 
-Aplicación interactiva desarrollada en Angular que permite a los usuarios ejercitar sus habilidades cognitivas y motrices a través de diversos juegos clásicos y uno original. Ofrece funcionalidades de autenticación, estadísticas personalizadas por jugador y por juego, chat en tiempo real, y una experiencia de usuario fluida y moderna.
+Aplicación interactiva desarrollada en Angular que permite a los usuarios ejercitar sus habilidades cognitivas y motrices a través de diversos juegos clásicos y uno original. Incluye autenticación, estadísticas personalizadas por jugador y juego, chat en tiempo real y una experiencia de usuario fluida y moderna.
 
 ---
 
 ## 📋 Indice
-- [Sala de Juegos 🎮](#sala-de-juegos-)
-  - [📋 Indice](#-indice)
-  - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
-  - [🔗 Links importantes](#-links-importantes)
-  - [🎯 Objetivo General](#-objetivo-general)
-  - [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
-  - [🌟 Caracteristicas principales](#-caracteristicas-principales)
-  - [🧠 Juego Propio: "Simón Dice - Secuencia de Colores"](#-juego-propio-simón-dice---secuencia-de-colores)
-  - [🧑‍💼 Funcionalidades por Sprint](#-funcionalidades-por-sprint)
-    - [🟢 Sprint 1 (28/04)](#-sprint-1-2804)
-    - [🟡 Sprint 2 (05/05)](#-sprint-2-0505)
-    - [🔵 Sprint 3 (12/05)](#-sprint-3-1205)
-    - [🔴 Sprint 4 (19/05)](#-sprint-4-1905)
-    - [⚫ Sprint 5 (Recuperatorio - Opcional)](#-sprint-5-recuperatorio---opcional)
+- [👨‍💻 Información del Proyecto](#-información-del-proyecto)
+- [🔗 Links importantes](#-links-importantes)
+- [🎯 Objetivo General](#-objetivo-general)
+- [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
+- [🌟 Caracteristicas principales](#-caracteristicas-principales)
+- [🧠 Juego Propio: "Simón Dice - Secuencia de Colores"](#-juego-propio-simón-dice---secuencia-de-colores)
+- [🧑‍💼 Funcionalidades por Sprint](#-funcionalidades-por-sprint)
+  - [🟢 Sprint 1 (28/04)](#-sprint-1-2804)
+  - [🟡 Sprint 2 (05/05)](#-sprint-2-0505)
+  - [🔵 Sprint 3 (12/05)](#-sprint-3-1205)
+  - [🔴 Sprint 4 (19/05)](#-sprint-4-1905)
+  - [⚫ Sprint 5 (Recuperatorio - Opcional)](#-sprint-5-recuperatorio---opcional)
 
 ---
 
@@ -47,7 +45,7 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
 
 ## 🎯 Objetivo General
 
-Desarrollar una plataforma web que permita a los usuarios registrados ingresar a una sala de juegos, jugar diferentes propuestas lúdicas, ver sus estadísticas, y comunicarse mediante un sistema de chat en tiempo real. El proyecto se divide en 4 sprints semanales con funcionalidades entregadas de forma incremental.
+Desarrollar una plataforma web que permita a usuarios registrados acceder a una sala de juegos con diversas propuestas lúdicas, visualizar sus estadísticas y comunicarse mediante un sistema de chat en tiempo real. El proyecto se desarrolla en 4 sprints con entregas incrementales.
 
 ---
 
@@ -102,10 +100,7 @@ Desarrollar una plataforma web que permita a los usuarios registrados ingresar a
 
 ## 🧠 Juego Propio: "Simón Dice - Secuencia de Colores"
 
-El juego muestra al usuario una secuencia de colores que debe memorizar y repetir.
-Cada vez que el usuario acierta, la secuencia se alarga agregando un color nuevo.
-Si el usuario se equivoca en cualquier paso, el juego se reinicia desde el principio.
-La idea es lograr repetir la mayor cantidad de colores seguidos sin fallar.
+El juego presenta al usuario una secuencia de colores que debe memorizar y repetir. Cada acierto alarga la secuencia con un color adicional. Al cometer un error, el juego se reinicia desde el principio. El objetivo es lograr la secuencia más larga posible.
 
 
 ---
