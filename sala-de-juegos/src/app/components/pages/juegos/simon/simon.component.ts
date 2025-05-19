@@ -96,7 +96,7 @@ export class SimonComponent implements OnInit {
         this.indiceUsuario++;
 
         if (this.indiceUsuario === this.secuencia.length) {
-            this.puntaje++;
+            this.puntaje += 10;
             this.turnoUsuario = false;
 
             setTimeout(() => this.agregarColor(), 1000);

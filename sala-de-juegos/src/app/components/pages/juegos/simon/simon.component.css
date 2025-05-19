@@ -1,33 +1,63 @@
-/* ====== CONTENEDOR PRINCIPAL ====== */
+/* ====== CONTENEDOR PRINCIPAL SIMÓN ====== */
 .simon-wrapper {
     max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-    background: #f7f7f7d7;
+    margin: 2rem auto;
+    padding: 2rem 2.5rem;
+    background-color: rgba(30, 30, 30, 0.85); /* semi-transparente oscuro */
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.7); /* sombra verde suave */
+    font-family: 'Silkscreen', cursive, sans-serif;
+    color: var(--color-texto);
+    animation: fadeInSlideUp 0.6s ease forwards;
 }
 
 /* ====== TÍTULO ====== */
 .simon-title {
-    font-size: 2rem;
-    color: #2c3e50;
+    font-size: 2.4rem;
+    color: var(--color-primario);
     margin-bottom: 1.5rem;
+    text-shadow: 0 0 6px var(--color-primario);
 }
 
+/* ====== SECCIÓN DE DIFICULTAD ====== */
 .simon-dificultad {
     margin-bottom: 1.5rem;
     font-size: 1.2rem;
-    color: #7f8c8d;
+    color: var(--color-secundario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
 }
 
-/* ====== GRID DE COLORES ====== */
+.simon-dificultad label {
+    font-weight: 600;
+    text-shadow: 0 0 4px var(--color-secundario);
+}
+
+.simon-dificultad select {
+    padding: 0.3rem 0.6rem;
+    font-family: 'Silkscreen', cursive, sans-serif;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--color-primario);
+    color: #1b1b1b;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.simon-dificultad select:hover,
+.simon-dificultad select:focus {
+    background-color: var(--color-secundario);
+    outline: none;
+}
+
+/* ====== GRID DE BOTONES DE COLORES ====== */
 .simon-colores {
     display: grid;
     grid-template-columns: repeat(4, 80px);
-    gap: 16px;
+    gap: 1rem;
     justify-content: center;
     margin-bottom: 2rem;
 }
@@ -37,65 +67,78 @@
     width: 80px;
     height: 80px;
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    filter: brightness(1);
 }
 
-/* ====== CLASES DE COLOR ====== */
-.rojo     { background-color: #e74c3c; }
-.verde    { background-color: #2ecc71; }
-.azul     { background-color: #3498db; }
-.amarillo { background-color: #f1c40f; }
-.naranja  { background-color: #e67e22; }
-.violeta  { background-color: #9b59b6; }
-.negro    { background-color: #2c3e50; }
-.blanco   { background-color: #ecf0f1; }
+/* Colores más vibrantes, usando los colores base del juego */
+.rojo     { background-color: #e74c3c; box-shadow: 0 0 10px #e74c3ccc; }
+.verde    { background-color: #2ecc71; box-shadow: 0 0 10px #2ecc71cc; }
+.azul     { background-color: #3498db; box-shadow: 0 0 10px #3498dbcc; }
+.amarillo { background-color: #f1c40f; box-shadow: 0 0 10px #f1c40fcc; }
+.naranja  { background-color: #e67e22; box-shadow: 0 0 10px #e67e22cc; }
+.violeta  { background-color: #9b59b6; box-shadow: 0 0 10px #9b59b6cc; }
+.negro    { background-color: #2c3e50; box-shadow: 0 0 10px #2c3e50cc; }
+.blanco   { background-color: #ecf0f1; box-shadow: 0 0 10px #ecf0f1cc; }
 
-/* ====== ILUMINACIÓN (usá 'activo' desde TS) ====== */
+/* Efecto cuando el botón está activo (iluminado) */
 .color-boton.activo {
-    filter: brightness(1.5);
-    transform: scale(1.1);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    filter: brightness(1.7);
+    transform: scale(1.15);
+    box-shadow: 0 0 20px 8px white;
 }
 
-/* ====== INFORMACIÓN DEL JUEGO ====== */
+/* Botones deshabilitados */
+.color-boton:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.6) brightness(0.7);
+    box-shadow: none;
+}
+
+/* ====== SECCIÓN DE INFORMACIÓN ====== */
 .simon-info {
-    font-size: 1.1rem;
-    color: #34495e;
+    font-size: 1.2rem;
+    color: var(--color-secundario);
     margin-bottom: 1.5rem;
+    text-shadow: 0 0 4px var(--color-secundario);
 }
 
-/* ====== BOTÓN DE INICIO ====== */
+/* ====== BOTÓN INICIAR ====== */
 .simon-start-btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.85rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
     border: none;
-    border-radius: 8px;
-    background-color: #2980b9;
-    color: #fff;
+    border-radius: 12px;
+    background-color: var(--color-primario);
+    color: #1b1b1b;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 15px var(--color-primario);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
 }
 
 .simon-start-btn:hover {
-    background-color: #2471a3;
+    background-color: var(--color-secundario);
+    box-shadow: 0 7px 20px var(--color-secundario);
 }
 
-/* ====== DESHABILITADO ====== */
-.color-boton:disabled {
-    cursor: not-allowed;
-    filter: grayscale(0.5);
+.simon-start-btn:focus {
+    outline: 3px solid var(--color-secundario);
+    outline-offset: 3px;
 }
 
-.color-boton.activo {
-    filter: brightness(1.5);
-    transform: scale(1.1);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Efecto al iluminar (activo) */
-.activo {
-    box-shadow: 0 0 20px 5px white;
-    transform: scale(1.05);
+/* ====== ANIMACIÓN PERSONALIZADA ====== */
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

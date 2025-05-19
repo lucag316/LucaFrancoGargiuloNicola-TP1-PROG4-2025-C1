@@ -16,6 +16,10 @@ import { SimonComponent } from './components/pages/juegos/simon/simon.component'
 import { ResultadosComponent } from './components/pages/resultados/resultados.component';
 
 
+import { AuthGuard } from './guards/auth.guard';
+import { LoginRedirectGuard } from './guards/login-redirect.guard';
+
+
 export const routes: Routes = [
 
     {
@@ -30,10 +34,12 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+        canActivate: [LoginRedirectGuard],
     },
     {
         path: 'register',
         component: RegisterComponent,
+        canActivate: [LoginRedirectGuard],
     },
     {
         path: 'quien-soy',
@@ -42,22 +48,27 @@ export const routes: Routes = [
     {
         path: 'chat',
         component: ChatComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'ahorcado',
         component: AhorcadoComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'mayor-o-menor',
         component: MayorOMenorComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'preguntados',
         component: PreguntadosComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'simon',
         component: SimonComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'resultados',
