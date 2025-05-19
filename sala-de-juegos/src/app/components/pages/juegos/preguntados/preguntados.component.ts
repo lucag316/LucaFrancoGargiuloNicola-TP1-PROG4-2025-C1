@@ -89,14 +89,18 @@ export class PreguntadosComponent implements OnInit {
         this.preguntadosService.getRandomQuestion().subscribe({
             next: (question: any) => {
                 try {
+                    let opciones = Array.isArray(question.opciones) ? question.opciones.slice(0, 4) : 
+                    ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'];
+
+                    opciones = this.shuffleArray(opciones);  // <-- Mezclo las opciones aquí
+
                     this.state.currentQuestion = {
                         id: question.id,
                         pregunta: question.pregunta,
                         categoria: typeof question.categoria === 'object' ? question.categoria.nombre : question.categoria,
-                        opciones: Array.isArray(question.opciones) ? question.opciones.slice(0, 4) : 
-                        ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'],
+                        opciones: opciones,
                         respuestaCorrecta: question.respuestaCorrecta
-                    };
+                        };
 
                     console.log('Pregunta cargada:', this.state.currentQuestion);
                 } catch (error) {
@@ -241,6 +245,14 @@ export class PreguntadosComponent implements OnInit {
         }
     }
 
+
+    shuffleArray(array: any[]): any[] {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 }
 
 

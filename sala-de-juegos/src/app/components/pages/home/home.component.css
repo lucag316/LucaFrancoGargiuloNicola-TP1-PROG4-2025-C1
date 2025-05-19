@@ -82,7 +82,22 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: "Silkscreen", sans-serif;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ranking-button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-primario); /* verde */
+    color: var(--color-fondo);
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Silkscreen", sans-serif; /* fuente global */
+    margin-top: 10px;
 }
 
 .jugar-button:hover {
@@ -90,6 +105,10 @@
     box-shadow: 0 0 10px 3px var(--color-boton-hover);
 }
 
+.ranking-button:hover {
+    background-color: #43a047;
+    box-shadow: 0 0 10px 3px #43a047;
+}
 /* Animación de resplandor cíclico */
 @keyframes neonColorCycle {
     0% {
