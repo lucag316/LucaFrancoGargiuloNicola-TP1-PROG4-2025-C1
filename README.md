@@ -14,7 +14,6 @@ Aplicación interactiva desarrollada en Angular que permite a los usuarios ejerc
   - [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
   - [🌟 Caracteristicas principales](#-caracteristicas-principales)
   - [🧠 Juego Propio: "Simón Dice - Secuencia de Colores"](#-juego-propio-simón-dice---secuencia-de-colores)
-  - [Sprint 1 Resumen](#sprint-1-resumen)
   - [🧑‍💼 Funcionalidades por Sprint](#-funcionalidades-por-sprint)
     - [🟢 Sprint 1 (28/04)](#-sprint-1-2804)
     - [🟡 Sprint 2 (05/05)](#-sprint-2-0505)
@@ -108,32 +107,6 @@ Cada vez que el usuario acierta, la secuencia se alarga agregando un color nuevo
 Si el usuario se equivoca en cualquier paso, el juego se reinicia desde el principio.
 La idea es lograr repetir la mayor cantidad de colores seguidos sin fallar.
 
----
-
-## 📌 Notas importantes
-
-- ❌ No usar `alert()` → ✅ Usar modales (PrimeNG o Bootstrap modals).
-- ✔ Juegos con reglas claras de victoria / derrota.
-- ✔ Navegación fluida y diseño uniforme.
-- ✔ Mostrar tiempo y puntuación en juegos.
-
----
-
-## Sprint 1 Resumen
-
-Objetivo:
-Crear la estructura base de la aplicación, habilitar la navegación entre las pantallas principales y configurar el acceso a la API de GitHub para mostrar los datos del alumno en el componente "Quién Soy". Además, se implementa un favicon propio y un diseño inicial de la aplicación.
-
-Tareas principales:
-Creación del proyecto Angular: Inicializar el proyecto y configurarlo para el despliegue.
-
-Componentes: Implementar los componentes Login, Registro, Bienvenida/Home, Quién Soy.
-
-Navegación: Establecer rutas para navegar entre los componentes.
-
-GitHub API: Usar la API de GitHub para mostrar el nombre, la imagen y los datos del alumno en el componente "Quién Soy".
-
-Favicon propio: Incluir un favicon personalizado para la aplicación.
 
 ---
 
@@ -142,7 +115,7 @@ Favicon propio: Incluir un favicon personalizado para la aplicación.
 ### 🟢 Sprint 1 (28/04)
 
 - Creación del proyecto y deploy inicial.
-- Componentes base: Login, Registro, Home, Quién Soy.
+- Componentes base: `Login`, `Registro`, `Home`, `Quién Soy`.
 - Navegación funcional entre componentes.
 - API GitHub: mostrar datos del alumno en “Quién Soy”.
 - Favicon personalizado.
@@ -152,30 +125,31 @@ En este primer sprint se sentaron las bases fundamentales de la aplicación. Se 
 
 #### Tareas realizadas:
 
-- Creación del proyecto Angular:
+- **Creación del proyecto Angular:**
 
   Se utilizó Angular CLI para generar el proyecto y se realizó la configuración inicial necesaria para el entorno de desarrollo. También se subió el proyecto a GitHub y se configuró el deploy automático en Vercel para pruebas y presentación.
 
-- Implementación de componentes principales:
+- **Implementación de componentes principales:**
 
-  - LoginComponent: formulario básico para inicio de sesión.
-  - RegisterComponent: formulario de registro con estructura lista para validaciones.
-  - HomeComponent: pantalla de bienvenida que actúa como hub principal de navegación.
-  - QuienSoyComponent: sección informativa con datos personales y descripción del juego propio.
+  - `LoginComponent`: formulario básico para inicio de sesión.
+  - `RegisterComponent`: formulario de registro con estructura lista para validaciones.
+  - `HomeComponent`: pantalla de bienvenida que actúa como hub principal de navegación.
+  - `QuienSoyComponent`: sección informativa con datos personales y descripción del juego propio.
 
-- Navegación entre componentes:
+- **Navegación entre componentes:**
 
-  Se definieron las rutas correspondientes a cada componente en el archivo de rutas (app.routes.ts), y se estableció la navegación utilizando botones y enlaces en el HTML. Esto permite al usuario moverse fluidamente por las secciones de la aplicación.
+  Se definieron las rutas correspondientes a cada componente en el archivo de rutas (`app.routes.ts`), y se estableció la navegación utilizando botones y enlaces en los templates HTML. Esto permite al usuario moverse fluidamente por las secciones de la aplicación.
 
-- Integración con API de GitHub:  VER SI ESTA BIEN
 
-  Se consumió la API pública de GitHub para traer y mostrar en tiempo real los datos del usuario (nombre, avatar, bio, cantidad de repos, etc.) dentro del componente QuienSoyComponent. Para esto, se implementó un servicio HTTP (GithubService) y se utilizó el pipe async para vincular la respuesta al template.
+- **Integración con API de GitHub:** 
 
-- Descripción del juego propio “Simón Dice”:
+  Se consumió la API pública de GitHub (`https://api.github.com/users/lucag316`) para mostrar dinámicamente los datos del usuario (nombre, avatar, bio, ubicación, repositorios, seguidores, etc.) en el componente `QuienSoyComponent`. Se usó `HttpClient` junto con una `signal` reactiva para manejar los datos, y se renderizaron de forma condicional en el template. Esta integración demuestra el consumo de APIs REST externas con Angular moderno.
 
-  En la misma sección “Quién Soy” se agregó una explicación clara del funcionamiento del juego propio. Se detalló la lógica: mostrar una secuencia creciente de colores que el jugador debe repetir correctamente. Si se equivoca, el juego se reinicia.
+- **Descripción del juego propio “Simón Dice”:**
 
--Favicon personalizado:
+  En la sección `Quién Soy` se agregó una explicación clara del funcionamiento del juego propio. Se detalló la lógica: mostrar una secuencia creciente de colores que el jugador debe repetir correctamente. Si se equivoca, el juego se reinicia.
+
+- **Favicon personalizado:**
 
   Se reemplazó el favicon por defecto de Angular por un ícono representativo del proyecto, visible tanto localmente como en el deploy online.
 
