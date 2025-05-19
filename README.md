@@ -192,6 +192,67 @@ En este sprint se avanzó en la funcionalidad de autenticación usando Supabase,
 - Guardado de información de partidas.
 - Chat en tiempo real: mensajes diferenciados según usuario.
 
+Este sprint estuvo enfocado en el desarrollo de las funcionalidades más interactivas de la aplicación: los juegos (ahorcado y mayor o menor) y la sala de chat. Se trabajó en la lógica de los juegos, su interfaz visual, persistencia de partidas en la base de datos y comunicación en tiempo real entre usuarios.
+
+#### Tareas realizadas:
+
+##### 🎮 Juego Ahorcado:
+
+
+- **Componente AhorcadoComponent:**
+
+- Standalone y funcional.
+- Muestra la palabra oculta y los espacios disponibles.
+- Incluye botones con todas las letras del abecedario.
+- Detecta letras usadas, cantidad de intentos fallidos y aciertos.
+
+- **Lógica de juego:**
+
+- La palabra se selecciona aleatoriamente.
+- Cada intento se registra y actualiza la UI.
+- Finaliza cuando el jugador adivina la palabra o se queda sin intentos.
+
+- **Guardado de partidas:**
+
+- Se utiliza AhorcadoService para registrar la partida en Supabase (partidas_ahorcado).
+- Se guarda: id de partida, id de usuario (FK), palabra, letras usadas, intentos, resultado, fecha y puntaje calculado
+
+
+##### 🃏 Juego Mayor o Menor:
+
+
+- **Componente MayorOMenorComponent:**
+
+- Standalone y funcional.
+- Muestra una carta visible al jugador, una carta dada vuelta y dos botones: Mayor, Menor.
+
+- **Mecánica de juego:**
+
+- El jugador intenta adivinar si la próxima carta será mayor o menor a la actual.
+- Si acierta, suma puntos y continúa con la siguiente carta.
+- Si falla o se acaban las cartas, el juego termina.
+
+- **Persistencia en Supabase:**
+
+- Se utiliza MayorOMenorService para guardar la partida en la tabla partidas_mayor_o_menor.
+- Se guarda: id de partida, id de usuario (FK), puntaje calculado y fecha.
+
+#### 💬 Chat en Tiempo Real:
+
+- **Componente ChatComponent:**
+
+- Permite enviar y visualizar mensajes en tiempo real.
+- Usa Supabase con canales (realtime) para suscribirse a nuevos mensajes.
+
+- **Lógica y funcionalidades:**
+
+- Los mensajes se almacenan en la tabla messages de Supabase.
+- Se diferencian visualmente los mensajes del propio usuario y los de otros.
+- Scroll automático para mantenerse en el mensaje más reciente.
+- Manejo de estados de carga, errores y validación de mensajes vacíos.
+- Compatible con múltiples usuarios conectados simultáneamente.
+
+
 ### 🔴 Sprint 4 (19/05)
 
 - Juego Preguntados conectado a API externa.
