@@ -58,14 +58,34 @@
 
         <section class="game-explanation">
             <h3>Mi Juego propio</h3>
-                <div class="game-card">
-                    <h4 class="game-title">🧠 Simón Dice - Secuencia de Colores</h4>
-                    <p class="game-description">
-                        Memoriza y repite la secuencia de colores que Simón te muestra. ¡Cada ronda se vuelve más difícil!
-                        Si te equivocas, tendrás que empezar desde cero. ¿Cuántos colores seguidos puedes recordar?
-                    </p>
-                    <button class="game-button" (click)="empezarJuego()">Jugar</button>
+            <div class="game-card">
+                <h4 class="game-title">🧠 Simón Dice - Secuencia de Colores</h4>
+                <p class="game-description">
+                    Este juego pone a prueba tu memoria visual. Simón mostrará una secuencia de colores que se iluminarán brevemente uno a uno. 
+                    Tu objetivo es repetir la secuencia exacta en el mismo orden. A medida que aciertas, la secuencia se hace más larga y el ritmo más rápido, 
+                    según la dificultad elegida.
+                </p>
+
+                <!-- Reglas del juego -->
+                <div class="game-rules">
+                    <h5>📜 Reglas del juego:</h5>
+                    <ul>
+                        <li>Seleccioná un nivel de dificultad: <strong>Lento</strong>, <strong>Medio</strong> o <strong>Rápido</strong>.</li>
+                        <li>Presioná <strong>Iniciar Juego</strong> para comenzar una nueva partida.</li>
+                        <li>Memorizá la secuencia de colores que se iluminarán uno por uno.</li>
+                        <li>Cuando sea tu turno, hacé clic en los colores en el mismo orden.</li>
+                        <li>Si te equivocás, el juego termina y se guarda tu puntaje.</li>
+                        <li>Por cada ronda correcta, sumás <strong>10 puntos</strong> y se agrega un color nuevo a la secuencia.</li>
+                    </ul>
                 </div>
+
+                <p class="game-description">
+                    ¡Probá tu memoria y desafiá tus reflejos con este clásico renovado!
+                </p>
+
+                <button class="game-button" (click)="empezarJuego()">Jugar</button>
+                <button class="game-button-secondary" (click)="verRankingSimon('simon')">🏆 Ver ranking</button>
+            </div>
         </section>
     </div>
 </div>

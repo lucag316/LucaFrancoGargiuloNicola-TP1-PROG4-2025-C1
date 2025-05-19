@@ -161,10 +161,31 @@
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+    font-family: "Silkscreen", sans-serif;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 10px;
 }
 
 .game-button:hover {
-    background-color: #ffcb05;
+    background-color: var(--color-boton-hover);
+    box-shadow: 0 0 10px 3px var(--color-boton-hover);
+    transform: scale(1.05);
+}
+
+.game-button-secondary{
+    background-color: var(--color-primario);
+    color: #000;
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: "Silkscreen", sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.game-button-secondary:hover {
+    background-color: #43a047;
+    box-shadow: 0 0 10px 3px #43a047;
     transform: scale(1.05);
 }

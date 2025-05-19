@@ -31,5 +31,12 @@ h2 {
 
 .botones-juego button:hover {
     background-color: var(--color-boton-hover);
+    
     transform: scale(1.05);
+}
+
+.botones-juego button.activo {
+    background-color: var(--color-boton-hover);
+    box-shadow: 0 0 10px 3px var(--color-boton-hover);
+    transform: none;
 }

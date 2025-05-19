@@ -82,6 +82,13 @@ export class QuienSoyComponent implements OnInit {
         this.router.navigate(['/simon']);
     }
 
+    verRankingSimon(nombreJuego: string): void {
+      this.router.navigate(['/resultados'], {
+            queryParams: { juego: nombreJuego }
+        });
+    }
+
+
   /* // ASI LO HIZO EL PROFE
   fetchGitHubData() {
     this.http.get<GitHubUser>('https://api.github.com/users/lucag316')
