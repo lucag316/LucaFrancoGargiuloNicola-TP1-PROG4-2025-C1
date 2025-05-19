@@ -66,7 +66,7 @@ export interface ITriviaState {
     selectedAnswer: string | null;
     feedBack: string | null;
     isCorrect: boolean;
-    score: number;
+    puntaje: number;
     questionsAnswered: number;
     correctAnswers: number;
     gameOver: boolean;
@@ -76,10 +76,10 @@ export interface IGameResult {
     id?: string; //con signo de pregunta
     user_id: string;
     game_type: string;
-    score: number;
+    puntaje: number;
     won: boolean;
     details?: any; // signo
-    created_at?: Date; // signo 
+    fecha?: Date; // signo 
 }
 
 export interface IUserInfo {

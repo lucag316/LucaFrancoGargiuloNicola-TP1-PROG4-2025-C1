@@ -48,4 +48,10 @@ export class HomeComponent {
             this.notificacionesService.showMessage('Necesitás loguearte para jugar.', true);
         }
     }
+
+    verRanking(nombreJuego: string) {
+        this.router.navigate(['/resultados'], {
+            queryParams: { juego: nombreJuego }
+        });
+    }
 }

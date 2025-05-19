@@ -167,6 +167,7 @@ export class SimonComponent implements OnInit {
         // Guardar la partida en la base de datos
         try {
             await this.simonService.guardarPartida({
+                
                 puntaje: this.puntaje,
                 fecha: new Date().toISOString(),
                 secuencia: [...this.secuencia],          // Pasar el array completo de colores

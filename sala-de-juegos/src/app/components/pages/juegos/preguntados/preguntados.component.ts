@@ -56,7 +56,7 @@ export class PreguntadosComponent implements OnInit {
             selectedAnswer: null,
             feedBack: null,
             isCorrect: false,
-            score: 0,
+            puntaje: 0,
             questionsAnswered: 0,
             correctAnswers: 0,
             gameOver: false
@@ -157,7 +157,7 @@ export class PreguntadosComponent implements OnInit {
 
         if(this.state.isCorrect){
             this.state.correctAnswers++;
-            this.state.score += 10;
+            this.state.puntaje += 10;
         }
 
         if ( this.state.questionsAnswered >= this.maxQuestions) {
@@ -175,7 +175,7 @@ export class PreguntadosComponent implements OnInit {
         if(this.state.gameOver) return;
 
         this.state.gameOver = true;
-        this.state.feedBack = `Juego terminado. Tu puntuacion es ${this.state.score}. Respuestas correctas ${this.state.correctAnswers}/${this.maxQuestions}`
+        this.state.feedBack = `Juego terminado. Tu puntuacion es ${this.state.puntaje}. Respuestas correctas ${this.state.correctAnswers}/${this.maxQuestions}`
     
         //await this.saveGameResult();
         await this.guardarPartida()
@@ -194,7 +194,7 @@ export class PreguntadosComponent implements OnInit {
                 await this.gameService.saveGameResult({
                     user_id: user.id,
                     game_type: 'preguntados',
-                    score: this.state.score,
+                    puntaje: this.state.puntaje,
                     won: this.state.correctAnswers > (this.maxQuestions / 2), // si acerto mas de la mitad
                     details: {
                         questionsAnswered: this.state.questionsAnswered,
@@ -222,14 +222,14 @@ export class PreguntadosComponent implements OnInit {
 
             const partida = {
                 user_id: user?.id,
-                score: this.state.score,
+                puntaje: this.state.puntaje,
                 won: this.state.correctAnswers > (this.maxQuestions / 2),
                 details: {
                     questionsAnswered: this.state.questionsAnswered,
                     correctAnswers: this.state.correctAnswers,
                     maxQuestions: this.maxQuestions
                 },
-                created_at: new Date()
+                fecha: new Date()
             };
 
             await this.preguntadosService.guardarPartida(partida);

@@ -1,0 +1,13 @@
+
+
+
+<h2>🏆 Ranking de Jugadores</h2>
+
+<div class="botones-juego">
+    <button (click)="cambiarJuego('simon')">🟥 Simón Dice</button>
+    <button (click)="cambiarJuego('preguntados')">🟨 Preguntados</button>
+    <button (click)="cambiarJuego('mayor-o-menor')">🟩 Mayor o Menor</button>
+    <button (click)="cambiarJuego('ahorcado')">🟦 Ahorcado</button>
+</div>
+
+<app-top-jugadores [juego]="juegoSeleccionado"></app-top-jugadores>

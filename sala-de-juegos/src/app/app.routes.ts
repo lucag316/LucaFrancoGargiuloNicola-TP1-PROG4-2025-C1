@@ -13,6 +13,7 @@ import { AhorcadoComponent } from './components/pages/juegos/ahorcado/ahorcado.c
 import { MayorOMenorComponent } from './components/pages/juegos/mayor-o-menor/mayor-o-menor.component';
 import { PreguntadosComponent } from './components/pages/juegos/preguntados/preguntados.component';
 import { SimonComponent } from './components/pages/juegos/simon/simon.component';
+import { ResultadosComponent } from './components/pages/resultados/resultados.component';
 
 
 export const routes: Routes = [
@@ -57,6 +58,10 @@ export const routes: Routes = [
     {
         path: 'simon',
         component: SimonComponent,
+    },
+    {
+        path: 'resultados',
+        component: ResultadosComponent,
     },
     {
         path: '**',

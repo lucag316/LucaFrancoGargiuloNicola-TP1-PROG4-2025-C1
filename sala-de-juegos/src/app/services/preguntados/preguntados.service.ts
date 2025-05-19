@@ -125,10 +125,10 @@ export class PreguntadosService {
 
     async guardarPartida(partida: {
         user_id?: string;
-        score: number;
+        puntaje: number;
         won: boolean;
         details?: any;
-        created_at?: Date;
+        fecha?: Date;
     }) {
         try {
             // Si no se envía user_id, se obtiene acá (opcional)

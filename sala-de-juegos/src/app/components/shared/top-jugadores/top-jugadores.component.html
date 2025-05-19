@@ -1,0 +1,21 @@
+
+<div *ngIf="cargando">⏳ Cargando ranking...</div>
+
+<table *ngIf="!cargando">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Jugador</th>
+            <th>Puntaje</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let jugador of top10; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ jugador.usuario.username }}</td>
+            <td>{{ jugador.puntaje }}</td>
+            <td>{{ jugador.fecha | date:'short' }}</td>
+        </tr>
+    </tbody>
+</table>
