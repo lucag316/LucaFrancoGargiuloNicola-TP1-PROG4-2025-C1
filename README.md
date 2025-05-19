@@ -237,7 +237,7 @@ Este sprint estuvo enfocado en el desarrollo de las funcionalidades más interac
 - Se utiliza MayorOMenorService para guardar la partida en la tabla partidas_mayor_o_menor.
 - Se guarda: id de partida, id de usuario (FK), puntaje calculado y fecha.
 
-#### 💬 Chat en Tiempo Real:
+##### 💬 Chat en Tiempo Real:
 
 - **Componente ChatComponent:**
 
@@ -259,9 +259,35 @@ Este sprint estuvo enfocado en el desarrollo de las funcionalidades más interac
 - Juego propio “Simón Dice” totalmente funcional.
 - Listado de resultados: estadísticas por usuario y por juego.
 
-### ⚫ Sprint 5 (Recuperatorio - Opcional)
+En este sprint se enfocó el desarrollo en el juego Preguntados, que ahora consume una API externa para mostrar preguntas y opciones. También se completó la implementación del juego propio “Simón Dice”, incluyendo reglas claras y controles para iniciar la partida. Finalmente, se implementaron las vistas y componentes para mostrar los rankings y resultados de los distintos juegos, con persistencia y orden según puntajes, todo integrado con Supabase.
 
-- Encuesta validada con múltiples tipos de campos.
-- Guardado de respuestas por usuario.
-- Visualización de resultados solo por administradores (con guards).
-- Animaciones de transición entre componentes.
+#### Tareas realizadas:
+
+##### 🧠 Juego Preguntados:
+
+- **Componente PreguntadosComponent:**
+
+- Componente standalone con UI para mostrar preguntas, opciones y respuestas.
+- Manejo del estado del juego para controlar preguntas, respuestas correctas e incorrectas.
+- Integración con un servicio que consume la API externa para obtener preguntas dinámicas (sino el json o backup de preguntas).
+- Guardado del desempeño del jugador en Supabase (partidas_preguntados), con puntaje y fecha.
+
+##### 🎨 Juego propio “Simón Dice”:
+
+- **Componente SimonComponent**
+
+- Secuencia visual de colores que se ilumina en orden creciente.
+- Permite seleccionar dificultad (Lento, Medio, Rápido) que afecta la velocidad de la secuencia.
+- Controles para iniciar juego, repetir secuencia y verificar respuesta del usuario.
+- Guarda la partida con puntaje en la tabla partidas_simon en Supabase.
+- Explicación clara de las reglas incluida en la sección “Quién Soy” para mejor comprensión del usuario.
+
+##### 📊 Listado de Resultados y Rankings:
+
+- **Componente ResultadosComponent:**
+
+- Permite seleccionar entre los cuatro juegos (Simón Dice, Preguntados, Mayor o Menor, Ahorcado) para ver rankings.
+- Muestra tabla con los 10 mejores puntajes para el juego seleccionado, incluyendo nombre de usuario, puntaje y fecha.
+- Componente TopJugadoresComponent reutilizable que consulta Supabase para obtener y ordenar los resultados.
+- Actualización dinámica al cambiar el juego seleccionado y manejo de estados de carga y errores.
+
