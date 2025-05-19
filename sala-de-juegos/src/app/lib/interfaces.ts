@@ -96,4 +96,5 @@ export interface IPartidaAhorcado {
     intentos: number;
     resultado: 'ganó' | 'perdió';
     fecha: string;
+    puntaje: number;
 }

@@ -33,6 +33,8 @@ export class AhorcadoComponent implements OnInit {
     mensaje: string = '';
     juegoTerminado: boolean = false;
 
+    
+
 
     constructor ( 
         private ahorcadoService: AhorcadoService,
@@ -112,13 +114,22 @@ export class AhorcadoComponent implements OnInit {
 
         const resultado: 'ganó' | 'perdió' = gano ? 'ganó' : 'perdió';
         
+        // ==== PUNTAJE ====
+        const intentosUsados = this.MAX_INTENTOS - this.intentosRestantes;
+        const penalizacion = 15;
+        let puntaje = Math.max(0, 100 - (intentosUsados * penalizacion));
+
+        // Si perdió, puntaje 0
+        if (!gano) puntaje = 0;
+
         const partida = {
             user_id: userId,  // Puede ser null si no está logueado
             palabra: this.palabraSecreta,
             letras_usadas: this.letrasUsadas,
             intentos: this.intentosRestantes,
             resultado: resultado,
-            fecha: new Date().toISOString()
+            fecha: new Date().toISOString(),
+            puntaje
         };
 
         try {
